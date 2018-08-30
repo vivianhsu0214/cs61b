@@ -3,7 +3,7 @@ import java.util.Formatter;
 /** Scheme-like pairs that can be used to form a list of integers.
  *  @author P. N. Hilfinger, Josh Hug, Melanie Cebula.
  */
-public class IntList {
+public class    IntList {
 
     /** First element of list. */
     public int head;
@@ -63,7 +63,7 @@ public class IntList {
 
         // Creates a sample IntList.
         IntList L1 = list(1, 2, 3, 4, 5);
-
+        System.out.println(L1);
         //TODO:  Print out L1 using IntelliJ's 'sout' command.
     }
 

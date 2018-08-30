@@ -25,6 +25,13 @@ public class IntListTest {
         assertEquals(IntList.list(1, 4, 9), L);
     }
 
+    @Test
+    public void testdSquareListRecursive() {
+        IntList L = IntList.list(1,2,3);
+        IntList L_squared = IntList.squareListRecursive(L);
+        assertEquals(IntList.list(1,2,3),L);
+        assertEquals(IntList.list(1,4,9),L_squared);
+    }
     /*  Do not use the "new" keyword in your tests. You can create
      *  lists using the handy IntList.list method.
      *
