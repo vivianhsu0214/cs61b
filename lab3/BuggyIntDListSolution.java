@@ -38,6 +38,7 @@ public class BuggyIntDListSolution extends IntDList {
         // PUT ERROR LINE NUMBER HERE
         // hint: this is the number that comes after whichever function the
         // error is occurring in.
+
         return 17;
     }
 }
