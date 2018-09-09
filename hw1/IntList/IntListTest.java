@@ -32,7 +32,11 @@ public class IntListTest {
 
     @Test
     public void testDcatenate() {
-
+        IntList A = IntList.list(1,2,3);
+        IntList B = IntList.list(4,5);
+        IntList C = IntList.list(1,2,3,4,5);
+        assertEquals(C,IntList.dcatenate(A,B));
+        assertEquals(A,C);
     }
 
     /** Tests that subtail works properly. Again, don't use new.
@@ -42,7 +46,18 @@ public class IntListTest {
 
     @Test
     public void testSubtail() {
+        IntList L = IntList.list(1,2,3,4,5);
+        IntList replica = IntList.list(1,2,3,4,5);
+        IntList L0 = IntList.subTail(L,0);
 
+        IntList L2 = IntList.list(3,4,5);
+        IntList empty = IntList.subTail(L,6);
+        IntList empty1 = IntList.subTail(L,-1);
+        assertEquals(L,L0);
+        assertEquals(L,replica);
+        assertEquals(L2,IntList.subTail(L,2));
+        assertEquals(empty,null);
+        assertEquals(empty1,null);
     }
 
     /** Tests that sublist works properly. Again, don't use new.
@@ -51,18 +66,40 @@ public class IntListTest {
      */
 
     @Test
-    public void testSublist() {
-
+    public void testsublist() {
+        IntList L = IntList.list(1,2,3,4,5);
+        IntList replica = IntList.list(1,2,3,4,5);
+        IntList L0 = IntList.sublist(L,0,5);
+        IntList L2 = IntList.list(3,4);
+        IntList empty = IntList.sublist(L,6,1);
+        IntList empty1 = IntList.sublist(L,6,-1);
+        IntList empty2 = IntList.sublist(L,4,3);
+        assertEquals(replica,L);
+        assertEquals(L0,L);
+        assertEquals(L2,IntList.sublist(L,2,2));
+        assertEquals(empty,null);
+        assertEquals(empty1,null);
+        assertEquals(empty2,null);
     }
 
-    /** Tests that dSublist works properly. Again, don't use new.
+    /** Tests that dsublist works properly. Again, don't use new.
      *
      *  As with testDcatenate, it is not safe to assume that list passed
-     *  to dSublist is the same after any call to dSublist
+     *  to dsublist is the same after any call to dsublist
      */
 
     @Test
     public void testDsublist() {
+        IntList L = IntList.list(1,2,3,4,5);
+        IntList A = IntList.list(3,4);
+        IntList empty = IntList.dsublist(L,0,100);
+        IntList empty1 = IntList.dsublist(L,0,-1);
+        IntList empty2 = IntList.dsublist(L,6,1);
+        assertEquals(A,IntList.dsublist(L,2,2));
+        assertEquals(IntList.list(1,2,3,4),L);
+        assertEquals(empty,null);
+        assertEquals(empty1,null);
+        assertEquals(empty2,null);
     }
 
 

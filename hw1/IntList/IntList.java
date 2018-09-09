@@ -138,8 +138,13 @@ public class IntList {
      *  elements of B.  May modify items of A. Don't use 'new'. */
 
     static IntList dcatenate(IntList A, IntList B) {
-        return null; // REPLACE WITH YOUR CODE */
-
+        IntList alast = A;
+        if(A==null) return null;
+        while(alast.tail!=null){
+            alast = alast.tail;
+        }
+        alast.tail = B;
+        return A;
     }
 
     /* 2b. */
@@ -150,7 +155,30 @@ public class IntList {
       * This method should NOT modify the items in L. */
 
     static IntList subTail(IntList L, int start) {
-        return null; // REPLACE WITH YOUR CODE
+        if(L==null) return null;
+        if(start<0) return null;
+        IntList starter = L;
+        for(int i=0;i<start;i++){
+            //System.out.println(starter);
+            if(starter==null)  return null;
+            starter = starter.tail;
+        }
+        /*
+        System.out.println("go");
+        IntList result = new IntList(starter.head,null);
+        result = IntList.dcatenate(result,IntList.subTail(L,start+1));
+        System.out.println(result);
+        */
+        IntList result = new IntList(starter.head,null);
+        IntList iterator = starter.tail;
+        IntList ender = result;
+        if(iterator==null) return result;
+        for(;iterator!=null;iterator=iterator.tail){
+            IntList next = new IntList(iterator.head,null);
+            ender.tail = next;
+            ender = ender.tail;
+        }
+        return result;
     }
 
 
@@ -166,10 +194,19 @@ public class IntList {
      *  that start and len are always >= 0.
      */
     static IntList sublist(IntList L, int start, int len) {
-        return null;  // REPLACE WITH YOUR SOLUTION
-
+        // REPLACE WITH YOUR SOLUTION
+        if(start<0 || len<=0) return null;
+        if(L==null) return null;
+        IntList starter = IntList.subTail(L,start);
+        if(starter==null) return starter;
+        IntList ender = starter;
+        for(int i=0;i<len-1;i++){
+            if(ender==null) return null;
+            ender = ender.tail;
+        }
+        ender.tail = null;
+        return starter;
     }
-
     /* 2d. */
     /** Returns the sublist consisting of LEN items from list L,
      *  beginning with item #START (where the first item is #0).
@@ -178,7 +215,22 @@ public class IntList {
      *  As with sublist, you can assume the items requested
      *  exist, and that START and LEN are >= 0. */
     static IntList dsublist(IntList L, int start, int len) {
-        return null; // REPLACE WITH YOUR SOLUTION
+        // REPLACE WITH YOUR SOLUTION
+        if(start<0 || len<0) return null;
+        if(L==null) return null;
+        IntList starter = L;
+        for(int i=0;i<start;i++){
+            if(starter==null) return null;
+            starter = starter.tail;
+        }
+        IntList ender = starter;
+        for(int i=1;i<len;i++) {
+            if (ender == null) return null;
+            ender = ender.tail;
+        }
+        if(ender==null) return null;
+        ender.tail = null;
+        return starter;
 
     }
 

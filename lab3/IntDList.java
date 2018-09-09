@@ -144,7 +144,7 @@ public class IntDList {
             result += ", ";
         }
         result += String.valueOf(iterator._val);
-        
+
         result += "]";
         return result;
     }

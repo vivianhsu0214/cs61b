@@ -58,6 +58,9 @@ class Model {
     /** Sets the puzzle board size to COLS x ROWS, and clears it. */
     void init(int cols, int rows) {
         // FIXME
+        table = new Places[2*(cols+1)][2*(rows+1)];//including ghost places
+        xlim = 2*cols;
+        ylim = 2*rows;
     }
 
     /** Clears the board (removes centers, boundaries that are not on the
@@ -441,6 +444,9 @@ class Model {
         }
         return out.toString();
     }
+    private int xlim = 1;
+    private int ylim = 1;
+    private Places[][] table;
 
     // FIXME: Need representation.
 

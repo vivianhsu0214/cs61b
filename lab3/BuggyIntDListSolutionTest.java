@@ -1,6 +1,6 @@
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-
+import ucb.junit.textui;
 /**
  * Created by joshuazeitsoff on 9/2/17.
  */
@@ -23,5 +23,8 @@ public class BuggyIntDListSolutionTest {
         assertEquals("getBack after inserting 15 should be 15", 15, d.getBack());
         assertEquals("getFront after inserting 15 should be 5", 5, d.getFront());
 
+    }
+    public static void main(String[] args){
+        System.exit(textui.runClasses(BuggyIntDListSolutionTest.class));
     }
 }
