@@ -133,7 +133,7 @@ class Model {
     /** Returns true iff (X, Y) is a valid intersection. */
     boolean isIntersection(int x, int y) {
         return x % 2 == 0 && y % 2 == 0
-            && x >= 0 && y >= 0 && x < ylim() && y < ylim();
+            && x >= 0 && y >= 0 && x < xlim() && y < ylim();
     }
 
     /** Returns true iff P is a valid intersection. */
