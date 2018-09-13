@@ -102,6 +102,7 @@ class Place {
     private int value;
     private boolean boundary;
     private boolean center;
+    public Model owner;
     /** Places already generated. */
     private static Place[][] _places = new Place[10][10];
 

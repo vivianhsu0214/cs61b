@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 
+
 import static java.util.Arrays.asList;
 import static galaxy.Place.pl;
 
@@ -50,26 +51,54 @@ class Model {
 
     /** Copies MODEL into me. */
     void copy(Model model) {
-        if (model == this) {
-            return;
+        this.w = model.w;
+        this.h = model.h;
+        //backup model's arraylist
+        List<List<Boolean>> blCopy = new ArrayList<List<Boolean>>();
+        List<List<Boolean>> clCopy = new ArrayList<List<Boolean>>();
+        List<List<Integer>> mlCopy = new ArrayList<List<Integer>>();
+        for (int i = 0; i < model.boundaryList.size(); i++) {
+            List<Boolean> bline = new ArrayList<Boolean>();
+            List<Boolean> cline = new ArrayList<Boolean>();
+            List<Integer> mline = new ArrayList<Integer>();
+            for (int j = 0; j < model.boundaryList.get(i).size(); j++) {
+                bline.add(model.boundaryList.get(i).get(j));
+                cline.add(model.centerList.get(i).get(j));
+                mline.add(model.markList.get(i).get(j));
+            }
+            blCopy.add(bline);
+            clCopy.add(cline);
+            mlCopy.add(mline);
         }
-        int lastW = this.w;
-        int lastH = this.h;
-        this.w = (model.xlim() - 1) / 2;
-        this.h = (model.ylim() - 1) / 2;
         // FIXME
-        if(lastW < w){
-            for(int i = -1; i <= 2 * h + 1; i++){
-                pl(lastW * 2, i).resetBoundary();
-                pl(lastW * 2 + 1, i).resetBoundary();
+        //clearing
+        boundaryList = new ArrayList<List<Boolean>>();
+        centerList = new ArrayList<List<Boolean>>();
+        markList = new ArrayList<List<Integer>>();
+        for(int c = 0; c <= 2 * w + 2; c++) {
+            List<Boolean> boundaryLine = new ArrayList<Boolean>();
+            List<Boolean> centerLine = new ArrayList<Boolean>();
+            List<Integer> markLine = new ArrayList<Integer>();
+            for (int r = 0; r <= 2 * h + 2; r++) {
+                pl(c - 1, r - 1).resetBoundary();
+                pl(c - 1, r - 1).resetCenter();
+                pl(c - 1, r - 1).setValue(0);
+                pl(c - 1, r - 1).owner = this;
+                if ((r >= 0 && r <= 2 * h) || (c >= 0 && c <= 2 * w)) {
+                    if (r == 0 || r == 2 * h || c == 0 || c == 2 * w) {
+                        boundaryLine.add(true);
+                    } else {
+                        boundaryLine.add(false);
+                    }
+                    centerLine.add(false);
+                    markLine.add(0);
+                }
             }
+            boundaryList.add(boundaryLine);
+            centerList.add(centerLine);
+            markList.add(markLine);
         }
-        if(lastH < h){
-            for(int i = -1; i <= 2 * w + 1; i++){
-                pl(lastH * 2, i).resetBoundary();
-                pl(lastH * 2 + 1, i).resetBoundary();
-            }
-        }
+        //setting up ghost and boundary
         for(int i = -1; i <= 2 * w + 1; i++){
             pl(i, -1).setBoundary();
             pl(i, 0).setBoundary();
@@ -81,6 +110,21 @@ class Model {
             pl(0, i).setBoundary();
             pl(2*w, i).setBoundary();
             pl(2*w + 1, i).setBoundary();
+        }
+        //copying
+        for (int i = 0; i < 2 * w; i++) {
+            for (int j = 0; j < 2 * h; j++) {
+                boundaryList.get(i).set(j, blCopy.get(i).get(j));
+                centerList.get(i).set(j, clCopy.get(i).get(j));
+                markList.get(i).set(j, mlCopy.get(i).get(j));
+                if(blCopy.get(i).get(j)){
+                    pl(i, j).setBoundary();
+                }
+                if(clCopy.get(i).get(j)){
+                    pl(i, j).setCenter();
+                }
+                pl(i, j).setValue(mlCopy.get(i).get(j));
+            }
         }
     }
 
@@ -100,8 +144,13 @@ class Model {
                 pl(c - 1, r - 1).resetBoundary();
                 pl(c - 1, r - 1).resetCenter();
                 pl(c - 1, r - 1).setValue(0);
-                if(r > 0 && r < 2 * rows){
-                    boundaryLine.add(false);
+                pl(c-1,r-1).owner = this;
+                if((r >= 0 && r <= 2 * rows) || (c >= 0 && c <= 2 * cols)){
+                    if(r == 0 || r == 2 * rows || c == 0 || c == 2 * cols) {
+                        boundaryLine.add(true);
+                    }else{
+                        boundaryLine.add(false);
+                    }
                     centerLine.add(false);
                     markLine.add(0);
                 }
@@ -133,11 +182,17 @@ class Model {
 
     /** Returns the number of columns of cells in the board. */
     int cols() {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         return xlim() / 2;
     }
 
     /** Returns the number of rows of cells in the board. */
     int rows() {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         return ylim() / 2;
     }
 
@@ -205,6 +260,10 @@ class Model {
 
     /** Returns true iff (X, Y) is a center. */
     boolean isCenter(int x, int y) {
+        if(pl(1,1).owner != this){
+            System.out.println("it happens");
+            copy(this);
+        }
         return pl(x, y).getCenter(); // FIXME
     }
 
@@ -215,6 +274,9 @@ class Model {
 
     /** Returns true iff (X, Y) is a boundary. */
     boolean isBoundary(int x, int y) {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         return pl(x, y).getBoundary(); // FIXME
     }
 
@@ -226,6 +288,9 @@ class Model {
     /** Returns true iff the puzzle board is solved, given the centers and
      *  boundaries that are currently on the board. */
     boolean solved() {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         int total;
         total = 0;
         if(centers() == null){
@@ -251,6 +316,9 @@ class Model {
      *  do not touch any cells that were initially in REGION. Requires
      *  that CELL is a valid cell. */
     private void accreteRegion(Place cell, HashSet<Place> region) {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         assert isCell(cell);
         if (region.contains(cell)) {
             return;
@@ -272,6 +340,9 @@ class Model {
      *      - contains no other centers.
      * Assumes that REGION is connected. */
     private boolean isGalaxy(Place center, HashSet<Place> region) {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         for (Place cell : region) {
             if (!region.contains(opposing(center, cell))) { // FIXME
                 return false;
@@ -356,6 +427,9 @@ class Model {
      *  are not contained in any of these galaxies. Requires that V is greater
      *  than or equal to 0. */
     void markGalaxies(int v) {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         assert v >= 0;
         markAll(0);
         for (Place c : centers()) {
@@ -371,8 +445,13 @@ class Model {
      *  Requires that (X, Y) is an edge. */
     void toggleBoundary(int x, int y) {
         // FIXME
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         if(!isEdge(x, y)) return;
         pl(x, y).toggleBoundary();
+        boolean isBound = boundaryList.get(x).get(y);
+        boundaryList.get(x).set(y, !isBound);
     }
 
     /** Places a center at (X, Y). Requires that X and Y are within bounds of
@@ -384,13 +463,21 @@ class Model {
     /** Places center at P. */
     void placeCenter(Place p) {
         // FIXME
-        if(0 <= p.x && p.x <= 2 * w && 0 <= p.y && p.y <= 2 * h)
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
+        if(0 <= p.x && p.x <= 2 * w && 0 <= p.y && p.y <= 2 * h) {
             pl(p.x, p.y).setCenter();
+            centerList.get(p.x).set(p.y, true);
+        }
     }
 
     /** Returns the current mark on cell (X, Y), or -1 if (X, Y) is not a valid
      *  cell address. */
     int mark(int x, int y) {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         if (!isCell(x, y)) {
             return -1;
         }
@@ -406,6 +493,9 @@ class Model {
     /** Marks the cell at (X, Y) with value V. Requires that V must be greater
      *  than or equal to 0, and that (X, Y) is a valid cell address. */
     void mark(int x, int y, int v) {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         if (!isCell(x, y)) {
             throw new IllegalArgumentException("bad cell coordinates");
         }
@@ -414,6 +504,7 @@ class Model {
         }
         //FIXME
         pl(x,y).setValue(v);
+        markList.get(x).set(y, v);
     }
 
     /** Marks the cell at P with value V. Requires that V must be greater
@@ -425,6 +516,9 @@ class Model {
     /** Sets the marks of all cells in CELLS to V. Requires that V must be
      *  greater than or equal to 0. */
     void markAll(Collection<Place> cells, int v) {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         assert v >= 0;
         for(Place c : cells){//FIXME
             mark(c, v);
@@ -434,6 +528,9 @@ class Model {
     /** Sets the marks of all cells to V. Requires that V must be greater than
      *  or equal to 0. */
     void markAll(int v) {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         assert v >= 0;
         // FIXME
         for(int c = 1; c < 2 * w; c++){
@@ -446,6 +543,9 @@ class Model {
     /** Returns the position of the cell that is opposite P using P0 as the
      *  center, or null if that is not a valid cell address. */
     Place opposing(Place p0, Place p) {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         //FIXME
         int dx = p0.x - p.x;
         int dy = p0.y - p.y;
@@ -464,6 +564,9 @@ class Model {
      *      - PLACE is an edge of c.
      *  Otherwise, returns an empty list. */
     List<Place> unmarkedContaining(Place place) {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         if (isCell(place)) {
             if (place.isUnmarked()) { // FIXME
                 return asList(place);
@@ -497,6 +600,9 @@ class Model {
      *  CENTER and all cells in REGION must be valid cell positions.
      *  Each cell appears at most once in the resulting list. */
     List<Place> unmarkedSymAdjacent(Place center, List<Place> region) {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         ArrayList<Place> result = new ArrayList<>();
         for (Place r : region) {
             assert isCell(r);
@@ -523,6 +629,9 @@ class Model {
     /** Returns an unmodifiable view of the list of all centers. */
     List<Place> centers() {
         // FIXME
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         List<Place> centers = new ArrayList<Place>();
         for(int c = 1; c < 2 * w; c++){
             for (int r = 1;r < 2 * h; r++){
@@ -536,6 +645,9 @@ class Model {
 
     @Override
     public String toString() {
+        if(pl(1,1).owner != this){
+            copy(this);
+        }
         Formatter out = new Formatter();
         int w = xlim(), h = ylim();
         for (int y = h - 1; y >= 0; y -= 1) {
@@ -567,8 +679,8 @@ class Model {
         return out.toString();
     }
     /** width and height of the model **/
-    private int w;
-    private int h;
+    public int w;
+    public int h;
     public List<List<Boolean>> boundaryList;
     public List<List<Boolean>> centerList;
     public List<List<Integer>> markList;
