@@ -25,7 +25,7 @@ import static galaxy.Place.pl;
  *  top edge.  The four cells (x, y), (x+2, y), (x, y+2), and (x+2, y+2)
  *  meet at intersection (x+1, y+1).  Cells contain nonnegative integer
  *  values, or "marks". A cell containing 0 is said to be unmarked.
- *  Zhibo Fan // FIXME
+ *  @Zhibo_Fan // FIXME
  */
 class Model {
 
@@ -53,7 +53,6 @@ class Model {
     void copy(Model model) {
         this.w = model.w;
         this.h = model.h;
-        //backup model's arraylist
         List<List<Boolean>> blCopy = new ArrayList<List<Boolean>>();
         List<List<Boolean>> clCopy = new ArrayList<List<Boolean>>();
         List<List<Integer>> mlCopy = new ArrayList<List<Integer>>();
@@ -71,7 +70,6 @@ class Model {
             mlCopy.add(mline);
         }
         // FIXME
-        //clearing
         boundaryList = new ArrayList<List<Boolean>>();
         centerList = new ArrayList<List<Boolean>>();
         markList = new ArrayList<List<Integer>>();
@@ -79,7 +77,7 @@ class Model {
             List<Boolean> boundaryLine = new ArrayList<Boolean>();
             List<Boolean> centerLine = new ArrayList<Boolean>();
             List<Integer> markLine = new ArrayList<Integer>();
-            for (int r = 0; r <= 2 * h + 2; r++) {
+            for(int r = 0; r <= 2 * h + 2; r++){
                 pl(c - 1, r - 1).resetBoundary();
                 pl(c - 1, r - 1).resetCenter();
                 pl(c - 1, r - 1).setValue(0);
@@ -98,21 +96,19 @@ class Model {
             centerList.add(centerLine);
             markList.add(markLine);
         }
-        //setting up ghost and boundary
-        for(int i = -1; i <= 2 * w + 1; i++){
+        for(int i = -1; i <= 2*w+1; i++){
             pl(i, -1).setBoundary();
             pl(i, 0).setBoundary();
             pl(i, 2*h).setBoundary();
             pl(i, 2*h + 1).setBoundary();
         }
-        for(int i = -1; i <= 2 * h + 1; i++){
+        for(int i = -1; i <= 2*h+1; i++){
             pl(-1, i).setBoundary();
             pl(0, i).setBoundary();
             pl(2*w, i).setBoundary();
             pl(2*w + 1, i).setBoundary();
         }
-        //copying
-        for (int i = 0; i < 2 * w; i++) {
+        for(int i = 0; i < 2*w; i++){
             for (int j = 0; j < 2 * h; j++) {
                 boundaryList.get(i).set(j, blCopy.get(i).get(j));
                 centerList.get(i).set(j, clCopy.get(i).get(j));
@@ -136,17 +132,17 @@ class Model {
         boundaryList = new ArrayList<List<Boolean>>();
         centerList = new ArrayList<List<Boolean>>();
         markList = new ArrayList<List<Integer>>();
-        for(int c = 0; c <= 2 * cols + 2; c++) {
+        for(int c = 0; c <= 2*cols+2; c++){
             List<Boolean> boundaryLine = new ArrayList<Boolean>();
             List<Boolean> centerLine = new ArrayList<Boolean>();
             List<Integer> markLine = new ArrayList<Integer>();
-            for (int r = 0; r <= 2 * rows + 2; r++) {
-                pl(c - 1, r - 1).resetBoundary();
-                pl(c - 1, r - 1).resetCenter();
-                pl(c - 1, r - 1).setValue(0);
+            for(int r = 0; r <= 2*rows+2; r++){
+                pl(c-1, r-1).resetBoundary();
+                pl(c-1, r-1).resetCenter();
+                pl(c-1, r-1).setValue(0);
                 pl(c-1,r-1).owner = this;
-                if((r >= 0 && r <= 2 * rows) || (c >= 0 && c <= 2 * cols)){
-                    if(r == 0 || r == 2 * rows || c == 0 || c == 2 * cols) {
+                if((r >= 0 && r <= 2*rows) || (c >= 0 && c <= 2*cols)){
+                    if(r == 0 || r == 2*rows || c == 0 || c == 2*cols) {
                         boundaryLine.add(true);
                     }else{
                         boundaryLine.add(false);
@@ -160,17 +156,17 @@ class Model {
             markList.add(markLine);
         }
         //setting up ghost and boundary
-        for(int i = -1; i <= 2 * w + 1; i++){
+        for(int i = -1; i <= 2*w+1; i++){
             pl(i, -1).setBoundary();
             pl(i, 0).setBoundary();
             pl(i, 2*h).setBoundary();
-            pl(i, 2*h + 1).setBoundary();
+            pl(i, 2*h+1).setBoundary();
         }
-        for(int i = -1; i <= 2 * h + 1; i++){
+        for(int i = -1; i <= 2*h+1; i++){
             pl(-1, i).setBoundary();
             pl(0, i).setBoundary();
             pl(2*w, i).setBoundary();
-            pl(2*w + 1, i).setBoundary();
+            pl(2*w+1, i).setBoundary();
         }
     }
 
@@ -261,7 +257,6 @@ class Model {
     /** Returns true iff (X, Y) is a center. */
     boolean isCenter(int x, int y) {
         if(pl(1,1).owner != this){
-            System.out.println("it happens");
             copy(this);
         }
         return pl(x, y).getCenter(); // FIXME
@@ -298,9 +293,6 @@ class Model {
         }
         for (Place c : centers()) {
             HashSet<Place> r = findGalaxy(c);
-            System.out.print("center:");
-            System.out.println(c);
-            System.out.println(r);
             if (r == null) {
                 return false;
             } else {
@@ -347,7 +339,7 @@ class Model {
             if (!region.contains(opposing(center, cell))) { // FIXME
                 return false;
             }
-            for (int i = 0; i < 4; i += 1) {
+            for(int i = 0; i < 4; i += 1){
                 int dx = (i % 2) * (2 * (i / 2) - 1),
                     dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
                 Place boundary = cell.move(dx, dy),

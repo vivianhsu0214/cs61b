@@ -66,17 +66,40 @@ class Place {
         return Math.abs(x - other.x) + Math.abs(y - other.y);
     }
 
-    /** Getters and setters */
-    int getValue(){ return value; }
-    void setValue(int v) { value = v; }
-    boolean getBoundary() { return boundary; }
-    void toggleBoundary() { boundary = !boundary; }
-    void setBoundary() { boundary = true; }
-    void resetBoundary() { boundary = false; }
-    boolean getCenter() { return center; }
-    void setCenter() { center = true; }
-    void resetCenter() { center = false;}
-    boolean isUnmarked() { return value == 0; }
+    /** Getters and setters. */
+    int getValue(){
+        return value;
+    }
+    void setValue(int v) {
+        value = v;
+    }
+    boolean getBoundary() {
+        return boundary;
+    }
+    void toggleBoundary() {
+        boundary = !boundary;
+    }
+    void setBoundary() {
+        boundary = true;
+    }
+    void resetBoundary() {
+        boundary = false;
+    }
+    boolean getCenter() {
+        return center;
+    }
+    void setCenter() {
+        center = true;
+    }
+    void resetCenter() {
+        center = false;
+    }
+    boolean isUnmarked() {
+        return value == 0;
+    }
+    Model getOwner() {
+        return owner;
+    }
 
     @Override
     public boolean equals(Object obj) {
