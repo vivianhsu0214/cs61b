@@ -1,5 +1,7 @@
 package galaxy;
 
+import afu.org.checkerframework.checker.igj.qual.I;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,7 +12,6 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static galaxy.Place.pl;
-
 
 /** The state of a Galaxies Puzzle.  Each cell, cell edge, and intersection of
  *  edges has coordinates (x, y). For cells, x and y are positive and odd.
@@ -23,7 +24,7 @@ import static galaxy.Place.pl;
  *  top edge.  The four cells (x, y), (x+2, y), (x, y+2), and (x+2, y+2)
  *  meet at intersection (x+1, y+1).  Cells contain nonnegative integer
  *  values, or "marks". A cell containing 0 is said to be unmarked.
- *  @author // FIXME
+ *  Zhibo Fan // FIXME
  */
 class Model {
 
@@ -52,15 +53,76 @@ class Model {
         if (model == this) {
             return;
         }
+        int lastW = this.w;
+        int lastH = this.h;
+        this.w = (model.xlim() - 1) / 2;
+        this.h = (model.ylim() - 1) / 2;
         // FIXME
+        if(lastW < w){
+            for(int i = -1; i <= 2 * h + 1; i++){
+                pl(lastW * 2, i).resetBoundary();
+                pl(lastW * 2 + 1, i).resetBoundary();
+            }
+        }
+        if(lastH < h){
+            for(int i = -1; i <= 2 * w + 1; i++){
+                pl(lastH * 2, i).resetBoundary();
+                pl(lastH * 2 + 1, i).resetBoundary();
+            }
+        }
+        for(int i = -1; i <= 2 * w + 1; i++){
+            pl(i, -1).setBoundary();
+            pl(i, 0).setBoundary();
+            pl(i, 2*h).setBoundary();
+            pl(i, 2*h + 1).setBoundary();
+        }
+        for(int i = -1; i <= 2 * h + 1; i++){
+            pl(-1, i).setBoundary();
+            pl(0, i).setBoundary();
+            pl(2*w, i).setBoundary();
+            pl(2*w + 1, i).setBoundary();
+        }
     }
 
     /** Sets the puzzle board size to COLS x ROWS, and clears it. */
     void init(int cols, int rows) {
         // FIXME
-        table = new Places[2*(cols+1)][2*(rows+1)];//including ghost places
-        xlim = 2*cols;
-        ylim = 2*rows;
+        w = cols;
+        h = rows;
+        boundaryList = new ArrayList<List<Boolean>>();
+        centerList = new ArrayList<List<Boolean>>();
+        markList = new ArrayList<List<Integer>>();
+        for(int c = 0; c <= 2 * cols + 2; c++) {
+            List<Boolean> boundaryLine = new ArrayList<Boolean>();
+            List<Boolean> centerLine = new ArrayList<Boolean>();
+            List<Integer> markLine = new ArrayList<Integer>();
+            for (int r = 0; r <= 2 * rows + 2; r++) {
+                pl(c - 1, r - 1).resetBoundary();
+                pl(c - 1, r - 1).resetCenter();
+                pl(c - 1, r - 1).setValue(0);
+                if(r > 0 && r < 2 * rows){
+                    boundaryLine.add(false);
+                    centerLine.add(false);
+                    markLine.add(0);
+                }
+            }
+            boundaryList.add(boundaryLine);
+            centerList.add(centerLine);
+            markList.add(markLine);
+        }
+        //setting up ghost and boundary
+        for(int i = -1; i <= 2 * w + 1; i++){
+            pl(i, -1).setBoundary();
+            pl(i, 0).setBoundary();
+            pl(i, 2*h).setBoundary();
+            pl(i, 2*h + 1).setBoundary();
+        }
+        for(int i = -1; i <= 2 * h + 1; i++){
+            pl(-1, i).setBoundary();
+            pl(0, i).setBoundary();
+            pl(2*w, i).setBoundary();
+            pl(2*w + 1, i).setBoundary();
+        }
     }
 
     /** Clears the board (removes centers, boundaries that are not on the
@@ -81,12 +143,12 @@ class Model {
 
     /** Returns the number of vertical edges and cells in a row. */
     int xlim() {
-        return 0; // FIXME
+        return 2*w+1; // FIXME
     }
 
     /** Returns the number of horizontal edges and cells in a column. */
     int ylim() {
-        return 0; // FIXME
+        return 2*h+1; // FIXME
     }
 
     /** Returns true iff (X, Y) is a valid cell. */
@@ -143,17 +205,17 @@ class Model {
 
     /** Returns true iff (X, Y) is a center. */
     boolean isCenter(int x, int y) {
-        return false; // FIXME
+        return pl(x, y).getCenter(); // FIXME
     }
 
     /** Returns true iff P is a center. */
     boolean isCenter(Place p) {
-        return false; // FIXME
+        return isCenter(p.x, p.y); // FIXME
     }
 
     /** Returns true iff (X, Y) is a boundary. */
     boolean isBoundary(int x, int y) {
-        return false; // FIXME
+        return pl(x, y).getBoundary(); // FIXME
     }
 
     /** Returns true iff P is a boundary. */
@@ -166,8 +228,14 @@ class Model {
     boolean solved() {
         int total;
         total = 0;
+        if(centers() == null){
+            return false;
+        }
         for (Place c : centers()) {
             HashSet<Place> r = findGalaxy(c);
+            System.out.print("center:");
+            System.out.println(c);
+            System.out.println(r);
             if (r == null) {
                 return false;
             } else {
@@ -191,7 +259,7 @@ class Model {
         for (int i = 0; i < 4; i += 1) {
             int dx = (i % 2) * (2 * (i / 2) - 1),
                 dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
-            if (false) { // FIXME
+            if (!pl(cell.x + dx, cell.y + dy).getBoundary()) { // FIXME
                 accreteRegion(cell.move(2 * dx, 2 * dy), region);
             }
         }
@@ -205,16 +273,18 @@ class Model {
      * Assumes that REGION is connected. */
     private boolean isGalaxy(Place center, HashSet<Place> region) {
         for (Place cell : region) {
-            if (!region.contains(null)) { // FIXME
+            if (!region.contains(opposing(center, cell))) { // FIXME
                 return false;
             }
             for (int i = 0; i < 4; i += 1) {
                 int dx = (i % 2) * (2 * (i / 2) - 1),
                     dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
                 Place boundary = cell.move(dx, dy),
-                    nextCell = cell.move(2 * dx, 2 * dy);
+                        nextCell = cell.move(2 * dx, 2 * dy);
 
-                if (true) { // FIXME
+                if ((boundary.getCenter() && !boundary.equals(center))
+                        || (boundary.getBoundary() && region.contains(nextCell))
+                        || (!boundary.getBoundary() && nextCell.getCenter()) && !nextCell.equals(center)) { // FIXME
                     return false;
                 }
             }
@@ -222,7 +292,7 @@ class Model {
                 int dx = 2 * (i / 2) - 1,
                     dy = 2 * (i % 2) - 1;
                 Place intersection = cell.move(dx, dy);
-                if (true) { // FIXME
+                if (intersection.getCenter() && !intersection.equals(center)) { // FIXME
                     return false;
                 }
             }
@@ -242,9 +312,16 @@ class Model {
      *  periphery. */
     HashSet<Place> findGalaxy(Place center) {
         HashSet<Place> galaxy = new HashSet<>();
-
         // FIXME
-
+        if(center.isCell()){
+            accreteRegion(center, galaxy);
+        }else if(center.isCorner()){
+            accreteRegion(center.move(1,1), galaxy);
+        }else if(center.x % 2 == 0){
+            accreteRegion(center.move(1,0), galaxy);
+        }else{
+            accreteRegion(center.move(0, 1), galaxy);
+        }
         if (isGalaxy(center, galaxy)) {
             return galaxy;
         } else {
@@ -263,8 +340,14 @@ class Model {
     Set<Place> maxUnmarkedRegion(Place center) {
         HashSet<Place> region = new HashSet<>();
         region.addAll(unmarkedContaining(center));
+        ArrayList<Place> regionList = new ArrayList<Place>(region);
         markAll(region, 1);
         // FIXME
+        while(unmarkedSymAdjacent(center, regionList).size() != 0){
+            region.addAll(unmarkedSymAdjacent(center, regionList));
+            markAll(region, 1);
+            regionList = new ArrayList<Place>(region);
+        }
         markAll(region, 0);
         return region;
     }
@@ -288,6 +371,8 @@ class Model {
      *  Requires that (X, Y) is an edge. */
     void toggleBoundary(int x, int y) {
         // FIXME
+        if(!isEdge(x, y)) return;
+        pl(x, y).toggleBoundary();
     }
 
     /** Places a center at (X, Y). Requires that X and Y are within bounds of
@@ -299,6 +384,8 @@ class Model {
     /** Places center at P. */
     void placeCenter(Place p) {
         // FIXME
+        if(0 <= p.x && p.x <= 2 * w && 0 <= p.y && p.y <= 2 * h)
+            pl(p.x, p.y).setCenter();
     }
 
     /** Returns the current mark on cell (X, Y), or -1 if (X, Y) is not a valid
@@ -307,7 +394,7 @@ class Model {
         if (!isCell(x, y)) {
             return -1;
         }
-        return 0; // FIXME
+        return pl(x, y).getValue(); // FIXME
     }
 
     /** Returns the current mark on cell P, or -1 if P is not a valid cell
@@ -325,7 +412,8 @@ class Model {
         if (v < 0) {
             throw new IllegalArgumentException("bad mark value");
         }
-        // FIXME
+        //FIXME
+        pl(x,y).setValue(v);
     }
 
     /** Marks the cell at P with value V. Requires that V must be greater
@@ -338,7 +426,9 @@ class Model {
      *  greater than or equal to 0. */
     void markAll(Collection<Place> cells, int v) {
         assert v >= 0;
-        // FIXME
+        for(Place c : cells){//FIXME
+            mark(c, v);
+        }
     }
 
     /** Sets the marks of all cells to V. Requires that V must be greater than
@@ -346,12 +436,25 @@ class Model {
     void markAll(int v) {
         assert v >= 0;
         // FIXME
+        for(int c = 1; c < 2 * w; c++){
+            for(int r = 1; r < 2 * h; r++){
+                mark(pl(c, r), v);
+            }
+        }
     }
 
     /** Returns the position of the cell that is opposite P using P0 as the
      *  center, or null if that is not a valid cell address. */
     Place opposing(Place p0, Place p) {
-        return null; // FIXME
+        //FIXME
+        int dx = p0.x - p.x;
+        int dy = p0.y - p.y;
+        int xt = p0.x + dx;
+        int yt = p0.y + dy;
+        if(0 <= xt && xt <= 2 * w && 0 <= yt && yt <= 2 * h && isCell(xt, yt)) {
+            return pl(xt, yt);
+        }
+        else return null;
     }
 
     /** Returns a list of all cells "containing" PLACE if all of the cells are
@@ -362,24 +465,26 @@ class Model {
      *  Otherwise, returns an empty list. */
     List<Place> unmarkedContaining(Place place) {
         if (isCell(place)) {
-            if (false) { // FIXME
+            if (place.isUnmarked()) { // FIXME
                 return asList(place);
             }
         } else if (isVert(place)) {
-            if (false) { // FIXME
+            if (place.move(-1,0).isUnmarked() && place.move(1,0).isUnmarked()) { // FIXME
                 return asList(place.move(-1, 0), place.move(1, 0));
             }
         } else if (isHoriz(place)) {
-            if (false) { // FIXME
+            if (place.move(0,-1).isUnmarked() && place.move(0,1).isUnmarked()) { // FIXME
                 return asList(place.move(0, -1), place.move(0, 1));
             }
         } else {
             for (int i = 0; i < 4; i += 1) {
-                if (mark(place.move(0, 0)) != 0) { // FIXME
+                int dx = 2 * (i / 2) - 1,
+                        dy = 2 * (i % 2) - 1;
+                if (!place.move(dx, dy).isUnmarked()) { // FIXME
                     return Collections.emptyList();
                 }
             }
-            return asList(null, null, null, null); // FIXME
+            return asList(place.move(1,1), place.move(1,-1), place.move(-1,-1), place.move(-1,1)); // FIXME
         }
         return Collections.emptyList();
     }
@@ -396,9 +501,17 @@ class Model {
         for (Place r : region) {
             assert isCell(r);
             for (int i = 0; i < 4; i += 1) {
-                Place p = r.move(0, 0); // FIXME
+                int dx = (i % 2) * (2 * (i / 2) - 1),
+                        dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
+                Place p = r.move(2*dx, 2*dy); // FIXME
                 Place opp = opposing(center, p);
-                if (false) { // FIXME
+                if (p.x == -1 || p.x == 2*w + 1 || p.y == -1 || p.y == 2*h + 1){
+                    continue;
+                }
+                if (opp == null){
+                    continue;
+                }
+                if (p.isUnmarked() && opp.isUnmarked()) { // FIXME
                     result.add(p);
                 }
             }
@@ -409,7 +522,16 @@ class Model {
 
     /** Returns an unmodifiable view of the list of all centers. */
     List<Place> centers() {
-        return Collections.unmodifiableList(Collections.emptyList()); // FIXME
+        // FIXME
+        List<Place> centers = new ArrayList<Place>();
+        for(int c = 1; c < 2 * w; c++){
+            for (int r = 1;r < 2 * h; r++){
+                if(pl(c, r).getCenter())
+                    centers.add(pl(c, r));
+            }
+        }
+        if(centers.isEmpty()) return null;
+        return centers;
     }
 
     @Override
@@ -444,10 +566,12 @@ class Model {
         }
         return out.toString();
     }
-    private int xlim = 1;
-    private int ylim = 1;
-    private Places[][] table;
-
+    /** width and height of the model **/
+    private int w;
+    private int h;
+    public List<List<Boolean>> boundaryList;
+    public List<List<Boolean>> centerList;
+    public List<List<Integer>> markList;
     // FIXME: Need representation.
 
 }

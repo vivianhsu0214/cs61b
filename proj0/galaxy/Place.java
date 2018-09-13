@@ -9,7 +9,11 @@ class Place {
 
     /** The position (X0, Y0), where X0, Y0 >= -1. */
     private Place(int x0, int y0) {
-        x = x0; y = y0;
+        x = x0;
+        y = y0;
+        value = 0;
+        boundary = false;
+        center = false;
     }
 
     /** Return the position (X, Y).  This is a factory method that
@@ -62,6 +66,18 @@ class Place {
         return Math.abs(x - other.x) + Math.abs(y - other.y);
     }
 
+    /** Getters and setters */
+    int getValue(){ return value; }
+    void setValue(int v) { value = v; }
+    boolean getBoundary() { return boundary; }
+    void toggleBoundary() { boundary = !boundary; }
+    void setBoundary() { boundary = true; }
+    void resetBoundary() { boundary = false; }
+    boolean getCenter() { return center; }
+    void setCenter() { center = true; }
+    void resetCenter() { center = false;}
+    boolean isUnmarked() { return value == 0; }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Place)) {
@@ -81,9 +97,11 @@ class Place {
         return String.format("(%d, %d)", x, y);
     }
 
-    /** Coordinates of this Place. */
+    /** Coordinates of this Place and Value. */
     protected final int x, y;
-
+    private int value;
+    private boolean boundary;
+    private boolean center;
     /** Places already generated. */
     private static Place[][] _places = new Place[10][10];
 
