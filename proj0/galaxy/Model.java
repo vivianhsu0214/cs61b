@@ -25,7 +25,7 @@ import static galaxy.Place.pl;
  *  top edge.  The four cells (x, y), (x+2, y), (x, y+2), and (x+2, y+2)
  *  meet at intersection (x+1, y+1).  Cells contain nonnegative integer
  *  values, or "marks". A cell containing 0 is said to be unmarked.
- *  @Zhibo_Fan // FIXME
+ *  @author Zhibo Fan// FIXME
  */
 class Model {
 
@@ -69,11 +69,10 @@ class Model {
             clCopy.add(cline);
             mlCopy.add(mline);
         }
-        // FIXME
         boundaryList = new ArrayList<List<Boolean>>();
         centerList = new ArrayList<List<Boolean>>();
         markList = new ArrayList<List<Integer>>();
-        for(int c = 0; c <= 2 * w + 2; c++) {
+        for(int c = 0; c <= 2 * w + 2; c++){
             List<Boolean> boundaryLine = new ArrayList<Boolean>();
             List<Boolean> centerLine = new ArrayList<Boolean>();
             List<Integer> markLine = new ArrayList<Integer>();
