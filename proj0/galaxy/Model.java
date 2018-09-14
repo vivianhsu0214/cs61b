@@ -60,27 +60,61 @@ class Model {
     }
 
     /**
-     * Copies MODEL into me.
+     * Backup arrays.
+     * @param blCopy blcopy
+     * @param clCopy clcopy
+     * @param mlCopy mlcopy
+     * @param bl bl
+     * @param cl cl
+     * @param ml ml
      */
-    void copy(Model model) {
-        this.w = model.w;
-        this.h = model.h;
-        List<List<Boolean>> blCopy = new ArrayList<List<Boolean>>();
-        List<List<Boolean>> clCopy = new ArrayList<List<Boolean>>();
-        List<List<Integer>> mlCopy = new ArrayList<List<Integer>>();
-        for (int i = 0; i < model.boundaryList.size(); i++) {
+    private void backup(List<List<Boolean>> blCopy, List<List<Boolean>> clCopy,
+                        List<List<Integer>> mlCopy, List<List<Boolean>> bl,
+                        List<List<Boolean>> cl, List<List<Integer>> ml) {
+        for (int i = 0; i < bl.size(); i++) {
             List<Boolean> bline = new ArrayList<Boolean>();
             List<Boolean> cline = new ArrayList<Boolean>();
             List<Integer> mline = new ArrayList<Integer>();
-            for (int j = 0; j < model.boundaryList.get(i).size(); j++) {
-                bline.add(model.boundaryList.get(i).get(j));
-                cline.add(model.centerList.get(i).get(j));
-                mline.add(model.markList.get(i).get(j));
+            for (int j = 0; j < bl.get(i).size(); j++) {
+                bline.add(bl.get(i).get(j));
+                cline.add(cl.get(i).get(j));
+                mline.add(ml.get(i).get(j));
             }
             blCopy.add(bline);
             clCopy.add(cline);
             mlCopy.add(mline);
         }
+    }
+
+    /**
+     *  Set ghost cells for this model.
+     */
+    private void setGhost() {
+        for (int i = -1; i <= 2 * w + 1; i++) {
+            pl(i, -1).setBoundary();
+            pl(i, 0).setBoundary();
+            pl(i, 2 * h).setBoundary();
+            pl(i, 2 * h + 1).setBoundary();
+        }
+        for (int i = -1; i <= 2 * h + 1; i++) {
+            pl(-1, i).setBoundary();
+            pl(0, i).setBoundary();
+            pl(2 * w, i).setBoundary();
+            pl(2 * w + 1, i).setBoundary();
+        }
+    }
+    /**
+     * Copies MODEL into me.
+     */
+    void copy(Model model) {
+        this.w = model.getw();
+        this.h = model.geth();
+        List<List<Boolean>> blCopy = new ArrayList<List<Boolean>>();
+        List<List<Boolean>> clCopy = new ArrayList<List<Boolean>>();
+        List<List<Integer>> mlCopy = new ArrayList<List<Integer>>();
+        backup(blCopy, clCopy, mlCopy,
+                model.getBoundaryList(), model.getCenterList(),
+                model.getMarkList());
         boundaryList = new ArrayList<List<Boolean>>();
         centerList = new ArrayList<List<Boolean>>();
         markList = new ArrayList<List<Integer>>();
@@ -107,18 +141,7 @@ class Model {
             centerList.add(centerLine);
             markList.add(markLine);
         }
-        for (int i = -1; i <= 2 * w + 1; i++) {
-            pl(i, -1).setBoundary();
-            pl(i, 0).setBoundary();
-            pl(i, 2 * h).setBoundary();
-            pl(i, 2 * h + 1).setBoundary();
-        }
-        for (int i = -1; i <= 2 * h + 1; i++) {
-            pl(-1, i).setBoundary();
-            pl(0, i).setBoundary();
-            pl(2 * w, i).setBoundary();
-            pl(2 * w + 1, i).setBoundary();
-        }
+        setGhost();
         for (int i = 0; i < 2 * w; i++) {
             for (int j = 0; j < 2 * h; j++) {
                 boundaryList.get(i).set(j, blCopy.get(i).get(j));
@@ -167,18 +190,7 @@ class Model {
             centerList.add(centerLine);
             markList.add(markLine);
         }
-        for (int i = -1; i <= 2 * w + 1; i++) {
-            pl(i, -1).setBoundary();
-            pl(i, 0).setBoundary();
-            pl(i, 2 * h).setBoundary();
-            pl(i, 2 * h + 1).setBoundary();
-        }
-        for (int i = -1; i <= 2 * h + 1; i++) {
-            pl(-1, i).setBoundary();
-            pl(0, i).setBoundary();
-            pl(2 * w, i).setBoundary();
-            pl(2 * w + 1, i).setBoundary();
-        }
+        setGhost();
     }
 
     /**
@@ -773,24 +785,70 @@ class Model {
     }
 
     /**
+     * Getters and setters.
+     *
+     * @return w w
+     */
+    int getw() {
+        return w;
+    }
+
+    /**
+     * Getters and setters.
+     *
+     * @return h h
+     */
+    int geth() {
+        return h;
+    }
+
+    /**
+     * Getters and setters.
+     *
+     * @return arr boundaryList
+     */
+    List<List<Boolean>> getBoundaryList() {
+        return boundaryList;
+    }
+
+    /**
+     * Getters and setters.
+     *
+     * @return arr centerList
+     */
+    List<List<Boolean>> getCenterList() {
+        return centerList;
+    }
+
+    /**
+     * Getters and setters.
+     *
+     * @return arr markList
+     */
+    List<List<Integer>> getMarkList() {
+        return markList;
+    }
+
+
+    /**
      * Width of the model.
      */
-    public int w;
+    private int w;
     /**
      * Height of the model.
      */
-    public int h;
+    private int h;
     /**
      * Boundary Array.
      */
-    public List<List<Boolean>> boundaryList;
+    private List<List<Boolean>> boundaryList;
     /**
      * Center Array.
      */
-    public List<List<Boolean>> centerList;
+    private List<List<Boolean>> centerList;
     /**
      * Mark Array.
      */
-    public List<List<Integer>> markList;
+    private List<List<Integer>> markList;
 
 }
