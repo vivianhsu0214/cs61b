@@ -526,7 +526,9 @@ class Model {
         // FIXME
         for(int c = 1; c < 2 * w; c++){
             for(int r = 1; r < 2 * h; r++){
-                mark(pl(c, r), v);
+                if(isCell(c, r)){
+                    mark(pl(c, r), v);
+                }
             }
         }
     }
@@ -630,7 +632,7 @@ class Model {
                     centers.add(pl(c, r));
             }
         }
-        if(centers.isEmpty()) return null;
+        if(centers.isEmpty()) return centers;
         return centers;
     }
 
