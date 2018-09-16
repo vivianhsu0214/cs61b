@@ -706,8 +706,8 @@ class Model {
         for (Place r : region) {
             assert isCell(r);
             for (int i = 0; i < 4; i += 1) {
-                    int dx = (i % 2) * (2 * (i / 2) - 1),
-                            dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
+                int dx = (i % 2) * (2 * (i / 2) - 1),
+                        dy = ((i + 1) % 2) * (2 * (i / 2) - 1);
                 Place p = r.move(2 * dx, 2 * dy);
                 Place opp = opposing(center, p);
                 if (p.x == -1 || p.x == 2 * w + 1
