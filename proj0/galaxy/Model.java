@@ -1,7 +1,5 @@
 package galaxy;
 
-import afu.org.checkerframework.checker.igj.qual.I;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
