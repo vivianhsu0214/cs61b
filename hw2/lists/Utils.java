@@ -1,3 +1,5 @@
+package lists;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +33,7 @@ import java.util.NoSuchElementException;
  *       from System.in and set B to point to the 3-element list
  *       whose elements are 1, 2, and 3.
  *
- *  * IntList2 B; ... B = Utils.readIntList2();
+ *  * IntListList B; ... B = Utils.readIntListList();
  *       reads a 2-D list (list of list of ints) from System.in,
  *       in the form
  *           [ [ 1, 2, 3 ], [ 0, 12, 14 ], [ 42 ] ]
@@ -40,7 +42,7 @@ import java.util.NoSuchElementException;
  *
  *  * Utils.reverse(A),
  *  * Utils.dreverse(A) (destructive).
- *  * Utils.toList(V) (convert int[] to IntList, int[][] to IntList2).
+ *  * Utils.toList(V) (convert int[] to IntList, int[][] to IntListList).
  *  * Utils.equals(L1, L2) equality test (L2 can also be an array).
  * @author P. N. Hilfinger
  */
@@ -180,7 +182,7 @@ public class Utils {
     /** Sentinel indicating an end of file (as opposed to empty list). */
     static final IntList INTLIST_EOF = new IntList(0, null);
     /** Sentinel indicating an end of file (as opposed to empty list). */
-    static final IntList2 INTLIST2_EOF = new IntList2(null, null);
+    static final IntListList IntListList_EOF = new IntListList(null, null);
 
     /** Read an list of integers from System.in (the standard input).
      *  The input must consist of a left curly brace ("["), followed by a
@@ -222,32 +224,32 @@ public class Utils {
      *  sequence of integers separated by commas or blanks, followed by a
      *  closing right curly brace ("]").  Returns INTLIST_EOF if an
      *  end-of-file or input format error occurs. */
-    public static IntList2 readIntList2() {
-        return readIntList2(defaultScanner());
+    public static IntListList readIntListList() {
+        return readIntListList(defaultScanner());
     }
 
-    /** Return as for readIntList2(), but reads from IN. */
-    public static IntList2 readIntList2(Scanner in) {
+    /** Return as for readIntListList(), but reads from IN. */
+    public static IntListList readIntListList(Scanner in) {
         int[][] A = readIntArray2(in);
         if (A == null) {
-            return INTLIST2_EOF;
+            return IntListList_EOF;
         } else {
             return toList(A);
         }
     }
 
-    /** Return the IntList2 whose sequence of items is the same as that in A. */
-    public static IntList2 toList(int[][] A) {
+    /** Return the IntListList whose sequence of items is the same as that in A. */
+    public static IntListList toList(int[][] A) {
         return toList(A, 0, A.length - 1);
     }
 
-    /** Return the IntList2 whose sequence of items is the same as that in
+    /** Return the IntListList whose sequence of items is the same as that in
      *  items L through U of array A. */
-    public static IntList2 toList(int[][] A, int L, int U) {
-        IntList2 result;
+    public static IntListList toList(int[][] A, int L, int U) {
+        IntListList result;
         result = null;
         for (int i = U; i >= L; i -= 1) {
-            result = new IntList2(toList(A[i]), result);
+            result = new IntListList(toList(A[i]), result);
         }
         return result;
     }
@@ -277,9 +279,9 @@ public class Utils {
     }
 
     /** Returns the number of elements in L. */
-    public static int length(IntList2 L) {
+    public static int length(IntListList L) {
         int n;
-        IntList2 p;
+        IntListList p;
         for (p = L, n = 0; p != null; p = p.tail) {
             n += 1;
         }
@@ -307,17 +309,17 @@ public class Utils {
     }
 
     /** Returns the reverse of L. */
-    public static IntList2 reverse(IntList2 L) {
-        IntList2 R;
+    public static IntListList reverse(IntListList L) {
+        IntListList R;
         for (R = null; L != null; L = L.tail) {
-            R = new IntList2(L.head, R);
+            R = new IntListList(L.head, R);
         }
         return R;
     }
 
     /** Returns the destructive reverse of L; original L is destroyed. */
-    public static IntList2 dreverse(IntList2 L) {
-        IntList2 R, L1;
+    public static IntListList dreverse(IntListList L) {
+        IntListList R, L1;
         for (R = null; L != null; L = L1) {
             L1 = L.tail;
             L.tail = R;
@@ -338,7 +340,7 @@ public class Utils {
 
     /** Returns true iff the sequence of items in A is the same as
      *  the sequence in B. */
-    public static boolean equals(IntList2 A, int[][] B) {
+    public static boolean equals(IntListList A, int[][] B) {
         if (A == null) {
             return B.length == 0;
         } else {
@@ -358,7 +360,7 @@ public class Utils {
 
     /** Returns true iff the sequence of items in A is the same as
      *  the sequence in B. */
-    public static boolean equals(IntList2 A, IntList2 B) {
+    public static boolean equals(IntListList A, IntListList B) {
         if (A == null) {
             return B == null;
         } else {

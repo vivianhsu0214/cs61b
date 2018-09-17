@@ -1,11 +1,10 @@
-
 STYLEPROG = style61b
 
 # All Java sources.  If you add more files, be sure to add them here as
 # well.
-STUDENT = Lists.java ListsTest.java
+STUDENT = Arrays.java ArraysTest.java IntList.java IntListList.java
 
-PROVIDED = IntList.java IntList2.java Utils.java
+PROVIDED = Utils.java
 
 ALL_SRCS = $(STUDENT) $(PROVIDED)
 
@@ -38,10 +37,10 @@ style:
 clean:
 	$(RM) *.class *~
 
-check: ListsTest.class
-	java ListsTest
+check: ArraysTest.class
+	cd ..; java -ea arrays.ArraysTest
 
 #what to do when the makefile requests all classes sbould be compiled
 #it makes this request as the default option (see above)
 $(ALL_CLASSES): $(ALL_SRCS)
-	javac $(JFLAGS) $(ALL_SRCS)
+	cd ..; javac $(JFLAGS) $(ALL_SRCS:%=arrays/%)

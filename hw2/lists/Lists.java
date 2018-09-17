@@ -1,3 +1,5 @@
+package lists;
+
 /* NOTE: The file Utils.java contains some functions that may be useful
  * in testing your answers. */
 
@@ -14,7 +16,7 @@ class Lists {
      *            ((1, 3, 7), (5), (4, 6, 9, 10), (10, 11)).
      *  Destructive: creates no new IntList items, and may modify the
      *  original list pointed to by L. */
-    static IntList2 naturalRuns(IntList L) {
+    static IntListList naturalRuns(IntList L) {
         /* *Replace this body with the solution. */
         return null;
     }

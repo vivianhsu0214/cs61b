@@ -1,3 +1,5 @@
+package arrays;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -5,11 +7,11 @@ import static org.junit.Assert.*;
  *  @author FIXME
  */
 
-public class MatrixUtilsTest {
+public class ArraysTest {
     /** FIXME
      */
 
     public static void main(String[] args) {
-        System.exit(ucb.junit.textui.runClasses(MatrixUtilsTest.class));
+        System.exit(ucb.junit.textui.runClasses(ArraysTest.class));
     }
 }

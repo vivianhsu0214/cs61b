@@ -1,3 +1,5 @@
+package arrays;
+
 /** Scheme-like pairs that can be used to form a list of
  *  integers.
  *  @author P. N. Hilfinger
@@ -21,7 +23,7 @@ public class IntList {
     }
 
     /** Returns a new IntList containing the ints in ARGS. */
-    public static IntList list(Integer ... args) {
+    public static IntList list(Integer... args) {
         IntList sentinel = new IntList(0, null);
 
         IntList p;

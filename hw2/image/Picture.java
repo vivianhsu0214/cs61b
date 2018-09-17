@@ -1,3 +1,5 @@
+package image;
+
 /*************************************************************************
  *  Compilation:  javac Picture.java
  *  Execution:    java Picture imagename

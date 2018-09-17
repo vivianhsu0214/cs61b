@@ -1,3 +1,5 @@
+package image;
+
 import java.util.Arrays;
 import java.awt.Color;
 
@@ -5,7 +7,7 @@ import java.awt.Color;
  *  @author Josh Hug, Paul Hilfinger (style revisions).
  */
 
-public class ImageRescaler {
+public class Rescaler {
     /** The energy arbitrarily assigned to boundary pixels. */
     static final int BORDER_ENERGY = 1_000_000;
 
@@ -13,7 +15,7 @@ public class ImageRescaler {
     private Picture pic;
 
     /** A rescaler that operates on PICTURE. */
-    public ImageRescaler(Picture picture) {
+    public Rescaler(Picture picture) {
         pic = new Picture(picture);
     }
 
@@ -109,7 +111,7 @@ public class ImageRescaler {
         pic = resizedPic;
     }
 
-    /** Transpose the image inside this ImageRescaler. */
+    /** Transpose the image inside this Rescaler. */
     private void transpose() {
         Picture transposed = new Picture(pic.height(), pic.width());
 
@@ -135,7 +137,7 @@ public class ImageRescaler {
      *  indicated numbers of rows and columns removed. */
     public static void main(String[] args) {
         if (args.length != 3) {
-            System.out.println("Usage:\njava ImageRescaler [image filename]"
+            System.out.println("Usage:\njava image.Rescaler [image filename]"
                                + " [num rows to remove]"
                                + " [num columns to remove]");
             return;
@@ -149,7 +151,7 @@ public class ImageRescaler {
         System.out.printf("Original image is %d columns by %d rows\n",
                           inputImg.width(), inputImg.height());
 
-        ImageRescaler sc = new ImageRescaler(inputImg);
+        Rescaler sc = new Rescaler(inputImg);
 
         for (int i = 0; i < removeColumns; i += 1) {
             sc.removeColumn();

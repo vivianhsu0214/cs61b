@@ -1,3 +1,5 @@
+package lists;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -11,10 +13,10 @@ public class ListsTest {
      */
 
     // It might initially seem daunting to try to set up
-    // Intlist2 expected.
+    // IntListList expected.
     //
-    // There is an easy way to get the IntList2 that you want in just
-    // few lines of code! Make note of the IntList2.list method that
+    // There is an easy way to get the IntListList that you want in just
+    // few lines of code! Make note of the IntListList.list method that
     // takes as input a 2D array.
 
     public static void main(String[] args) {

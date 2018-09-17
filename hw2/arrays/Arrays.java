@@ -1,3 +1,5 @@
+package arrays;
+
 /* NOTE: The file Arrays/Utils.java contains some functions that may be useful
  * in testing your answers. */
 

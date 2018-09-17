@@ -1,55 +1,57 @@
+package lists;
+
 /** A list of IntLists.
  *  @author P. N. Hilfinger
  */
-public class IntList2 {
+public class IntListList {
     /** A List with head HEAD0 and tail TAIL0. */
-    public IntList2(IntList head0, IntList2 tail0) {
+    public IntListList(IntList head0, IntListList tail0) {
         head = head0; tail = tail0;
     }
 
     /** A List with null head and tail. */
-    public IntList2() {
+    public IntListList() {
         this (null, null);
     }
 
     /** First element of list. */
     public IntList head;
     /** Remaining elements of list. */
-    public IntList2 tail;
+    public IntListList tail;
 
-    /** Return a new IntList2 containing the ints in ARGS. */
-    public static IntList2 list(IntList ... args) {
-        IntList2 sentinel = new IntList2(null, null);
+    /** Return a new IntListList containing the ints in ARGS. */
+    public static IntListList list(IntList ... args) {
+        IntListList sentinel = new IntListList(null, null);
 
-        IntList2 p;
+        IntListList p;
         p = sentinel;
         for (IntList x : args) {
-            p.tail = new IntList2(x, null);
+            p.tail = new IntListList(x, null);
             p = p.tail;
         }
         return sentinel.tail;
     }
 
-    /** Return a new IntList2 containing the lists of ints corresponding
+    /** Return a new IntListList containing the lists of ints corresponding
      *  to the arrays in A. */
-    public static IntList2 list(int[][] A) {
-        IntList2 sentinel = new IntList2(null, null);
+    public static IntListList list(int[][] A) {
+        IntListList sentinel = new IntListList(null, null);
 
-        IntList2 p;
+        IntListList p;
         p = sentinel;
         for (int[] x : A) {
-            p.tail = new IntList2(IntList.list(x), null);
+            p.tail = new IntListList(IntList.list(x), null);
             p = p.tail;
         }
         return sentinel.tail;
     }
 
-    /** Return true iff X is an IntList2 or int[][] containing the
+    /** Return true iff X is an IntListList or int[][] containing the
      *  same sequence of ints as THIS. */
     public boolean equals(Object x) {
-        if (x instanceof IntList2) {
-            IntList2 L = (IntList2) x;
-            IntList2 p;
+        if (x instanceof IntListList) {
+            IntListList L = (IntListList) x;
+            IntListList p;
             for (p = this; p != null && L != null; p = p.tail, L = L.tail) {
                 if ((p.head == null && L.head != null)
                     || (p.head != null && !p.head.equals(L.head))) {
@@ -61,7 +63,7 @@ public class IntList2 {
             }
         } else if (x instanceof int[][]) {
             int[][] A = (int[][]) x;
-            IntList2 p;
+            IntListList p;
             int i;
             for (i = 0, p = this; i < A.length && p != null;
                  i += 1, p = p.tail) {
@@ -81,7 +83,7 @@ public class IntList2 {
     public String toString() {
         StringBuffer b = new StringBuffer();
         b.append("[");
-        for (IntList2 L = this; L != null; L = L.tail) {
+        for (IntListList L = this; L != null; L = L.tail) {
             b.append(" " + L.head);
         }
         b.append("]");

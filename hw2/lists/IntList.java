@@ -1,3 +1,5 @@
+package lists;
+
 /** Scheme-like pairs that can be used to form a list of
  *  integers.
  *  @author P. N. Hilfinger

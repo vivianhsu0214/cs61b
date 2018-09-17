@@ -2,9 +2,9 @@ STYLEPROG = style61b
 
 # All Java sources.  If you add more files, be sure to add them here as
 # well.
-STUDENT = Arrays.java ArraysTest.java IntList.java IntList2.java
+STUDENT = MatrixUtils.java MatrixUtilsTest.java
 
-PROVIDED = Utils.java
+PROVIDED = Rescaler.java In.java Picture.java Utils.java Out.java
 
 ALL_SRCS = $(STUDENT) $(PROVIDED)
 
@@ -16,14 +16,14 @@ PROVIDED_CLASSES = $(PROVIDED:.java=.class)
 
 ALL_CLASSES = $(STUDENT_CLASSES) $(PROVIDED_CLASSES)
 
-# Flags to pass to Java compilations (include debugging info and report
+# Flags to pass to Java compilations (include debugging info) and report
 # "unsafe" operations.
-JFLAGS = -g
+JFLAGS = -g 
 
 .PHONY: default style clean
 
 # By default, recompile if any sources have changed since the last build.
-# This will fail to recompile properly if you compile, then delete
+# This will fail to recompile properly if you compile, then delete 
 # a .class file in the draw package, and then compile again.  You
 # shouldn't do that, of course, but if it happens, just do a 'make clean'
 # first and then 'gmake'
@@ -37,10 +37,10 @@ style:
 clean:
 	$(RM) *.class *~
 
-check: ArraysTest.class
-	java ArraysTest
+check: MatrixUtilsTest.class
+	java MatrixUtilsTest
 
 #what to do when the makefile requests all classes sbould be compiled
 #it makes this request as the default option (see above)
 $(ALL_CLASSES): $(ALL_SRCS)
-	javac $(JFLAGS) $(ALL_SRCS)
+	cd ..; javac $(JFLAGS) $(ALL_SRCS:%=image/%)

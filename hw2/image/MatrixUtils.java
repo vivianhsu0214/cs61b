@@ -1,3 +1,5 @@
+package image;
+
 /** Provides a variety of utilities for operating on matrices.
  *  All methods assume that the double[][] arrays provided are rectangular.
  *
@@ -129,9 +131,9 @@ public class MatrixUtils {
     public static void main(String[] args) {
         /* sample calls to functions in this class are below
 
-        ImageRescaler sc = new ImageRescaler("4x6.png");
+        Rescaler sc = new Rescaler("4x6.png");
 
-        double[][] em = ImageRescaler.energyMatrix(sc);
+        double[][] em Rescaler.energyMatrix(sc);
 
         //double[][] m = sc.cumulativeEnergyMatrix(true);
         double[][] m = MatrixUtils.accumulateVertical(em);

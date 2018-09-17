@@ -1,11 +1,13 @@
-/** General utilities for hw2.ImageRescaler.
+package image;
+
+/** General utilities for hw2.image.Rescaler.
  *  @author Josh Hug
  */
 public class Utils {
     /** Returns the image with the given FILENAME as an energy matrix. */
     public static double[][] toEnergyMatrix(String filename) {
         Picture inputImg = new Picture(filename);
-        ImageRescaler ir = new ImageRescaler(inputImg);
+        Rescaler ir = new Rescaler(inputImg);
         return ir.energyMatrix();
     }
 
