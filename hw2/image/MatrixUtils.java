@@ -54,8 +54,38 @@ public class MatrixUtils {
      *
      */
 
+    /**
+     * Helper function for accumulate.
+     * @param m original matrix, r rows, c cols
+     * @return value or infinite
+     */
+    private static double get(double[][] m, int r, int c) {
+        if(r < 0 || r >= m.length || c < 0 || c >= m[0].length) {
+            return Double.POSITIVE_INFINITY;
+        }
+        else {
+            return m[r][c];
+        }
+    }
+
     public static double[][] accumulateVertical(double[][] m) {
-        return null; //your code here
+        if(m == null) { return null; }
+        double[][] am = new double[m.length][m[0].length];
+        for (int i = 0; i < m[0].length; i++) {
+            am[0][i] = m[0][i];
+        }
+        for(int row = 1; row < m.length; row++) {
+            for(int col = 0; col < m[0].length; col++) {
+                double least = Double.POSITIVE_INFINITY;
+                for (int i = -1; i <= 1; i++) {
+                    if(get(m, row - 1, col + i ) < least) {
+                        least = get(m, row - 1, col + i );
+                    }
+                }
+                am[row][col] = least + m[row][col];
+            }
+        }
+        return am;
     }
 
     /** Non-destructively accumulates a matrix M along the specified
@@ -81,8 +111,34 @@ public class MatrixUtils {
      *
      */
 
+    /**
+     * Makes a transposition.
+     * @param m original matrix.
+     * @return mT transferred matrix
+     */
+    public static double[][] transformMatrix(double[][] m) {
+        double mT[][] = new double[m[0].length][m.length];
+        for (int i = 0; i < m[0].length; i++) {
+            for (int j = 0; j < m.length; j++) {
+                mT[i][j] = m[j][i];
+            }
+        }
+        return mT;
+    }
+
     public static double[][] accumulate(double[][] m, Orientation orientation) {
-        return null; //your code here
+        if(m == null) { return null; }
+        if(orientation == Orientation.VERTICAL) {
+            return accumulateVertical(m);
+        }
+        else if(orientation == Orientation.HORIZONTAL) {
+            double[][] mT = transformMatrix(m);
+            mT = accumulateVertical(mT);
+            return transformMatrix(mT);
+        }
+        else{
+            return null;
+        }
     }
 
     /** Finds the vertical seam VERTSEAM of the given matrix M.
@@ -115,7 +171,23 @@ public class MatrixUtils {
      */
 
     public static int[] findVerticalSeam(double[][] m) {
-        return null; //your code here
+        int[] solution = new int[m.length];
+        for(int row = m.length - 1; row >= 0; row--) {
+            double least = Double.POSITIVE_INFINITY;
+            int index = 0;
+            for(int i = 0; i < m[0].length; i++) {
+                if(m[row][i] < least) {
+                    least = m[row][i];
+                    index = i;
+                }
+            }
+            solution[row] = index;
+            if(solution[row] < solution[row - 1] && row != 0) {
+                System.out.println("There must be a problem!!");
+                return null;
+            }
+        }
+        return solution;
     }
 
     /** Returns the SEAM of M with the given ORIENTATION.
@@ -124,7 +196,15 @@ public class MatrixUtils {
      */
 
     public static int[] findSeam(double[][] m, Orientation orientation) {
-        return null; //your code here
+        if(orientation == Orientation.VERTICAL) {
+            return findVerticalSeam(m);
+        }
+        else if(orientation == Orientation.HORIZONTAL) {
+            return findVerticalSeam(transformMatrix(m));
+        }
+        else {
+            return null;
+        }
     }
 
     /** does nothing. ARGS not used. use for whatever purposes you'd like */

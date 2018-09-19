@@ -3,10 +3,12 @@ package lists;
 /* NOTE: The file Utils.java contains some functions that may be useful
  * in testing your answers. */
 
-/** HW #2, Problem #1. */
+/**
+ * HW #2, Problem #1.
+ */
 
 /** List problem.
- *  @author
+ *  @author Zhibo Fan
  */
 class Lists {
     /** Return the list of lists formed by breaking up L into "natural runs":
@@ -18,6 +20,33 @@ class Lists {
      *  original list pointed to by L. */
     static IntListList naturalRuns(IntList L) {
         /* *Replace this body with the solution. */
-        return null;
+        if (L == null) {
+            return null;
+        }
+        IntListList result = new IntListList();
+        IntListList re_iterator = result;
+        IntList iterator = L;
+        while (iterator.tail != null) {
+            if (iterator.head >= iterator.tail.head) {
+                IntList temp = iterator.tail;
+                iterator.tail = null;
+                if (result.head == null) {
+                    result.head = L;
+                } else {
+                    re_iterator.tail = new IntListList(L, null);
+                    re_iterator = re_iterator.tail;
+                }
+                L = temp;
+                iterator = L;
+            } else {
+                iterator = iterator.tail;
+            }
+        }
+        if (result.head == null) {
+            result.head = L;
+        } else {
+            re_iterator.tail = new IntListList(L, null);
+        }
+        return result;
     }
 }
