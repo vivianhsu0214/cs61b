@@ -12,14 +12,15 @@ class PredicateFilter<Value> extends Filter<Value> {
      *  delivering only those for which PRED is true. */
     PredicateFilter(Predicate<Value> pred, Iterator<Value> input) {
         super(input); //FIXME ??
+        _pred = pred;
         // FIXME
     }
 
     @Override
     protected boolean keep() {
-        return false;  // FIXME
+        return _pred.test(candidateNext());
     }
-
+    private Predicate<Value> _pred;
     // FIXME
 
 }

@@ -15,6 +15,6 @@ class TrivialFilter<Value> extends Filter<Value> {
 
     @Override
     protected boolean keep() {
-        return false;    // FIXME
+        return _next != null;
     }
 }

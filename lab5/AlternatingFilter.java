@@ -11,14 +11,17 @@ class AlternatingFilter<Value> extends Filter<Value> {
      *  value. */
     AlternatingFilter(Iterator<Value> input) {
         super(input); //FIXME?
-        // FIXME
+        _even = false;
     }
 
     @Override
     protected boolean keep() {
-        return false;  // FIXME
+        _even = !_even;
+        return _even;
     }
 
-    // FIXME
-
+    /**
+     * If the index of the object is even or not
+     */
+    private boolean _even;
 }

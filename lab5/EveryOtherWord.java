@@ -22,7 +22,11 @@ public class EveryOtherWord {
       */
 
     public static Iterable<String> everyOtherWord(List<String> L) {
-        return null; // FIXME!
+        Set<String> result = new HashSet<String>();
+        for (int i = 0; i < L.size(); i+=2) {
+            result.add(L.get(i));
+        }
+        return result;
     }
 
     /** Tests whether or not your everyOtherWord method works correctly. */
