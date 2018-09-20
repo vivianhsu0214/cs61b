@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 /**
- *  @author You, mostly
+ *  @author Zhibo Fan, mostly
  */
 
 public class EveryOtherWord {

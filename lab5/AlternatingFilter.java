@@ -10,7 +10,7 @@ class AlternatingFilter<Value> extends Filter<Value> {
     /** A filter of values from INPUT that lets through every other
      *  value. */
     AlternatingFilter(Iterator<Value> input) {
-        super(input); //FIXME?
+        super(input); 
         _even = false;
     }
 
