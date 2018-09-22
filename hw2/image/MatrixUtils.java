@@ -78,8 +78,8 @@ public class MatrixUtils {
             for(int col = 0; col < m[0].length; col++) {
                 double least = Double.POSITIVE_INFINITY;
                 for (int i = -1; i <= 1; i++) {
-                    if(get(m, row - 1, col + i ) < least) {
-                        least = get(m, row - 1, col + i );
+                    if(get(am, row - 1, col + i ) < least) {
+                        least = get(am, row - 1, col + i );
                     }
                 }
                 am[row][col] = least + m[row][col];
@@ -182,10 +182,6 @@ public class MatrixUtils {
                 }
             }
             solution[row] = index;
-            if(solution[row] < solution[row - 1] && row != 0) {
-                System.out.println("There must be a problem!!");
-                return null;
-            }
         }
         return solution;
     }

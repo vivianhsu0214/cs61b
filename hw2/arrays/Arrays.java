@@ -49,7 +49,7 @@ class Arrays {
                 result[i - len] = A[i];
             }
         }
-        return null;
+        return result;
     }
 
     /* E. */
@@ -60,30 +60,47 @@ class Arrays {
      *  {{1, 3, 7}, {5}, {4, 6, 9, 10}}. */
     static int[][] naturalRuns(int[] A) {
         /* *Replace this body with the solution. */
-        if(A == null) { return null; }
-        int height = 0;
-        for(int i = 0; i < A.length - 1; i++) {
-            if(A[i] >= A[i + 1]) {
+        if (A == null) {
+            return null;
+        }
+
+        if(A.length == 0) {
+            int[][] result = {{}};
+            return result;
+        }
+
+        int height = 1;
+        for (int i = 0; i < A.length - 1; i++) {
+            if (A[i] >= A[i + 1]) {
                 height += 1;
             }
         }
 
         int[][] result = new int[height][];
-        int width = 0;
+        int width = 1;
         int index = 0;
 
-        for(int i = 0; i < height; i++) {
-            for(int j = 0; j < A.length - 1 - index; j++) {
-                if(A[j + index] >= A[j + index + 1]) {
+        for (int i = 0; i < height; i++) {
+            for (int j = index; j < A.length - 1; j++) {
+                if (A[j] >= A[j + 1]) {
+                    result[i] = new int[width];
+                    for(int k = 0; k < width; k++) {
+                        result[i][k] = A[index + k];
+                    }
                     index = j + 1;
-                    width = j + 1;
+                    width = 1;
+                    break;
                 }
-            }
-            result[i] = new int[width];
-            for(int j = 0; j < width; j++) {
-                result[i][j] = A[index - width + j];
+                width += 1;
             }
         }
+
+        result[height - 1] = new int[width];
+        for(int k = 0; k < width; k++) {
+            result[height - 1][k] = A[index + k];
+        }
+
         return result;
     }
+
 }
