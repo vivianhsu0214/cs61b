@@ -28,6 +28,11 @@ public class MatrixUtilsTest {
         assert(outputImage.equals(accu));
         int[] expected = {1, 2, 1, 1, 2, 1};
         assert(expected.equals(MatrixUtils.findSeam(outputImage, MatrixUtils.Orientation.VERTICAL)));
+
+        double[][] test = {{10, 4, 5, 6}, {3, 10, 18, 6}, {8, 5, 19, 6}};
+        double[][] outputimg = {{10, 7, 12, 18}, {3 , 13, 25, 18}, {8, 8, 27, 31}};
+        int[] route = {1, 0, 0, 0};
+
     }
 
     public static void main(String[] args) {

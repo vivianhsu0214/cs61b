@@ -65,7 +65,7 @@ class Arrays {
         }
 
         if(A.length == 0) {
-            int[][] result = {{}};
+            int[][] result = {};
             return result;
         }
 
