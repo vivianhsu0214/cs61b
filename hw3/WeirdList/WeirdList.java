@@ -1,18 +1,50 @@
+import afu.org.checkerframework.checker.oigj.qual.O;
+
 /** A WeirdList holds a sequence of integers.
- * @author
+ * @author Zhibo Fan
  */
 public class WeirdList {
     /** The empty sequence of integers. */
-    public static final WeirdList EMPTY =
-        null;  // REPLACE THIS LINE WITH THE RIGHT ANSWER.
+    static class EmptyWeirdList extends WeirdList {
+        EmptyWeirdList(int head, WeirdList tail) {
+            super(head, tail);
+        }
+        @Override
+        public int length() {
+            int result = size;
+            size = 0;
+            return result;
+        }
+        @Override
+        public String toString() {
+            return "";
+        }
+        @Override
+        public WeirdList map(IntUnaryFunction func) {
+            return this;
+        }
+    }
+
+    public static final WeirdList EMPTY = new EmptyWeirdList(-100, null);
+    private int head;
+    private WeirdList tail;
+    private static int size;
 
     /** A new WeirdList whose head is HEAD and tail is TAIL. */
-    public WeirdList(int head, WeirdList tail) { /* FILL IN */ }
+    public WeirdList(int head, WeirdList tail) {
+        this.head = head;
+        if(tail == null) {
+            this.tail = EMPTY;
+        } else {
+            this.tail = tail;
+        }
+    }
 
     /** Returns the number of elements in the sequence that
      *  starts with THIS. */
     public int length() {
-        return 0;  // REPLACE THIS LINE WITH THE RIGHT ANSWER.
+        size += 1;
+        return tail.length();// REPLACE THIS LINE WITH THE RIGHT ANSWER.
     }
 
     /** Return a string containing my contents as a sequence of numerals
@@ -20,13 +52,13 @@ public class WeirdList {
      *  5, 4, and 2, this returns " 5 4 2". */
     @Override
     public String toString() {
-        return ""; // REPLACE THIS LINE WITH THE RIGHT ANSWER.
+        return " " + String.valueOf(head) + tail.toString(); // REPLACE THIS LINE WITH THE RIGHT ANSWER.
     }
 
     /** Part 3b: Apply FUNC.apply to every element of THIS WeirdList in
      *  sequence, and return a WeirdList of the resulting values. */
     public WeirdList map(IntUnaryFunction func) {
-        return null;  // REPLACE THIS LINE WITH THE RIGHT ANSWER.
+        return new WeirdList(func.apply(this.head), this.tail.map(func));// REPLACE THIS LINE WITH THE RIGHT ANSWER.
     }
 
     /*
@@ -62,6 +94,7 @@ public class WeirdList {
      * do if you want to avoid making a separate .java file. */
 
 }
+
 
 
 

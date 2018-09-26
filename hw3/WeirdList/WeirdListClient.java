@@ -1,14 +1,42 @@
 /** Functions to increment and sum the elements of a WeirdList. */
 class WeirdListClient {
 
+    private static class AddFunction implements IntUnaryFunction {
+        private int adder;
+        AddFunction(int adder) {
+            this.adder = adder;
+        }
+        @Override
+        public int apply(int x) {
+            return adder + x;
+        }
+    }
+
+    private static class SumFunction implements IntUnaryFunction {
+        private int sum;
+        SumFunction(int sum) {
+            this.sum = sum;
+        }
+        @Override
+        public int apply(int x) {
+            sum += x;
+            return x;
+        }
+        public int getSum() {
+            return sum;
+        }
+    }
+
     /** Return the result of adding N to each element of L. */
     static WeirdList add(WeirdList L, int n) {
-        return null; // REPLACE THIS LINE WITH THE RIGHT ANSWER.
+        return L.map(new AddFunction(n)); // REPLACE THIS LINE WITH THE RIGHT ANSWER.
     }
 
     /** Return the sum of the elements in L. */
     static int sum(WeirdList L) {
-        return 0; // REPLACE THIS LINE WITH THE RIGHT ANSWER.
+        SumFunction sf = new SumFunction(0);
+        L.map(sf);
+        return sf.getSum();
     }
 
     /* As with WeirdList, you'll need to add an additional class or

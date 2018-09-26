@@ -19,7 +19,7 @@ public class TrReaderTest {
      * source for this test, but scrambled. */
     @Test
     public void testSource() throws IOException {
-        Reader r = makeStringReader(new FileReader("TrReaderTest.java"), 4096);
+        Reader r = makeStringReader(new FileReader("TrReader/TrReaderTest.java"), 4096);
 
         TrReader trR = new TrReader(r, "import jav.", "josh hug___");
         char[] cbuf = new char[250];
@@ -29,6 +29,15 @@ public class TrReaderTest {
         assertEquals(TRANSLATION.substring(0, 250), result);
     }
 
+    @Test
+    public void testTranslate () throws IOException {
+        Reader r = makeStringReader(new FileReader("TrReader/TrReaderTest.java"), 4096);
+        char[] cbuf = new char[250];
+        assertEquals(250, r.read(cbuf));
+        String source = new String(cbuf);
+        String result = Translate.translate(source, "import jav.", "josh hug___");
+        assertEquals(TRANSLATION.substring(0, 250), result);
+    }
     /** Return a StringReader that contains the contents delivered by R,
      *  up to MAXSIZE characters.  All end-of-line sequences in the
      *  characters read are canonicalized to '\n' (this has an effect only
