@@ -1,4 +1,4 @@
-import afu.org.checkerframework.checker.oigj.qual.O;
+
 
 /** A WeirdList holds a sequence of integers.
  * @author Zhibo Fan
