@@ -2,82 +2,119 @@ package enigma;
 
 import static enigma.EnigmaException.*;
 
-/** Superclass that represents a rotor in the enigma machine.
- *  @author
+/**
+ * Superclass that represents a rotor in the enigma machine.
+ *
+ * @author Zhibo Fan
  */
 class Rotor {
 
-    /** A rotor named NAME whose permutation is given by PERM. */
+    /**
+     * A rotor named NAME whose permutation is given by PERM.
+     */
     Rotor(String name, Permutation perm) {
         _name = name;
         _permutation = perm;
-        // FIXME
+        _pos = 0;
     }
 
-    /** Return my name. */
+    /**
+     * Return my name.
+     */
     String name() {
         return _name;
     }
 
-    /** Return my alphabet. */
+    /**
+     * Return my alphabet.
+     */
     Alphabet alphabet() {
         return _permutation.alphabet();
     }
 
-    /** Return my permutation. */
+    /**
+     * Return my permutation.
+     */
     Permutation permutation() {
         return _permutation;
     }
 
-    /** Return the size of my alphabet. */
+    /**
+     * Return the size of my alphabet.
+     */
     int size() {
         return _permutation.size();
     }
 
-    /** Return true iff I have a ratchet and can move. */
+    /**
+     * Return true iff I have a ratchet and can move.
+     */
     boolean rotates() {
         return false;
     }
 
-    /** Return true iff I reflect. */
+    /**
+     * Return true iff I reflect.
+     */
     boolean reflecting() {
         return false;
     }
 
-    /** Return my current setting. */
+    /**
+     * Return my current setting.
+     */
     int setting() {
-        return 0; // FIXME
+        return _pos;
     }
 
-    /** Set setting() to POSN.  */
+    /**
+     * Set setting() to POSN.
+     */
     void set(int posn) {
-        // FIXME
+        _pos = posn;
     }
 
-    /** Set setting() to character CPOSN. */
+    /**
+     * Set setting() to character CPOSN.
+     */
     void set(char cposn) {
-        // FIXME
+        int posn = alphabet().toInt(cposn);
+        set(posn);
     }
 
-    /** Return the conversion of P (an integer in the range 0..size()-1)
-     *  according to my permutation. */
+    /**
+     * Return the conversion of P (an integer in the range 0..size()-1)
+     * according to my permutation.
+     */
     int convertForward(int p) {
-        return 0;  // FIXME
+        int cIn = _permutation.wrap(p + _pos);
+        int cOut = _permutation.permute(cIn);
+        int result = _permutation.wrap(cOut - _pos);
+        return result;
     }
 
-    /** Return the conversion of E (an integer in the range 0..size()-1)
-     *  according to the inverse of my permutation. */
+    /**
+     * Return the conversion of E (an integer in the range 0..size()-1)
+     * according to the inverse of my permutation.
+     */
     int convertBackward(int e) {
-        return 0;  // FIXME
+        int cIn = _permutation.wrap(e + _pos);
+        int cOut = _permutation.invert(cIn);
+        int result = _permutation.wrap(cOut - _pos);
+        return result;
     }
 
-    /** Returns true iff I am positioned to allow the rotor to my left
-     *  to advance. */
+    /**
+     * Returns true iff I am positioned to allow the rotor to my left
+     * to advance.
+     */
     boolean atNotch() {
         return false;
     }
 
-    /** Advance me one position, if possible. By default, does nothing. */
+    /**
+     * Advance me one position, if possible. By default, does nothing.
+     */
     void advance() {
     }
 
@@ -86,12 +123,18 @@ class Rotor {
         return "Rotor " + _name;
     }
 
-    /** My name. */
+    /**
+     * My name.
+     */
     private final String _name;
 
-    /** The permutation implemented by this rotor in its 0 position. */
+    /**
+     * The permutation implemented by this rotor in its 0 position.
+     */
     private Permutation _permutation;
 
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
-
+    /**
+     * The position of the rotor.
+     */
+    private int _pos;
 }
