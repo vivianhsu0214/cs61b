@@ -5,25 +5,30 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static enigma.EnigmaException.*;
 
-/** Enigma simulator.
- *  @author
+/**
+ * Enigma simulator.
+ *
+ * @author Zhibo Fan
  */
 public final class Main {
 
-    /** Process a sequence of encryptions and decryptions, as
-     *  specified by ARGS, where 1 <= ARGS.length <= 3.
-     *  ARGS[0] is the name of a configuration file.
-     *  ARGS[1] is optional; when present, it names an input file
-     *  containing messages.  Otherwise, input comes from the standard
-     *  input.  ARGS[2] is optional; when present, it names an output
-     *  file for processed messages.  Otherwise, output goes to the
-     *  standard output. Exits normally if there are no errors in the input;
-     *  otherwise with code 1. */
+    /**
+     * Process a sequence of encryptions and decryptions, as
+     * specified by ARGS, where 1 <= ARGS.length <= 3.
+     * ARGS[0] is the name of a configuration file.
+     * ARGS[1] is optional; when present, it names an input file
+     * containing messages.  Otherwise, input comes from the standard
+     * input.  ARGS[2] is optional; when present, it names an output
+     * file for processed messages.  Otherwise, output goes to the
+     * standard output. Exits normally if there are no errors in the input;
+     * otherwise with code 1.
+     */
     public static void main(String... args) {
         try {
             new Main(args).process();
@@ -34,13 +39,16 @@ public final class Main {
         System.exit(1);
     }
 
-    /** Check ARGS and open the necessary files (see comment on main). */
+    /**
+     * Check ARGS and open the necessary files (see comment on main).
+     */
     Main(String[] args) {
         if (args.length < 1 || args.length > 3) {
             throw error("Only 1, 2, or 3 command-line arguments allowed");
         }
 
         _config = getInput(args[0]);
+        _copyConfig = getInput(args[0]);
 
         if (args.length > 1) {
             _input = getInput(args[1]);
@@ -55,7 +63,9 @@ public final class Main {
         }
     }
 
-    /** Return a Scanner reading from the file named NAME. */
+    /**
+     * Return a Scanner reading from the file named NAME.
+     */
     private Scanner getInput(String name) {
         try {
             return new Scanner(new File(name));
@@ -64,7 +74,9 @@ public final class Main {
         }
     }
 
-    /** Return a PrintStream writing to the file named NAME. */
+    /**
+     * Return a PrintStream writing to the file named NAME.
+     */
     private PrintStream getOutput(String name) {
         try {
             return new PrintStream(new File(name));
@@ -73,55 +85,230 @@ public final class Main {
         }
     }
 
-    /** Configure an Enigma machine from the contents of configuration
-     *  file _config and apply it to the messages in _input, sending the
-     *  results to _output. */
+    /**
+     * Configure an Enigma machine from the contents of configuration
+     * file _config and apply it to the messages in _input, sending the
+     * results to _output.
+     */
     private void process() {
-        // FIXME
+        Machine enigma = readConfig();
+        _config.close();
+        while(_input.hasNextLine()) {
+            String line = _input.nextLine().trim();
+            if(line.replaceAll("(\\s)+", "").equals("")) {
+                continue;
+            }
+            if(line.charAt(0) == '*') {
+                setUp(enigma, line.replaceAll("\\*","").trim());
+            } else {
+                String print = enigma.convert(line.replaceAll("\\s", ""));
+                printMessageLine(print);
+            }
+        }
+        _input.close();
+        _output.close();
     }
 
-    /** Return an Enigma machine configured from the contents of configuration
-     *  file _config. */
+    /**
+     * Return an Enigma machine configured from the contents of configuration
+     * file _config.
+     */
     private Machine readConfig() {
         try {
-            // FIXME
-            _alphabet = new CharacterRange('A', 'Z');
-            return new Machine(_alphabet, 2, 1, null);
+            String currentLine = null;
+            currentLine = nextValidLine(0);
+            _alphabet = readAlphabet(currentLine);
+
+            int numRotors = _config.nextInt();
+            int numPawls = _config.nextInt();
+            _copyConfig.nextInt();
+            _copyConfig.nextInt();
+
+            LinkedList<Rotor> archive = new LinkedList<Rotor>();
+            archive = fillArchive(archive);
+            return new Machine(_alphabet, numRotors, numPawls, archive);
         } catch (NoSuchElementException excp) {
             throw error("configuration file truncated");
         }
     }
 
-    /** Return a rotor, reading its description from _config. */
-    private Rotor readRotor() {
+    /**
+     * Skip to the next valid line.
+     * Return null if nothing left.
+     * @param option 0: Result without whitespace. 1: Original result.
+     */
+    private String nextValidLine(int option) {
+        String src = "";
+        String temp = "";
+        boolean valid = false;
+        while (_config.hasNextLine()) {
+            src = _config.nextLine();
+            _copyConfig.nextLine();
+            temp = src.replaceAll(" ", "");
+            if (temp.length() != 0) {
+                valid = true;
+                break;
+            }
+        }
+        if (valid) {
+            if(option == 0) {
+                return temp;
+            } else {
+                return src;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Generate an alphabet with the config string.
+     */
+    private Alphabet readAlphabet(String alpha) {
+        alpha = alpha.replaceAll(" ", "");
+        alpha = alpha.toUpperCase();
+        if (alpha.contains(String.valueOf('('))
+                || alpha.contains(String.valueOf(')'))
+                || alpha.contains(String.valueOf('+'))
+                || alpha.contains(String.valueOf('*'))) {
+            throw error(String.format("Including illegal symbol", alpha));
+        }
+        if (alpha.contains(String.valueOf('-'))) {
+            if (alpha.length() != 3 || alpha.indexOf(String.valueOf('-')) != 1
+                    || alpha.charAt(0) >= alpha.charAt(2)) {
+                throw error(String.format("Unrecognized alphabet", alpha));
+            }
+            return new CharacterRange(alpha.charAt(0), alpha.charAt(2));
+        } else {
+            return new SymbolAlphabet(alpha);
+        }
+    }
+
+    /**
+     * Return a list of rotors
+     */
+    private LinkedList<Rotor> fillArchive(LinkedList<Rotor> archive) {
+        String rotorInfo = "";
+        boolean newInfoFlag;
+        boolean firstInfoFlag = true;
+        while (_config.hasNext()) {
+            String thisLine = nextValidLine(1);
+            newInfoFlag = thisLine.trim().charAt(0) != '(';
+
+            if(firstInfoFlag) {
+                rotorInfo = thisLine;
+                firstInfoFlag = false;
+                continue;
+            }
+            if(newInfoFlag) {
+                archive.add(readRotor(rotorInfo.trim()));
+                rotorInfo = thisLine;
+            } else {
+                rotorInfo += thisLine;
+            }
+        }
+        archive.add(readRotor(rotorInfo.trim()));
+        return archive;
+    }
+
+
+    /**
+     * Return a rotor, reading its description from _config.
+     */
+    private Rotor readRotor(String rotorInfo) {
         try {
-            return null; // FIXME
+            String[] temp = rotorInfo.split("(\\s)+");
+            String name = temp[0].toUpperCase();
+            String feature = temp[1].replaceAll("(\\s)+", "");
+            String[] permuteTemp = new String[temp.length - 2];
+            System.arraycopy(temp, 2, permuteTemp, 0, permuteTemp.length);
+            String perm = "";
+            for (String s : permuteTemp) {
+                perm += s;
+            }
+            Permutation objPerm = new Permutation(perm.trim(), _alphabet);
+            char type = feature.charAt(0);
+            switch (type) {
+                case 'M': {
+                    return new MovingRotor(name, objPerm, feature.substring(1));
+                }
+                case 'N': {
+                    return new FixedRotor(name, objPerm);
+                }
+                case 'R': {
+                    return new Reflector(name, objPerm);
+                }
+                default: {
+                    throw error("Wrong rotor type");
+                }
+            }
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
         }
     }
 
-    /** Set M according to the specification given on SETTINGS,
-     *  which must have the format specified in the assignment. */
+    /**
+     * Set M according to the specification given on SETTINGS,
+     * which must have the format specified in the assignment.
+     */
     private void setUp(Machine M, String settings) {
-        // FIXME
+        String[] temp = settings.trim().split("(\\s)+");
+        int num = 0;
+        for(String s : temp) {
+            if(M.contains(s)) {
+                num += 1;
+            }
+        }
+        String[] rotors = new String[num];
+        System.arraycopy(temp, 0, rotors, 0, num);
+        M.insertRotors(rotors);
+        M.setRotors(temp[num]);
+        for(int i = num + 1; i < temp.length; i++) {
+            Permutation perm = new Permutation(temp[i], _alphabet);
+            M.setPlugboard(perm);
+        }
     }
 
-    /** Print MSG in groups of five (except that the last group may
-     *  have fewer letters). */
+    /**
+     * Print MSG in groups of five (except that the last group may
+     * have fewer letters).
+     */
     private void printMessageLine(String msg) {
-        // FIXME
+        String section = "";
+        for(int i = 0; i < msg.length(); i += 1) {
+            section += msg.charAt(i);
+            if(i % 5 == 4) {
+                if(i != msg.length() - 1) {
+                    section += " ";
+                }
+                _output.print(section);
+                section = "";
+            }
+        }
+        _output.println(section);
     }
 
-    /** Alphabet used in this machine. */
+    /**
+     * Alphabet used in this machine.
+     */
     private Alphabet _alphabet;
 
-    /** Source of input messages. */
+    /**
+     * Source of input messages.
+     */
     private Scanner _input;
 
-    /** Source of machine configuration. */
+    /**
+     * Source of machine configuration.
+     */
     private Scanner _config;
 
-    /** File for encoded/decoded messages. */
+    /**
+     * File for encoded/decoded messages.
+     */
     private PrintStream _output;
+
+    /**
+     * A backup of config.
+     */
+    private Scanner _copyConfig;
 }

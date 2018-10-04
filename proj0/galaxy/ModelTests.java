@@ -433,7 +433,6 @@ public class ModelTests {
         }
         _model.mark(7, 1, 0);
         _model.mark(7, 7, 0);
-
         assertSetEquals("wrong symmetric, adjacent cells",
                         asList(pl(5, 1), pl(9, 1), pl(5, 3), pl(11, 3),
                                pl(3, 5), pl(9, 5), pl(5, 7), pl(9, 7),

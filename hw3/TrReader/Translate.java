@@ -13,7 +13,7 @@ public class Translate {
         char[] buffer = new char[S.length()];
         try {
             TrReader trE = new TrReader(new StringReader(S), from, to);
-            for(int i = 0; i < S.length(); i += 1) {
+            for (int i = 0; i < S.length(); i += 1) {
                 buffer[i] = (char) trE.read();
             }
             return String.valueOf(buffer);
