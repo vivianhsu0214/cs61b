@@ -98,6 +98,8 @@ class Machine {
             } else {
                 lastRolled = false;
             }
+        }
+        for(int i = _slots.length - 1; i >= 0; i -= 1) {
             entry = _slots[i].convertForward(entry);
         }
         for(int i = 1; i < _slots.length; i += 1) {
