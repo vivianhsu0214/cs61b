@@ -262,10 +262,12 @@ public final class Main {
         System.arraycopy(temp, 0, rotors, 0, num);
         M.insertRotors(rotors);
         M.setRotors(temp[num]);
+        String permute = "";
         for(int i = num + 1; i < temp.length; i++) {
-            Permutation perm = new Permutation(temp[i], _alphabet);
-            M.setPlugboard(perm);
+            permute += temp[i].trim();
         }
+        Permutation plug = new Permutation(permute, _alphabet);
+        M.setPlugboard(plug);
     }
 
     /**
