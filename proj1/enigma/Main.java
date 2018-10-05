@@ -239,14 +239,11 @@ public final class Main {
             Permutation objPerm = new Permutation(perm.trim(), _alphabet);
             char type = feature.charAt(0);
             switch (type) {
-                case 'M': return new MovingRotor(name, objPerm, feature.substring(1));
-
+                case 'M': return new MovingRotor(name, objPerm,
+                        feature.substring(1));
                 case 'N': return new FixedRotor(name, objPerm);
-
                 case 'R': return new Reflector(name, objPerm);
-
                 default: throw error("Wrong rotor type");
-                
             }
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
