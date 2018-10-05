@@ -31,7 +31,7 @@ public class RuntimeQuiz {
     }
 
     public static Asymptotic f2_notation = Asymptotic.BIG_THETA;
-    public static Runtime f2_runtime = Runtime.CUBIC;
+    public static Runtime f2_runtime = Runtime.QUADRATIC;
     public int f2(int n) {
         if (n <= 1) return n;
         f1(new int[n]);
@@ -48,7 +48,7 @@ public class RuntimeQuiz {
     }
 
     public static Asymptotic f4_notation = Asymptotic.BIG_THETA;
-    public static Runtime f4_runtime = Runtime.QUADRATIC;
+    public static Runtime f4_runtime = Runtime.LINEARITHMIC;
     /* When f4 is first called, start will be 0 and end will be the length of the array - 1 */
     public int f4(char[] array, int start, int end) {
         if (array.length <= 1 || end <= start) return 1;
@@ -70,7 +70,7 @@ public class RuntimeQuiz {
         }
     }
 
-    public static Asymptotic f6_notation = Asymptotic.BIG_THETA;
+    public static Asymptotic f6_notation = Asymptotic.BIG_OMEGA;
     public static Runtime f6_runtime = Runtime.LINEAR;
     public void f6(int[] array) {
         for (int i = 1; i < array.length; i++) {
