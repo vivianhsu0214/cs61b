@@ -87,23 +87,29 @@ class Machine {
     int convert(int c) {
         int entry = _plug.permute(c);
 
-        boolean lastRolled = true;
-        for (int i = _slots.length - 1; i >= 0; i -= 1) {
-            if(_slots[i] == null) {
-                throw error("Empty slot exists, machine broke down");
-            }
-            if(lastRolled && _slots[i].rotates()
-                    && (i == _slots.length - 1 || _slots[i].atNotch())) {
-                _slots[i].advance();
-                lastRolled = true;
-            } else {
-                lastRolled = false;
+        int numFixed = _slots.length - _numPawls;
+        boolean[] isGoingToAdvance = new boolean[_numPawls];
+        isGoingToAdvance[_numPawls - 1] = true;
+        for(int i = numFixed; i < _slots.length; i += 1) {
+            if(_slots[i].atNotch()) {
+                if(i == numFixed) {
+                    isGoingToAdvance[0] = true;
+                } else {
+                    isGoingToAdvance[i - numFixed] = true;
+                    isGoingToAdvance[i - numFixed - 1] = true;
+                }
             }
         }
-        for(int i = _slots.length - 1; i > 0; i -= 1) {
+        for (int i = 0; i < _numPawls; i++) {
+            if(isGoingToAdvance[i]) {
+                _slots[i + numFixed].advance();
+            }
+        }
+
+        for(int i = _slots.length - 1; i >= 0; i -= 1) {
             entry = _slots[i].convertForward(entry);
         }
-        for(int i = 0; i < _slots.length; i += 1) {
+        for(int i = 1; i < _slots.length; i += 1) {
             entry = _slots[i].convertBackward(entry);
         }
         entry = _plug.permute(entry);
