@@ -70,7 +70,7 @@ public class RuntimeQuiz {
         }
     }
 
-    public static Asymptotic f6_notation = Asymptotic.BIG_OMEGA;
+    public static Asymptotic f6_notation = Asymptotic.BIG_O;
     public static Runtime f6_runtime = Runtime.LINEAR;
     public void f6(int[] array) {
         for (int i = 1; i < array.length; i++) {
