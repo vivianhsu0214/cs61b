@@ -95,14 +95,15 @@ class Machine {
             if(lastRolled && _slots[i].rotates()
                     && (i == _slots.length - 1 || _slots[i].atNotch())) {
                 _slots[i].advance();
+                lastRolled = true;
             } else {
                 lastRolled = false;
             }
         }
-        for(int i = _slots.length - 1; i >= 0; i -= 1) {
+        for(int i = _slots.length - 1; i > 0; i -= 1) {
             entry = _slots[i].convertForward(entry);
         }
-        for(int i = 1; i < _slots.length; i += 1) {
+        for(int i = 0; i < _slots.length; i += 1) {
             entry = _slots[i].convertBackward(entry);
         }
         entry = _plug.permute(entry);
