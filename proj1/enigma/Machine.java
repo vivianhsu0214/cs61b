@@ -1,6 +1,5 @@
 package enigma;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collection;
 
@@ -155,7 +154,8 @@ class Machine {
     }
 
     /**
-     * Returns true iff the archive contains the rotor
+     * Returns true iff the archive contains the rotor.
+     * @param name name of the rotor
      */
     boolean contains(String name) {
         return _archive.containsKey(name);

@@ -111,6 +111,7 @@ public final class Main {
     /**
      * Return an Enigma machine configured from the contents of configuration
      * file _config.
+     *
      * @return Machine with initialized
      */
     private Machine readConfig() {
@@ -163,7 +164,8 @@ public final class Main {
 
     /**
      * Generate an alphabet with the config string.
-     * @param  alpha alphabet config
+     *
+     * @param alpha alphabet config
      * @return alphabet object
      */
     private Alphabet readAlphabet(String alpha) {
@@ -188,6 +190,7 @@ public final class Main {
 
     /**
      * Return a list of rotors.
+     *
      * @param archive empty list
      * @return archive filed
      */
@@ -218,6 +221,7 @@ public final class Main {
 
     /**
      * Return a rotor, reading its description from _config.
+     *
      * @param rotorInfo concatenated line of rotor config
      * @return rotor initialized
      */
@@ -235,17 +239,14 @@ public final class Main {
             Permutation objPerm = new Permutation(perm.trim(), _alphabet);
             char type = feature.charAt(0);
             switch (type) {
-                case 'M':
-                    return new MovingRotor(name, objPerm, feature.substring(1));
+                case 'M': return new MovingRotor(name, objPerm, feature.substring(1));
 
-                case 'N':
-                    return new FixedRotor(name, objPerm);
+                case 'N': return new FixedRotor(name, objPerm);
 
-                case 'R':
-                    return new Reflector(name, objPerm);
+                case 'R': return new Reflector(name, objPerm);
 
-                default:
-                    throw error("Wrong rotor type");
+                default: throw error("Wrong rotor type");
+                
             }
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
