@@ -1,5 +1,8 @@
 package enigma;
 
+/** Alphabet that includes enum characters only.
+ * @author Zhibo Fan
+ */
 public class SymbolAlphabet extends Alphabet {
     /**
      * An alphabet containing given characters.

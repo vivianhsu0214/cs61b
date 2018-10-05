@@ -19,7 +19,7 @@ class Permutation {
      */
     Permutation(String cycles, Alphabet alphabet) {
         _alphabet = alphabet;
-        _cycle = cycles;
+        _cycle = cycles.replaceAll("(\\w)+", "");
     }
 
     /**

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -93,13 +92,13 @@ public final class Main {
     private void process() {
         Machine enigma = readConfig();
         _config.close();
-        while(_input.hasNextLine()) {
+        while (_input.hasNextLine()) {
             String line = _input.nextLine().trim();
-            if(line.replaceAll("(\\s)+", "").equals("")) {
+            if (line.replaceAll("(\\s)+", "").equals("")) {
                 continue;
             }
-            if(line.charAt(0) == '*') {
-                setUp(enigma, line.replaceAll("\\*","").trim());
+            if (line.charAt(0) == '*') {
+                setUp(enigma, line.replaceAll("\\*", "").trim());
             } else {
                 String print = enigma.convert(line.replaceAll("\\s", ""));
                 printMessageLine(print);
@@ -112,6 +111,7 @@ public final class Main {
     /**
      * Return an Enigma machine configured from the contents of configuration
      * file _config.
+     * @return Machine with initialized
      */
     private Machine readConfig() {
         try {
@@ -135,6 +135,7 @@ public final class Main {
     /**
      * Skip to the next valid line.
      * Return null if nothing left.
+     *
      * @param option 0: Result without whitespace. 1: Original result.
      */
     private String nextValidLine(int option) {
@@ -151,7 +152,7 @@ public final class Main {
             }
         }
         if (valid) {
-            if(option == 0) {
+            if (option == 0) {
                 return temp;
             } else {
                 return src;
@@ -162,6 +163,8 @@ public final class Main {
 
     /**
      * Generate an alphabet with the config string.
+     * @param  alpha alphabet config
+     * @return alphabet object
      */
     private Alphabet readAlphabet(String alpha) {
         alpha = alpha.replaceAll(" ", "");
@@ -184,7 +187,9 @@ public final class Main {
     }
 
     /**
-     * Return a list of rotors
+     * Return a list of rotors.
+     * @param archive empty list
+     * @return archive filed
      */
     private LinkedList<Rotor> fillArchive(LinkedList<Rotor> archive) {
         String rotorInfo = "";
@@ -194,12 +199,12 @@ public final class Main {
             String thisLine = nextValidLine(1);
             newInfoFlag = thisLine.trim().charAt(0) != '(';
 
-            if(firstInfoFlag) {
+            if (firstInfoFlag) {
                 rotorInfo = thisLine;
                 firstInfoFlag = false;
                 continue;
             }
-            if(newInfoFlag) {
+            if (newInfoFlag) {
                 archive.add(readRotor(rotorInfo.trim()));
                 rotorInfo = thisLine;
             } else {
@@ -213,6 +218,8 @@ public final class Main {
 
     /**
      * Return a rotor, reading its description from _config.
+     * @param rotorInfo concatenated line of rotor config
+     * @return rotor initialized
      */
     private Rotor readRotor(String rotorInfo) {
         try {
@@ -228,18 +235,17 @@ public final class Main {
             Permutation objPerm = new Permutation(perm.trim(), _alphabet);
             char type = feature.charAt(0);
             switch (type) {
-                case 'M': {
+                case 'M':
                     return new MovingRotor(name, objPerm, feature.substring(1));
-                }
-                case 'N': {
+
+                case 'N':
                     return new FixedRotor(name, objPerm);
-                }
-                case 'R': {
+
+                case 'R':
                     return new Reflector(name, objPerm);
-                }
-                default: {
+
+                default:
                     throw error("Wrong rotor type");
-                }
             }
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
@@ -253,8 +259,8 @@ public final class Main {
     private void setUp(Machine M, String settings) {
         String[] temp = settings.trim().split("(\\s)+");
         int num = 0;
-        for(String s : temp) {
-            if(M.contains(s)) {
+        for (String s : temp) {
+            if (M.contains(s)) {
                 num += 1;
             }
         }
@@ -263,7 +269,7 @@ public final class Main {
         M.insertRotors(rotors);
         M.setRotors(temp[num]);
         String permute = "";
-        for(int i = num + 1; i < temp.length; i++) {
+        for (int i = num + 1; i < temp.length; i++) {
             permute += temp[i].trim();
         }
         Permutation plug = new Permutation(permute, _alphabet);
@@ -276,10 +282,10 @@ public final class Main {
      */
     private void printMessageLine(String msg) {
         String section = "";
-        for(int i = 0; i < msg.length(); i += 1) {
+        for (int i = 0; i < msg.length(); i += 1) {
             section += msg.charAt(i);
-            if(i % 5 == 4) {
-                if(i != msg.length() - 1) {
+            if (i % 5 == 4) {
+                if (i != msg.length() - 1) {
                     section += " ";
                 }
                 _output.print(section);

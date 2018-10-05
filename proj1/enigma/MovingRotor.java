@@ -17,7 +17,7 @@ class MovingRotor extends Rotor {
      */
     MovingRotor(String name, Permutation perm, String notches) {
         super(name, perm);
-        if(notches == null || notches == "") {
+        if (notches == null || notches.equals("")) {
             return;
         }
         _notch = new int[notches.length()];
@@ -27,11 +27,13 @@ class MovingRotor extends Rotor {
     }
 
     @Override
-    boolean rotates() { return true; }
+    boolean rotates() {
+        return true;
+    }
 
     @Override
     boolean atNotch() {
-        if(_notch == null) {
+        if (_notch == null) {
             return false;
         }
         for (int i : _notch) {
@@ -48,7 +50,7 @@ class MovingRotor extends Rotor {
     }
 
     /**
-     * The index of where the notch is
+     * The index of where the notch is.
      */
     private int[] _notch;
 }
