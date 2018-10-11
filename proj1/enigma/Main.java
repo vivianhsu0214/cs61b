@@ -242,6 +242,18 @@ public final class Main {
             for (String s : permuteTemp) {
                 perm += s;
             }
+            int numLeft = 0;
+            int numRight = 0;
+            for (int i = 0; i < perm.length(); i += 1) {
+                if(perm.charAt(i) == '(') {
+                    numLeft++;
+                } else if (perm.charAt(i) == ')') {
+                    numRight++;
+                }
+            }
+            if (numLeft != numRight) {
+                throw error("Bad permutation!");
+            }
             Permutation objPerm = new Permutation(perm.trim(), _alphabet);
             char type = feature.charAt(0);
 

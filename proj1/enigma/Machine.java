@@ -120,10 +120,10 @@ class Machine {
                 }
             }
         }
-        for (int i = 0; i < _numPawls; i++) {
+        for (int i = _numPawls - 1; i >= 0; i--) {
             if (isGoingToAdvance[i]) {
                 _slots[i + numFixed].advance();
-            }
+            } else break;
         }
 
         for (int i = _slots.length - 1; i >= 0; i -= 1) {
@@ -155,6 +155,7 @@ class Machine {
 
     /**
      * Returns true iff the archive contains the rotor.
+     *
      * @param name name of the rotor
      */
     boolean contains(String name) {
