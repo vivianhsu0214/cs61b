@@ -99,13 +99,13 @@ public final class Main {
                 continue;
             }
             if (line.charAt(0) == '*') {
-                if(!noSetting) {
-                    System.out.println();
+                if (!noSetting) {
+                    printMessageLine("\n");
                 }
                 setUp(enigma, line.replaceAll("\\*", "").trim());
                 noSetting = false;
             } else {
-                if(noSetting) {
+                if (noSetting) {
                     throw error("Missing setting!");
                 }
                 String print = enigma.convert(line.replaceAll("\\s", ""));
@@ -247,11 +247,15 @@ public final class Main {
             Permutation objPerm = new Permutation(perm.trim(), _alphabet);
             char type = feature.charAt(0);
             switch (type) {
-                case 'M': return new MovingRotor(name, objPerm,
-                        feature.substring(1));
-                case 'N': return new FixedRotor(name, objPerm);
-                case 'R': return new Reflector(name, objPerm);
-                default: throw error("Wrong rotor type");
+                case 'M':
+                    return new MovingRotor(name, objPerm,
+                            feature.substring(1));
+                case 'N':
+                    return new FixedRotor(name, objPerm);
+                case 'R':
+                    return new Reflector(name, objPerm);
+                default:
+                    throw error("Wrong rotor type");
             }
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");

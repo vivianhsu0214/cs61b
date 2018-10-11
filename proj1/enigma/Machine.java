@@ -132,7 +132,7 @@ class Machine {
         for (int i = 1; i < _slots.length; i += 1) {
             entry = _slots[i].convertBackward(entry);
         }
-        entry = _plug.permute(entry);
+        entry = _plug.invert(entry);
 
         return entry;
     }

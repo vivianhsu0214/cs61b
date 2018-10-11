@@ -51,4 +51,5 @@ public class PermutationTest {
         checkPerm("identity", UPPER_STRING, "BCDAFEGHIJKLMNOPQRSTUVWXYZ");
     }
 
+
 }
