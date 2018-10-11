@@ -91,6 +91,7 @@ public final class Main {
      */
     private void process() {
         Machine enigma = readConfig();
+        boolean noSetting = true;
         _config.close();
         while (_input.hasNextLine()) {
             String line = _input.nextLine().trim();
@@ -98,8 +99,15 @@ public final class Main {
                 continue;
             }
             if (line.charAt(0) == '*') {
+                if(!noSetting) {
+                    System.out.println();
+                }
                 setUp(enigma, line.replaceAll("\\*", "").trim());
+                noSetting = false;
             } else {
+                if(noSetting) {
+                    throw error("Missing setting!");
+                }
                 String print = enigma.convert(line.replaceAll("\\s", ""));
                 printMessageLine(print);
             }
