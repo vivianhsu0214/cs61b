@@ -110,17 +110,10 @@ class Machine {
         int numFixed = _slots.length - _numPawls;
         boolean[] isGoingToAdvance = new boolean[_numPawls];
         isGoingToAdvance[_numPawls - 1] = true;
-        for (int i = numFixed; i < _slots.length; i += 1) {
+        for (int i = numFixed + 1; i < _slots.length; i += 1) {
             if (_slots[i].atNotch()) {
-                if (i == numFixed) {
-                    isGoingToAdvance[0] = true;
-                } else {
-                    isGoingToAdvance[i - numFixed] = true;
-                    isGoingToAdvance[i - numFixed - 1] = true;
-                }
-            }
-            if (!_slots[numFixed + 1].atNotch()) {
-                isGoingToAdvance[0] = false;
+                isGoingToAdvance[i - numFixed] = true;
+                isGoingToAdvance[i - numFixed - 1] = true;
             }
         }
         for (int i = _numPawls - 1; i >= 0; i--) {
