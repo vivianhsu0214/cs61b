@@ -119,11 +119,16 @@ class Machine {
                     isGoingToAdvance[i - numFixed - 1] = true;
                 }
             }
+            if (!_slots[numFixed + 1].atNotch()) {
+                isGoingToAdvance[0] = false;
+            }
         }
         for (int i = _numPawls - 1; i >= 0; i--) {
             if (isGoingToAdvance[i]) {
                 _slots[i + numFixed].advance();
-            } else break;
+            } else {
+                break;
+            }
         }
 
         for (int i = _slots.length - 1; i >= 0; i -= 1) {

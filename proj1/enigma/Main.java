@@ -245,7 +245,7 @@ public final class Main {
             int numLeft = 0;
             int numRight = 0;
             for (int i = 0; i < perm.length(); i += 1) {
-                if(perm.charAt(i) == '(') {
+                if (perm.charAt(i) == '(') {
                     numLeft++;
                 } else if (perm.charAt(i) == ')') {
                     numRight++;
