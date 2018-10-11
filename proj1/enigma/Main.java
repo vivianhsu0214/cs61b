@@ -100,7 +100,7 @@ public final class Main {
             }
             if (line.charAt(0) == '*') {
                 if (!noSetting) {
-                    printMessageLine("\n");
+                    printMessageLine("\r");
                 }
                 setUp(enigma, line.replaceAll("\\*", "").trim());
                 noSetting = false;
