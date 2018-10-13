@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static junit.framework.TestCase.*;
+import static org.junit.Assert.*;
 
 
 /**
