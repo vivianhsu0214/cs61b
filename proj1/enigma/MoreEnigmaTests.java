@@ -1,3 +1,4 @@
+
 package enigma;
 
 import org.junit.Test;
@@ -66,7 +67,8 @@ public class MoreEnigmaTests {
     }
 
     /**
-     * Helper method to get the String representation of the current Rotor settings
+     * Helper method to get the String representation of
+     * the current Rotor settings.
      */
     private String getSetting(Alphabet alph, Rotor[] machineRotors) {
         String currSetting = "";
