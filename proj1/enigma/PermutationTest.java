@@ -51,5 +51,33 @@ public class PermutationTest {
         checkPerm("identity", UPPER_STRING, "BCDAFEGHIJKLMNOPQRSTUVWXYZ");
     }
 
+    @Test
+    public void checkPermute() {
+        perm = new Permutation("(ABCD) (EF)", UPPER);
+        assertEquals(1, perm.permute(0));
+        assertEquals(0,perm.permute(3));
+    }
+
+    @Test
+    public void checkInvert() {
+        perm = new Permutation("(ABCD) (EF)", UPPER);
+        assertEquals(0, perm.invert(1));
+        assertEquals(3, perm.invert(0));
+    }
+
+    @Test
+    public void checkCPermute() {
+        perm = new Permutation("(ABCD) (EF)", UPPER);
+        assertEquals('B', perm.permute('A'));
+        assertEquals('A', perm.permute('D'));
+    }
+
+    @Test
+    public void checkCInvert() {
+        perm = new Permutation("(ABCD)(EF)", UPPER);
+        assertEquals('A', perm.invert('B'));
+        assertEquals('D', perm.invert('A'));
+    }
+
 
 }

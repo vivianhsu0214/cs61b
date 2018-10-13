@@ -70,4 +70,14 @@ public class MovingRotorTest {
         rotor.set(25);
         checkRotor("Rotor I set", UPPER_STRING, NAVALZ_MAP.get("I"));
     }
+
+    @Test
+    public void checkRotorConvert() {
+        assertTrue(true);
+    }
+
+    @Test
+    public void checkRotorConvertString() {
+        assertTrue(true);
+    }
 }
