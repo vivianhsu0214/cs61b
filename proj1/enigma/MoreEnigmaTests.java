@@ -17,37 +17,46 @@ public class MoreEnigmaTests {
 
     @Test
     public void testInvertChar() {
-        Permutation p = new Permutation("(PNH) (ABDFIKLZYXW) (JC)", new CharacterRange('A', 'Z'));
+        Permutation p = new Permutation("(PNH) (ABDFIKLZYXW) (JC)",
+                new CharacterRange('A', 'Z'));
         assertEquals(p.invert('B'), 'A');
         assertEquals(p.invert('G'), 'G');
     }
 
     @Test
     public void testPermuteChar() {
-        Permutation p = new Permutation("(PNH) (ABDFIKLZYXW) (JC)", new CharacterRange('A', 'Z'));
+        Permutation p = new Permutation("(PNH) (ABDFIKLZYXW) (JC)",
+                new CharacterRange('A', 'Z'));
         assertEquals(p.permute('A'), 'B');
         assertEquals(p.permute('G'), 'G');
     }
 
     @Test
     public void testDerangement() {
-        Permutation p = new Permutation("(PNH) (ABDFIKLZYXW) (JC)", new CharacterRange('A', 'Z'));
+        Permutation p = new Permutation("(PNH) (ABDFIKLZYXW) (JC)",
+                new CharacterRange('A', 'Z'));
         assertFalse(p.derangement());
-        p = new Permutation("(ABCDEFGHIJKLMNOPQRSTUVWXYZ)", new CharacterRange('A', 'Z'));
+        p = new Permutation("(ABCDEFGHIJKLMNOPQRSTUVWXYZ)",
+                new CharacterRange('A', 'Z'));
         assertTrue(p.derangement());
     }
 
     @Test
     public void testDoubleStep() {
         Alphabet ac = new CharacterRange('A', 'D');
-        Rotor one = new Reflector("R1", new Permutation("(AC) (BD)", ac));
-        Rotor two = new MovingRotor("R2", new Permutation("(ABCD)", ac), "C");
-        Rotor three = new MovingRotor("R3", new Permutation("(ABCD)", ac), "C");
-        Rotor four = new MovingRotor("R4", new Permutation("(ABCD)", ac), "C");
+        Rotor one = new Reflector("R1",
+                new Permutation("(AC) (BD)", ac));
+        Rotor two = new MovingRotor("R2",
+                new Permutation("(ABCD)", ac), "C");
+        Rotor three = new MovingRotor("R3",
+                new Permutation("(ABCD)", ac), "C");
+        Rotor four = new MovingRotor("R4",
+                new Permutation("(ABCD)", ac), "C");
         String setting = "AAA";
         Rotor[] machineRotors = {one, two, three, four};
         String[] rotors = {"R1", "R2", "R3", "R4"};
-        Machine mach = new Machine(ac, 4, 3, new ArrayList<>(Arrays.asList(machineRotors)));
+        Machine mach = new Machine(ac, 4, 3,
+                new ArrayList<>(Arrays.asList(machineRotors)));
         mach.insertRotors(rotors);
         mach.setRotors(setting);
 
