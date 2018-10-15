@@ -3,25 +3,49 @@ HW #5.
 
 Question D.
 
-1.
+1.Θ(x^2)
+Ignore the constant coefficient and terms of lower order.
+
+2.O(logx)
+Ignore the term 2x2 whose order is lower than 4x3.
+log(4x3+2x2) -> log(4x3) = log4 + 3logx
+Ignore the coeffiecient and constant term.
+
+3.Θ(N^2)
+The inner sum is iterating from 0 to i while i is iterating from 0 to N.
+So the total time should be 0+1+2+...+N-1 = (N-1)N/2 which ∈ Θ(N2)
+
+4.Θ(M+N)
+Variable j is initialized outside the outer loop.
+So the inner loop is only executed once given M.
+The worse case will be bump(i, j) never returns false.
+So the total number of execution will be M+N
+
+5.Θ(n^2)
+The complexity of f1 is Θ(n)
+Assume that T(n) represents the complexity of f5
+T(n) = Θ(n)+2*T(n/2)
+->T(n)+Θ(n) = 2*(Θ(n)+T(n/2))
+->T(n)+Θ(n) = Θ(n)*(2^k-1)/(2-1) where k equals to the total number of recursive calls, that is log2(n)
+T(n) = Θ(n)*(n-2) -> Θ(n^2)
+
+6.Assume f(x) > 0, so that the absolute of logb(f(x)) and log10(f(x)) are still the same as themselves.
+  log10(f(x)) = logb(f(x))/logb(10) = |logb(f(x))/logb(10)|
+  Assume f(x) <= 0, so that the absolute for logb(f(x)) and log10(f(x)) are the opposite number as themselves.
+  Similarly, |log10(f(x))| = |logb(f(x))/logb(10)|
+  Thus, there exists a number K larger than 1/logb(10) and a number M that makes f(x) is positive for all x>M
+  Thus, logb(f(x))∈Θ(log10(f(x)))
 
 
-2.
+7.Let p(x) = a0+a1*x+a2*x^2+a3*x^3+...+an*x^n, where n is a constant positive integer
+  Ignore the terms of lower order and constant coefficient, p(x)->x^n
+  log(x^n) = nlogx, ignore the constant coefficient, log(x^n)∈Θ(log(n))
+  So log(p(x))∈O(log(x))
 
 
-3.
-
-
-4.
-
-
-5.
-
-
-6.
-
-
-7.
-
-
-8.
+8.If  ⌈f(n)⌉ is less than f(n), it's obvious that  ⌈f(n)⌉ < f(n) such that  ⌈f(n)⌉∈O(f(n))⌈f(n)⌉∈O(f(n))
+  If  ⌈f(n)⌉ is larger than f(n), f(n) - ⌈f(n)⌉ <= 0.5
+  As f(n) is positive, f(n)/⌈f(n)⌉ <= (⌈f(n)⌉ + 0.5)/⌈f(n)⌉ = 1 + 1/2*⌈f(n)⌉
+  As ⌈f(n)⌉ is a number larger than f(n), f(n) >= 0.5. Let K = 2.
+  Obviously, K >= (⌈f(n)⌉ + 0.5)/⌈f(n)⌉, such that ⌈f(n)⌉ <= K*f(n) is always true.
+  To sum up, there exists a positive number K, for instance, K=2, that ⌈f(n)⌉ <= K*f(n). So ⌈f(n)⌉∈O(f(n))⌈f(n)⌉∈O(f(n))

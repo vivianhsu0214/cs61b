@@ -9,7 +9,6 @@ public class Nybbles {
 
     /** Return an array of size N. */
     public Nybbles(int N) {
-        // DON'T CHANGE THIS.
         _data = new int[(N + 7) / 8];
         _n = N;
     }
@@ -25,7 +24,13 @@ public class Nybbles {
         if (k < 0 || k >= _n) {
             throw new IndexOutOfBoundsException();
         } else {
-            return 0; // REPLACE WITH SOLUTION
+            int result = _data[k / 8] >>> (7 - (k % 8)) * 4;
+            result &= 0x000F;
+            if (result >>> 3 == 1) {
+                result ^= 0x000F;
+                result = -(result + 1);
+            }
+            return result;
         }
     }
 
@@ -37,7 +42,9 @@ public class Nybbles {
         } else if (val < (-MAX_VALUE - 1) || val > MAX_VALUE) {
             throw new IllegalArgumentException();
         } else {
-            _data[0] = 0; // REPLACE WITH SOLUTION
+            val &= 0x000F;
+            val = val << (7 - (k % 8)) * 4;
+            _data[k / 8] |= val; // REPLACE WITH SOLUTION
         }
     }
 

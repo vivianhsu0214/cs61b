@@ -4,7 +4,7 @@ import java.util.AbstractSequentialList;
 import java.util.ListIterator;
 
 /** A list of objects of type T with a fixed maximum list size.
- *  @author
+ *  @author Zhibo Fan
  */
 public class CompactLinkedList<T> extends AbstractSequentialList<T> {
 
@@ -70,7 +70,14 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
 
         @Override
         public T next() {
-            return null; // REPLACE WITH SOLUTION
+            if (_next == -1) {
+                throw new IllegalStateException();
+            }
+            T elem = _data[_next];
+            int oldNext = _next;
+            _next = _link[_next] ^ _prev;
+            _prev = oldNext;
+            return elem;
         }
 
         @Override
@@ -85,7 +92,14 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
 
         @Override
         public T previous() {
-            return null; // REPLACE WITH SOLUTION
+            if (_last == -1) {
+                throw new IllegalStateException();
+            }
+            T elem = _data[_prev];
+            int oldPrev = _prev;
+            _prev = _link[_prev] ^ _next;
+            _next = oldPrev;
+            return elem;
         }
 
         @Override
@@ -106,7 +120,23 @@ public class CompactLinkedList<T> extends AbstractSequentialList<T> {
              * require some other way of finding indices that are
              * no longer in use (for example, that were being used, but were
              * then removed).  For this exercise, you needn't bother. */
-            // FILL IN
+            if (_size + 1 > _data.length) {
+                throw new IllegalStateException();
+            }
+            _data[_size] = obj;
+            _link[_size] = _next ^ _prev;
+            if (_prev == -1) {
+                _first = _size;
+            } else {
+                _link[_prev] ^= _size ^ _next;
+            }
+            if (_next == -1) {
+                _last = _size;
+            } else {
+                _link[_next] ^= _size ^ _prev;
+            }
+            _prev = _size;
+            _size += 1;
         }
 
 
