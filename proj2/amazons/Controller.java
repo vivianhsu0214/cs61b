@@ -178,7 +178,8 @@ final class Controller {
             new Command("[a-j](10|[1-9])" +
                     "-[a-j](10|[1-9])\\([a-j](10|[1-9])\\)$", this::doMove),
             new Command("[a-j](10|[1-9])\\s+" +
-                    "[a-j](10|[1-9])\\s+[a-j](10|[1-9])$", this::doMove)
+                    "[a-j](10|[1-9])\\s+[a-j](10|[1-9])$", this::doMove),
+            new Command("undo$", this::undo)
     };
 
     /**
@@ -210,6 +211,14 @@ final class Controller {
             }
         }
         throw error("Bad command: %s", cmnd);
+    }
+
+    /**
+     * Command "undo"
+     * @param dummy not used
+     */
+    private void undo(Matcher dummy) {
+        _board.undo();
     }
 
     /**
@@ -253,6 +262,9 @@ final class Controller {
         Move mv = Move.mv(move.group());
         board().makeMove(mv);
         _winner = board().winner();
+        if (_winner != EMPTY || _winner != null) {
+            _reporter.reportNote(_winner.toString() + " wins.");
+        }
     }
 
 

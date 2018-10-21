@@ -112,38 +112,14 @@ class Board {
         _white = new boolean[SIZE * SIZE];
         _spear = new boolean[SIZE * SIZE];
         _movement = new Stack<String>();
-        initQueens(BLACK);
-        initQueens(WHITE);
-    }
-
-    /**
-     * Init queens.
-     * @param side whose queens to init
-     */
-    private void initQueens(Piece side) {
-        int numQueens = 0;
-        Random rand = new Random(System.currentTimeMillis());
-        if (side == BLACK) {
-            while(numQueens != QUEENS) {
-                int idx = rand.nextInt(SIZE * SIZE);
-                if (_black[idx] || _white[idx]) {
-                    continue;
-                } else {
-                    numQueens += 1;
-                    _black[idx] = true;
-                }
-            }
-        } else if (side == WHITE) {
-            while(numQueens != QUEENS) {
-                int idx = rand.nextInt(SIZE * SIZE);
-                if (_white[idx] || _black[idx]) {
-                    continue;
-                } else {
-                    numQueens += 1;
-                    _white[idx] = true;
-                }
-            }
-        }
+        put(BLACK, Square.sq(60));
+        put(BLACK, Square.sq(93));
+        put(BLACK, Square.sq(96));
+        put(BLACK, Square.sq(69));
+        put(WHITE, Square.sq(30));
+        put(WHITE, Square.sq(39));
+        put(WHITE, Square.sq(3));
+        put(WHITE, Square.sq(6));
     }
 
     /**
@@ -416,7 +392,7 @@ class Board {
      * Undo one move.  Has no effect on the initial board.
      */
     void undo() {
-        if (_movement.isEmpty()) {
+        if (_movement.size() < 2) {
             return;
         }
         Move m = Move.mv(_movement.pop());
@@ -428,7 +404,15 @@ class Board {
             _black[m.from().index()] = true;
             _black[m.to().index()] = false;
         }
-        _turn = (turn() == BLACK ? WHITE : BLACK);
+        m = Move.mv(_movement.pop());
+        _spear[m.spear().index()] = false;
+        if (turn() == BLACK) {
+            _black[m.from().index()] = true;
+            _black[m.to().index()] = false;
+        } else {
+            _white[m.from().index()] = true;
+            _white[m.to().index()] = false;
+        }
     }
 
     /**

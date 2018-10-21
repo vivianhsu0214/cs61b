@@ -28,13 +28,22 @@ class GUI extends TopLevel implements View, Reporter {
         //System.exit(2);
 
         addMenuButton("Game->Quit", this::quit);
+        addMenuButton("Game->Restart", this::restart);
         addMenuButton("Settings->Seed", this::newSeed);
-
+        addMenuButton("Game->Undo", this::undo);
         _widget = new BoardWidget(_pendingCommands);
         add(_widget,
             new LayoutSpec("y", 1,
                            "height", 1,
                            "width", 3));
+    }
+
+    /**
+     * Response to "Undo" button click.
+     * @param dummy not used
+     */
+    private void undo(String dummy) {
+        _pendingCommands.offer("undo");
     }
 
     /** Response to "Quit" button click. */
@@ -59,6 +68,14 @@ class GUI extends TopLevel implements View, Reporter {
                 showMessage("Enter an integral seed value.", "Error", "error");
             }
         }
+    }
+
+    /**
+     * New game.
+     * @param dummy not used
+     */
+    private void restart(String dummy) {
+        _pendingCommands.offer("restart");// FIXME
     }
 
     /** Return the next command from our widget, waiting for it as necessary.
