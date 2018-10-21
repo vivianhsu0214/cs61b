@@ -75,6 +75,11 @@ final class Move {
         return _str;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Move && _str.equals(((Move) obj).toString());
+    }
+
     /** Construct the Move FROM-TO(SPEAR). */
     private Move(Square from, Square to, Square spear) {
         _from = from; _to = to; _spear = spear;

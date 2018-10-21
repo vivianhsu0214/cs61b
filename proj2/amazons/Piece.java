@@ -1,7 +1,7 @@
 package amazons;
 
 /** The contents of a cell on the board.
- *  @author
+ *  @author Zhibo Fan
  */
 enum Piece {
 

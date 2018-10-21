@@ -22,7 +22,7 @@ import static amazons.Move.mv;
 // GUI of the staff program.
 
 /** A widget that displays an Amazons game.
- *  @author
+ *  @author Zhibo Fan
  */
 class BoardWidget extends Pad {
 
@@ -65,7 +65,10 @@ class BoardWidget extends Pad {
     private void drawGrid(Graphics2D g) {
         g.setColor(LIGHT_SQUARE_COLOR);
         g.fillRect(0, 0, BOARD_SIDE, BOARD_SIDE);
-        // FIXME
+        for (int i = 1; i < 10; i++) {
+            g.drawLine(i * SQUARE_SIDE, 0, i * SQUARE_SIDE, BOARD_SIDE);
+            g.drawLine(0, i * SQUARE_SIDE, BOARD_SIDE, i * SQUARE_SIDE);
+        }
     }
 
     @Override

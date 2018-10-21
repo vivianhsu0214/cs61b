@@ -3,7 +3,7 @@ package amazons;
 import static amazons.Move.mv;
 
 /** A Player that takes input as text commands from the standard input.
- *  @author
+ *  @author Zhibo Fan
  */
 class TextPlayer extends Player {
 
@@ -29,12 +29,16 @@ class TextPlayer extends Player {
             String line = _controller.readLine();
             if (line == null) {
                 return "quit";
-            } else if (false) {  // FIXME
+            } else if (line.equals("restart") || line.equals("dump")
+                    || line.equals("quit") || line.equals("seed\\s+\\(\\d+\\)")
+                    || _controller.board().isLegal(Move.mv(line))) {
+                return line;
+            } else if (!_controller.board().isLegal(Move.mv(line))) {
                 _controller.reportError("Invalid move. "
                                         + "Please try again.");
                 continue;
-            } else { // F(XME
-                return line;
+            } else {
+                return null;
             }
         }
     }

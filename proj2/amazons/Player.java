@@ -3,7 +3,7 @@ package amazons;
 import static amazons.Utils.*;
 
 /** A generic Amazons Player.
- *  @author
+ *  @author Zhibo Fan
  */
 abstract class Player {
 
@@ -35,6 +35,8 @@ abstract class Player {
      *  latter if board().turn() is not myPiece() or if board.winner()
      *  is not null. */
     abstract String myMove();
+
+
 
     /** My Controller. */
     protected Controller _controller;
