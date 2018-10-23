@@ -27,10 +27,17 @@ class TextPlayer extends Player {
     String myMove() {
         while (true) {
             String line = _controller.readLine();
+            if (line != null) {
+                line = line.toLowerCase();
+            }
             if (line == null) {
                 return "quit";
-            } else if (line.equals("restart") || line.equals("dump")
-                    || line.equals("quit") || line.equals("seed\\s+\\(\\d+\\)")
+            } else if (line.equals("new") || line.equals("dump")
+                    || line.equals("quit")
+                    || line.matches("seed\\s+\\(\\d+\\)$")
+                    || line.equals("undo")
+                    || line.matches("manual\\s+(black|white)$")
+                    || line.matches("auto\\s+(black|white)$")
                     || _controller.board().isLegal(Move.mv(line))) {
                 return line;
             } else if (!_controller.board().isLegal(Move.mv(line))) {

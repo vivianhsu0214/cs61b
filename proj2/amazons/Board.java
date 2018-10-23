@@ -172,7 +172,7 @@ class Board {
      * Return the contents of the square at COL ROW.
      */
     final Piece get(char col, char row) {
-        return get(col - 'a', row - '1');
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -363,6 +363,9 @@ class Board {
      * Update winner after movement.
      */
     private void updateWinner() {
+        if (_winner == WHITE || _winner == BLACK) {
+            return;
+        }
         boolean blackWins = true;
         boolean whiteWins = true;
         for (int i = 0; i < SIZE * SIZE; i++) {
@@ -413,6 +416,7 @@ class Board {
             _white[m.from().index()] = true;
             _white[m.to().index()] = false;
         }
+        updateWinner();
     }
 
     /**

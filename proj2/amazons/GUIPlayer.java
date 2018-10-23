@@ -24,7 +24,22 @@ class GUIPlayer extends Player implements Reporter {
 
     @Override
     String myMove() {
-        return _gui.readCommand();
+        while(true) {
+            String line = _gui.readCommand();
+            if (line == null) {
+                return "quit";
+            } else if (line.equals("new") || line.equals("quit")
+                    || line.matches("seed\\s+\\(\\d+\\)$")
+                    || line.equals("undo")
+                    || line.matches("manual\\s+(black|white)$")
+                    || line.matches("auto\\s+(black|white)$")
+                    || _controller.board().isLegal(Move.mv(line))) {
+                return line;
+            } else if (!_controller.board().isLegal(Move.mv(line))){
+                continue;
+            }
+            return null;
+        }
     }
 
     @Override

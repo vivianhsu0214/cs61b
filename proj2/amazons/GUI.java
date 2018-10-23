@@ -28,14 +28,41 @@ class GUI extends TopLevel implements View, Reporter {
         //System.exit(2);
 
         addMenuButton("Game->Quit", this::quit);
-        addMenuButton("Game->Restart", this::restart);
+        addMenuButton("Game->New", this::restart);
         addMenuButton("Settings->Seed", this::newSeed);
+        addMenuButton("Game->dump", this::dump);
         addMenuButton("Game->Undo", this::undo);
+        addMenuButton("Player->auto black", this::auto);
+        addMenuButton("Player->auto white", this::auto);
+        addMenuButton("Player->manual black", this::manual);
+        addMenuButton("Player->manual white", this::manual);
         _widget = new BoardWidget(_pendingCommands);
         add(_widget,
             new LayoutSpec("y", 1,
                            "height", 1,
                            "width", 3));
+    }
+
+    /**
+     * Turn black side into AI playing.
+     * @param cmd including which piece to execute
+     */
+    private void auto(String cmd) {
+        String piece = cmd.split(" ")[1];
+        _pendingCommands.offer("auto " + piece);
+    }
+
+    private void manual(String cmd) {
+        String piece = cmd.split(" ")[1];
+        _pendingCommands.offer("manual " + piece);
+    }
+
+    /**
+     * Dump the info of the board.
+     * @param dummy not used
+     */
+    private void dump(String dummy) {
+        _pendingCommands.offer("dump");
     }
 
     /**
@@ -75,7 +102,7 @@ class GUI extends TopLevel implements View, Reporter {
      * @param dummy not used
      */
     private void restart(String dummy) {
-        _pendingCommands.offer("restart");// FIXME
+        _pendingCommands.offer("new");
     }
 
     /** Return the next command from our widget, waiting for it as necessary.

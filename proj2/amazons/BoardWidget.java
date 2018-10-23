@@ -100,7 +100,8 @@ class BoardWidget extends Pad {
         }
         g.setColor(DARK_SQUARE_COLOR);
         for(Square sq : _moveSquares) {
-            g.fillRect(cx(sq), cy(sq), SQUARE_SIDE, SQUARE_SIDE);
+            g.fillRect(cx(sq) + 1, cy(sq) + 1,
+                    SQUARE_SIDE - 1, SQUARE_SIDE - 1);
         }
     }
 
@@ -157,6 +158,14 @@ class BoardWidget extends Pad {
     void setMoveCollection(boolean collecting) {
         _acceptingMoves = collecting;
         repaint();
+    }
+
+    /**
+     * Returns the board.
+     * @return board
+     */
+    Board board() {
+        return _board;
     }
 
     /**

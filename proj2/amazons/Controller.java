@@ -174,12 +174,14 @@ final class Controller {
             new Command("quit$", this::doQuit),
             new Command("seed\\s+(\\d+)$", this::doSeed),
             new Command("dump$", this::doDump),
-            new Command("restart$", this::doNew),
+            new Command("new$", this::doNew),
             new Command("[a-j](10|[1-9])" +
                     "-[a-j](10|[1-9])\\([a-j](10|[1-9])\\)$", this::doMove),
             new Command("[a-j](10|[1-9])\\s+" +
                     "[a-j](10|[1-9])\\s+[a-j](10|[1-9])$", this::doMove),
-            new Command("undo$", this::undo)
+            new Command("undo$", this::undo),
+            new Command("auto\\s+(black|white)", this::auto),
+            new Command("mannual\\s+(black|white)", this::manual)
     };
 
     /**
@@ -211,6 +213,26 @@ final class Controller {
             }
         }
         throw error("Bad command: %s", cmnd);
+    }
+
+    /**
+     * Command "auto".
+     * @param cmd the command including piece
+     */
+    private void auto(Matcher cmd) { // FIXME
+        throw new UnsupportedOperationException();
+        //String piece = cmd.group().split(" ")[1];
+        //Piece side = (piece.equals("black") ? BLACK : WHITE);
+    }
+
+    /**
+     * Command "manual"
+     * @param cmd the command including piece
+     */
+    private void manual(Matcher cmd) { // FIXME
+        throw new UnsupportedOperationException();
+        //String piece = cmd.group().split(" ")[1];
+        //Piece side = (piece.equals("black") ? BLACK : WHITE);
     }
 
     /**
@@ -262,7 +284,7 @@ final class Controller {
         Move mv = Move.mv(move.group());
         board().makeMove(mv);
         _winner = board().winner();
-        if (_winner != EMPTY || _winner != null) {
+        if (_winner != EMPTY && _winner != null) {
             _reporter.reportNote(_winner.toString() + " wins.");
         }
     }
@@ -325,4 +347,8 @@ final class Controller {
      */
     private Reporter _reporter;
 
+    /**
+     * True if using GUI.
+     */
+    private boolean _mode;
 }
