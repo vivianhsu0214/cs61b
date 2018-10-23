@@ -407,6 +407,8 @@ class Board {
             _black[m.from().index()] = true;
             _black[m.to().index()] = false;
         }
+        _turn = (_turn == BLACK ? WHITE : BLACK);
+        /*
         m = Move.mv(_movement.pop());
         _spear[m.spear().index()] = false;
         if (turn() == BLACK) {
@@ -416,6 +418,7 @@ class Board {
             _white[m.from().index()] = true;
             _white[m.to().index()] = false;
         }
+        */
         updateWinner();
     }
 
@@ -644,6 +647,7 @@ class Board {
         }
         for (int i = 0; i < SIZE; i++) {
             int index = row * 10 + i;
+            result += (i == 0 ? "   " : "");
             if (_black[index]) {
                 result += "B";
             } else if (_white[index]) {
