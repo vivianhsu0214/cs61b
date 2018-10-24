@@ -6,7 +6,7 @@ import java.util.Stack;
 
 /**
  * Implementation of a BST based String Set.
- * @author
+ * @author Zhibo Fan
  */
 public class BSTStringSet implements SortedStringSet, Iterable<String> {
     /** Creates a new empty set. */
@@ -51,7 +51,7 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public Iterator<String> iterator(String low, String high) {
-        return null;  // FIXME
+        return new BSTIterator(root, low, high);  // FIXME
     }
 
     /** Return either the node in this BST that contains S, or, if
@@ -106,14 +106,26 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
          *  the stack. */
         private Stack<Node> _toDo = new Stack<>();
 
+        private String L;
+
+        private String U;
+
         /** A new iterator over the labels in NODE. */
         BSTIterator(Node node) {
             addTree(node);
         }
 
+        BSTIterator(Node node, String low, String high) {
+            L = low;
+            U = high;
+            addTree(node);
+        }
+
         @Override
         public boolean hasNext() {
-            return !_toDo.empty();
+            return !_toDo.empty()
+                    || (_toDo.peek() != null
+                    && compareHigh(_toDo.peek().s)) ;
         }
 
         @Override
@@ -134,10 +146,24 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
         /** Add the relevant subtrees of the tree rooted at NODE. */
         private void addTree(Node node) {
-            while (node != null) {
+            while (node != null && compareLow(node.s)) {
                 _toDo.push(node);
                 node = node.left;
             }
+        }
+
+        private boolean compareLow(String s) {
+            if (L == null) {
+                return true;
+            }
+            return s.compareTo(L) >= 0;
+        }
+
+        private boolean compareHigh(String s) {
+            if (U == null) {
+                return true;
+            }
+            return s.compareTo(U) <= 0;
         }
     }
 
