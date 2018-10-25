@@ -25,22 +25,25 @@ public class SortedListTester {
 		assertFalse(SortedListHelper.isListSorted(unsortedList));
 	}
 
-	@Test
+	@Test(timeout = 1000)
 	public void testInsertIntoSortedList() {
 		// TODO Allan please add more tests
 
-		List<Integer> list = new ArrayList<>();
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(-40);
+		list.add(1);
+		list.add(5);
+		list.add(7);
+		list.add(50);
+		list.add(494);
+		list.add(481293);
 
 		SortedListHelper.insertIntoSortedList(list, 40);
-		assertEquals(1, list.size());
+		assertEquals(8, list.size());
 		assertTrue(SortedListHelper.isListSorted(list));
 
-		SortedListHelper.insertIntoSortedList(list, 50);
-		assertEquals(2, list.size());
-		assertTrue(SortedListHelper.isListSorted(list));
-
-		SortedListHelper.insertIntoSortedList(list, 60);
-		assertEquals(3, list.size());
+		SortedListHelper.insertIntoSortedList(list, 51);
+		assertEquals(9, list.size());
 		assertTrue(SortedListHelper.isListSorted(list));
 	}
 }

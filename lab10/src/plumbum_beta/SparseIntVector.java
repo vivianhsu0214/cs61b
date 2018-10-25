@@ -17,12 +17,10 @@ public class SparseIntVector {
 	private int size;
 
 	public SparseIntVector(int... values) {
-		// replace this comment with something?
+		entries = new ArrayList<Entry>();
 
 		for (int i = 0; i < values.length; i++) {
-			if (values[i] != 0) {
-				entries.add(new Entry(i, values[i]));
-			}
+			entries.add(new Entry(i, values[i]));
 		}
 
 		// replace this comment with something?
@@ -55,7 +53,7 @@ public class SparseIntVector {
 		int value = 0;
 		int indexA = 0;
 		int indexB = 0;
-		while (indexA <= a.size() && indexB <= b.size()) {
+		while (indexA < a.size() && indexB < b.size()) {
 			Entry entryA = a.entries.get(indexA);
 			Entry entryB = b.entries.get(indexB);
 
