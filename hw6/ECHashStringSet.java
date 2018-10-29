@@ -13,7 +13,10 @@ class ECHashStringSet implements StringSet {
     private static double MAX_LOAD = 5;
 
     public ECHashStringSet() {
-        _storage = new LinkedList[(int)(1 / MIN_LOAD)];
+        _storage = new LinkedList[5];
+        for (int i = 0; i < 5; i++) {
+            _storage[i] = new LinkedList<String>();
+        }
         _size = 0;
     }
 
@@ -28,9 +31,6 @@ class ECHashStringSet implements StringSet {
             resize();
         }
         int idx = storeIndex(s);
-        if (_storage[idx] == null) {
-            _storage[idx] = new LinkedList<String>();
-        }
         _storage[idx].add(s);
     }
 
@@ -44,6 +44,9 @@ class ECHashStringSet implements StringSet {
     }
 
     private double loadFactor() {
+        if (_size == 0) {
+            return 0;
+        }
         double items = 0.0;
         for (LinkedList store : _storage) {
             items = items + store.size();
@@ -52,14 +55,17 @@ class ECHashStringSet implements StringSet {
     }
 
     private void resize() {
-        LinkedList[] old = _storage;
-        _storage = new LinkedList[old.length * 2];
-        for (LinkedList<String> store : old) {
-            if (store != null) {
-                for (String s : store) {
-                    put(s);
-                }
-            }
+        List store = asList();
+        _storage = new LinkedList[_storage.length * 2];
+
+        for (int i = 0; i < _storage.length; i++) {
+            _storage[i] = new LinkedList<String>();
+        }
+
+        for (Object obj : store) {
+            String elem = (String) obj;
+            int idx = storeIndex(elem);
+            _storage[idx].add(elem);
         }
     }
 

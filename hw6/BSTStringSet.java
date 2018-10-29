@@ -123,9 +123,8 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
         @Override
         public boolean hasNext() {
-            return !_toDo.empty()
-                    || (_toDo.peek() != null
-                    && compareHigh(_toDo.peek().s)) ;
+            return _toDo.peek() != null
+                    && compareHigh(_toDo.peek().s) ;
         }
 
         @Override
