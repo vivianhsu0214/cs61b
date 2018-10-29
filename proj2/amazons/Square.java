@@ -57,9 +57,9 @@ final class Square {
 
     /** Return the Square that is STEPS>0 squares away from me in direction
      *  DIR, or null if there is no such square.
-     *  DIR = 0 for north, 1 for northeast, 2 for east, etc., up to 7 for west.
-     *  If DIR has another value, return null. Thus, unless the result
-     *  is null the resulting square is a queen move away rom me. */
+     *  DIR = 0 for north, 1 for northeast, 2 for east, etc., up to 7 for 
+     *  northwest. If DIR has another value, return null. Thus, unless the 
+     *  result is null the resulting square is a queen move away from me. */
     Square queenMove(int dir, int steps) {
         return this;  // FIXME
     }

@@ -33,7 +33,7 @@ class TextPlayer extends Player {
                 _controller.reportError("Invalid move. "
                                         + "Please try again.");
                 continue;
-            } else { // F(XME
+            } else { // FIXME
                 return line;
             }
         }
