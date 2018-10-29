@@ -33,6 +33,7 @@ class ECHashStringSet implements StringSet {
         }
         int idx = storeIndex(s);
         _storage[idx].add(s);
+        _size += 1;
     }
 
     @Override
@@ -45,14 +46,7 @@ class ECHashStringSet implements StringSet {
     }
 
     private double loadFactor() {
-        if (_size == 0) {
-            return 0;
-        }
-        double items = 0.0;
-        for (LinkedList store : _storage) {
-            items = items + store.size();
-        }
-        return items / _size;
+        return (double)_size / (double)_storage.length;
     }
 
     @SuppressWarnings("unchecked")

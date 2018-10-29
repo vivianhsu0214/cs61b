@@ -18,15 +18,15 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public void put(String s) {
-        Node root = find(s);
-        if (root == null) {
+        Node last = find(s);
+        if (last == null) {
             root = new Node(s);
         } else {
-            int cmp = s.compareTo(root.s);
-            if (cmp > 0) {
-                root.right = new Node(s);
-            } else if (cmp < 0) {
-                root.left = new Node(s);
+            int c = s.compareTo(last.s);
+            if (c < 0) {
+                last.left = new Node(s);
+            } else if (c > 0) {
+                last.right = new Node(s);
             }
         }
     }
@@ -107,10 +107,6 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
             addTree(node);
         }
 
-        BSTIterator(Node node, String low, String high) {
-            addTree(node);
-        }
-
         @Override
         public boolean hasNext() {
             return !_toDo.isEmpty();
@@ -140,25 +136,35 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
             }
         }
     }
-
+    /**
     private static class BSTRange implements Iterator<String> {
 
         private String L;
         private String U;
         private Stack<Node> toDo;
+        private Node cur;
 
         @SuppressWarnings("unchecked")
         BSTRange(Node root, String down, String up) {
             U = up;
             L = down;
             toDo = new Stack<Node>();
-            addTree(root);
+            cur = root;
         }
 
         @Override
         public boolean hasNext() {
-            return !toDo.empty()
-                    && toDo.peek().s.compareTo(U) <= 0;
+            return !toDo.empty() || hasLeftInRange(cur);
+        }
+
+        private boolean hasLeftInRange(Node n) {
+            while (n != null) {
+                if (n.s.compareTo(U) <= 0) {
+                    return true;
+                }
+                n = n.left;
+            }
+            return false;
         }
 
         @Override
@@ -167,7 +173,58 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
                 throw new NoSuchElementException();
             }
 
+            while (cur != null && cur.s.compareTo(L) >= 0) {
+                toDo.push(cur);
+                cur = cur.left;
+            }
+
             Node node = toDo.pop();
+            cur = node.right;
+            return node.s;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+        */
+    private static class BSTRange implements Iterator<String> {
+
+        /** Stack of nodes to be delivered.  The values to be delivered
+         *  are (a) the label of the top of the stack, then (b)
+         *  the labels of the right child of the top of the stack inorder,
+         *  then (c) the nodes in the rest of the stack (i.e., the result
+         *  of recursively applying this rule to the result of popping
+         *  the stack. */
+        private Stack<Node> _toDo = new Stack<>();
+
+        /** Lower bound. */
+        String _low;
+
+        /** Upper bound. */
+        String _high;
+
+        /** A new iterator over the labels in NODE. */
+        BSTRange(Node node, String low, String high) {
+            _low = low;
+            _high = high;
+            addTree(node);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !_toDo.empty()
+                    && _toDo.peek().s.compareTo(_high) <= 0;
+        }
+
+        @Override
+        public String next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            Node node = _toDo.pop();
             addTree(node.right);
             return node.s;
         }
@@ -179,8 +236,8 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
         /** Add the relevant subtrees of the tree rooted at NODE. */
         private void addTree(Node node) {
-            while (node != null && node.s.compareTo(L) >= 0) {
-                toDo.push(node);
+            while (node != null && node.s.compareTo(_low) >= 0) {
+                _toDo.push(node);
                 node = node.left;
             }
             if (node != null) {
@@ -188,7 +245,6 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
             }
         }
     }
-
     /** Root node of the tree. */
     private Node root;
 }
