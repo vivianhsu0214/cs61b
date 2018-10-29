@@ -1,8 +1,4 @@
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Implementation of a BST based String Set.
@@ -22,17 +18,20 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public void put(String s) {
-        Node last = find(s);
-        if (last == null) {
-            root = new Node(s);
-        } else {
-            int c = s.compareTo(last.s);
-            if (c < 0) {
-                last.left = new Node(s);
-            } else if (c > 0) {
-                last.right = new Node(s);
-            }
+        root = putHelper(s, root);
+    }
+
+    private Node putHelper(String s, Node n) {
+        if (n == null) {
+            return new Node(s);
         }
+        int cmp = s.compareTo(n.s);
+        if (cmp < 0) {
+            n.left = putHelper(s, n.left);
+        } else {
+            n.right = putHelper(s, n.right);
+        }
+        return n;
     }
 
     @Override
@@ -51,7 +50,7 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public Iterator<String> iterator(String low, String high) {
-        return new BSTIterator(root, low, high);  // FIXME
+        return new BSTRange(asList(), low, high);  // FIXME
     }
 
     /** Return either the node in this BST that contains S, or, if
@@ -106,25 +105,18 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
          *  the stack. */
         private Stack<Node> _toDo = new Stack<>();
 
-        private String L;
-
-        private String U;
-
         /** A new iterator over the labels in NODE. */
         BSTIterator(Node node) {
             addTree(node);
         }
 
         BSTIterator(Node node, String low, String high) {
-            L = low;
-            U = high;
             addTree(node);
         }
 
         @Override
         public boolean hasNext() {
-            return _toDo.peek() != null
-                    && compareHigh(_toDo.peek().s) ;
+            return !_toDo.isEmpty();
         }
 
         @Override
@@ -145,24 +137,80 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
         /** Add the relevant subtrees of the tree rooted at NODE. */
         private void addTree(Node node) {
-            while (node != null && compareLow(node.s)) {
+            while (node != null) {
                 _toDo.push(node);
                 node = node.left;
             }
         }
+    }
 
-        private boolean compareLow(String s) {
-            if (L == null) {
-                return true;
-            }
-            return s.compareTo(L) >= 0;
+    private static class BSTRange implements Iterator<String> {
+
+        private String L;
+        private String U;
+        private int start;
+        private int end;
+        private List<String> treelist;
+
+        @SuppressWarnings("unchecked")
+        BSTRange(List list, String down, String up) {
+            U = up;
+            L = down;
+            treelist = list;
+            start = findStart(0, treelist.size());
+            end = findEnd(start, treelist.size());
         }
 
-        private boolean compareHigh(String s) {
-            if (U == null) {
-                return true;
+        private int findStart(int start, int end) {
+            int mid = (start + end) / 2;
+            String pivot = treelist.get(mid);
+            if (pivot.compareTo(L) < 0) {
+                return findStart(mid + 1, end);
+            } else if (pivot.compareTo(U) > 0) {
+                return findStart(start, mid);
+            } else if (start >= end) {
+                return -1;
+            } else if (mid == 0
+                    || treelist.get(mid - 1).compareTo(L) < 0) {
+                return mid;
+            } else {
+                return findStart(start, mid);
             }
-            return s.compareTo(U) <= 0;
+        }
+
+        private int findEnd(int start, int end) {
+            if (start == -1) {
+                return -1;
+            }
+            int mid = (start + end) / 2;
+            String pivot = treelist.get(mid);
+            if (pivot.compareTo(L) < 0) {
+                return findEnd(mid + 1, end);
+            } else if (pivot.compareTo(U) > 0) {
+                return findEnd(start, mid);
+            } else if (start >= end) {
+                return -1;
+            } else if (mid == end - 1
+                    || treelist.get(mid + 1).compareTo(U) > 0) {
+                return mid + 1;
+            } else {
+                return findEnd(mid + 1, end);
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return start < end;
+        }
+
+        @Override
+        public String next() {
+            return treelist.get(start++);
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
         }
     }
 

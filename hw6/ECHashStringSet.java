@@ -12,6 +12,7 @@ class ECHashStringSet implements StringSet {
     private static double MIN_LOAD = 0.2;
     private static double MAX_LOAD = 5;
 
+    @SuppressWarnings("unchecked")
     public ECHashStringSet() {
         _storage = new LinkedList[5];
         for (int i = 0; i < 5; i++) {
@@ -54,6 +55,7 @@ class ECHashStringSet implements StringSet {
         return items / _size;
     }
 
+    @SuppressWarnings("unchecked")
     private void resize() {
         List store = asList();
         _storage = new LinkedList[_storage.length * 2];
