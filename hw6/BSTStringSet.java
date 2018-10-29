@@ -50,7 +50,7 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public Iterator<String> iterator(String low, String high) {
-        return new BSTRange(asList(), low, high);  // FIXME
+        return new BSTRange(asList(), low, high);
     }
 
     /** Return either the node in this BST that contains S, or, if
