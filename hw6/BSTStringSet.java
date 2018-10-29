@@ -18,20 +18,17 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public void put(String s) {
-        root = putHelper(s, root);
-    }
-
-    private Node putHelper(String s, Node n) {
-        if (n == null) {
-            return new Node(s);
-        }
-        int cmp = s.compareTo(n.s);
-        if (cmp < 0) {
-            n.left = putHelper(s, n.left);
+        Node root = find(s);
+        if (root == null) {
+            root = new Node(s);
         } else {
-            n.right = putHelper(s, n.right);
+            int cmp = s.compareTo(root.s);
+            if (cmp > 0) {
+                root.right = new Node(s);
+            } else if (cmp < 0) {
+                root.left = new Node(s);
+            }
         }
-        return n;
     }
 
     @Override
@@ -50,7 +47,7 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public Iterator<String> iterator(String low, String high) {
-        return new BSTRange(asList(), low, high);
+        return new BSTRange(root, low, high);
     }
 
     /** Return either the node in this BST that contains S, or, if
@@ -148,73 +145,49 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
         private String L;
         private String U;
-        private int start;
-        private int end;
-        private List<String> treelist;
+        private Stack<Node> toDo;
 
         @SuppressWarnings("unchecked")
-        BSTRange(List list, String down, String up) {
+        BSTRange(Node root, String down, String up) {
             U = up;
             L = down;
-            treelist = list;
-            start = findStart(0, treelist.size());
-            end = findEnd(start, treelist.size());
-        }
-
-        private int findStart(int start, int end) {
-            int mid = (start + end) / 2;
-            String pivot = treelist.get(mid);
-            if (pivot.compareTo(L) < 0) {
-                return findStart(mid + 1, end);
-            } else if (pivot.compareTo(U) > 0) {
-                return findStart(start, mid);
-            } else if (start >= end) {
-                return -1;
-            } else if (mid == 0
-                    || treelist.get(mid - 1).compareTo(L) < 0) {
-                return mid;
-            } else {
-                return findStart(start, mid);
-            }
-        }
-
-        private int findEnd(int start, int end) {
-            if (start == -1) {
-                return -1;
-            }
-            int mid = (start + end) / 2;
-            String pivot = treelist.get(mid);
-            if (pivot.compareTo(L) < 0) {
-                return findEnd(mid + 1, end);
-            } else if (pivot.compareTo(U) > 0) {
-                return findEnd(start, mid);
-            } else if (start >= end) {
-                return -1;
-            } else if (mid == end - 1
-                    || treelist.get(mid + 1).compareTo(U) > 0) {
-                return mid + 1;
-            } else {
-                return findEnd(mid + 1, end);
-            }
+            toDo = new Stack<Node>();
+            addTree(root);
         }
 
         @Override
         public boolean hasNext() {
-            return start < end;
+            return !toDo.empty()
+                    && toDo.peek().s.compareTo(U) <= 0;
         }
 
         @Override
         public String next() {
-            return treelist.get(start++);
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            Node node = toDo.pop();
+            addTree(node.right);
+            return node.s;
         }
 
         @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
-    }
 
-    // ADD A CLASS, PERHAPS?
+        /** Add the relevant subtrees of the tree rooted at NODE. */
+        private void addTree(Node node) {
+            while (node != null && node.s.compareTo(L) >= 0) {
+                toDo.push(node);
+                node = node.left;
+            }
+            if (node != null) {
+                addTree(node.right);
+            }
+        }
+    }
 
     /** Root node of the tree. */
     private Node root;
