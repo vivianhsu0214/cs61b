@@ -1,9 +1,5 @@
 package amazons;
 
-// NOTICE:
-// This file is a SUGGESTED skeleton.  NOTHING here or in any other source
-// file is sacred.  If any of it confuses you, throw it out and do it your way.
-
 import java.util.Iterator;
 
 import static java.lang.Math.*;
@@ -146,7 +142,7 @@ class AI extends Player {
                 opp = Integer.max(opp, valid);
             }
         }
-        return mine - 2 * opp;
+        return mine - opp;
     }
 
     /**

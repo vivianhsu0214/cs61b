@@ -181,7 +181,7 @@ final class Controller {
                     "[a-j](10|[1-9])\\s+[a-j](10|[1-9])$", this::doMove),
             new Command("undo$", this::undo),
             new Command("auto\\s+(black|white)", this::auto),
-            new Command("mannual\\s+(black|white)", this::manual)
+            new Command("manual\\s+(black|white)", this::manual)
     };
 
     /**
@@ -219,10 +219,14 @@ final class Controller {
      * Command "auto".
      * @param cmd the command including piece
      */
-    private void auto(Matcher cmd) { // FIXME
-        throw new UnsupportedOperationException();
-        //String piece = cmd.group().split(" ")[1];
-        //Piece side = (piece.equals("black") ? BLACK : WHITE);
+    private void auto(Matcher cmd) {
+        String piece = cmd.group().split(" ")[1];
+        Piece side = (piece.equals("black") ? BLACK : WHITE);
+        if (side == BLACK) {
+            _black = _autoPlayerTemplate.create(side, this);
+        } else if (side == WHITE) {
+            _white = _autoPlayerTemplate.create(side, this);
+        }
     }
 
     /**
@@ -230,9 +234,13 @@ final class Controller {
      * @param cmd the command including piece
      */
     private void manual(Matcher cmd) { // FIXME
-        throw new UnsupportedOperationException();
-        //String piece = cmd.group().split(" ")[1];
-        //Piece side = (piece.equals("black") ? BLACK : WHITE);
+        String piece = cmd.group().split(" ")[1];
+        Piece side = (piece.equals("black") ? BLACK : WHITE);
+        if (side == BLACK) {
+            _black = _manualPlayerTemplate.create(side, this);
+        } else if (side == WHITE) {
+            _white = _manualPlayerTemplate.create(side, this);
+        }
     }
 
     /**
