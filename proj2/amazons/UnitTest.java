@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 import ucb.junit.textui;
 
 /** The suite of all JUnit tests for the enigma package.
- *  @author
+ *  @author Zhibo Fan
  */
 public class UnitTest {
 
@@ -79,28 +79,28 @@ public class UnitTest {
     }
 
     static final String INIT_BOARD_STATE =
-            "   - - - B - - B - - -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   B - - - - - - - - B\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   W - - - - - - - - W\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - - W - - W - - -\n";
+            "   - - - B - - B - - -\n"
+            + "   - - - - - - - - - -\n"
+            + "   - - - - - - - - - -\n"
+            + "   B - - - - - - - - B\n"
+            + "   - - - - - - - - - -\n"
+            + "   - - - - - - - - - -\n"
+            + "   W - - - - - - - - W\n"
+            + "   - - - - - - - - - -\n"
+            + "   - - - - - - - - - -\n"
+            + "   - - - W - - W - - -\n";
 
     static final String SMILE =
-            "   - - - - - - - - - -\n" +
-                    "   - S S S - - S S S -\n" +
-                    "   - S - S - - S - S -\n" +
-                    "   - S S S - - S S S -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - W - - - - W - -\n" +
-                    "   - - - W W W W - - -\n" +
-                    "   - - - - - - - - - -\n" +
-                    "   - - - - - - - - - -\n";
+            "   - - - - - - - - - -\n"
+            + "   - S S S - - S S S -\n"
+            + "   - S - S - - S - S -\n"
+            + "   - S S S - - S S S -\n"
+            + "   - - - - - - - - - -\n"
+            + "   - - - - - - - - - -\n"
+            + "   - - W - - - - W - -\n"
+            + "   - - - W W W W - - -\n"
+            + "   - - - - - - - - - -\n"
+            + "   - - - - - - - - - -\n";
 }
 
 

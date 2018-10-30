@@ -162,7 +162,7 @@ final class Square {
      * @return whether square of that index is valid
      */
     static boolean exists(int index) {
-        return exists(index % 10,index / 10);
+        return exists(index % 10, index / 10);
     }
 
     /**
@@ -222,8 +222,8 @@ final class Square {
         _index = index;
         _row = index / 10;
         _col = index % 10;
-        char rowChar = (char)(_row + '1');
-        char colChar = (char)(_col + 'a');
+        char rowChar = (char) (_row + '1');
+        char colChar = (char) (_col + 'a');
         _str = String.valueOf(colChar) + (rowChar == ':' ? "10"
                 : String.valueOf(rowChar));
         assert _str.matches(SQ);

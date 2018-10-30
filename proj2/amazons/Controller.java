@@ -9,8 +9,6 @@ import java.util.function.Consumer;
 
 import static amazons.Utils.*;
 import static amazons.Piece.*;
-import static amazons.Square.sq;
-import static amazons.Square.SQ;
 
 /**
  * The input/output and GUI controller for play of Amazons.
@@ -171,17 +169,17 @@ final class Controller {
      * Amazons program and the methods to process them.
      */
     private Command[] _commands = {
-            new Command("quit$", this::doQuit),
-            new Command("seed\\s+(\\d+)$", this::doSeed),
-            new Command("dump$", this::doDump),
-            new Command("new$", this::doNew),
-            new Command("[a-j](10|[1-9])" +
-                    "-[a-j](10|[1-9])\\([a-j](10|[1-9])\\)$", this::doMove),
-            new Command("[a-j](10|[1-9])\\s+" +
-                    "[a-j](10|[1-9])\\s+[a-j](10|[1-9])$", this::doMove),
-            new Command("undo$", this::undo),
-            new Command("auto\\s+(black|white)", this::auto),
-            new Command("manual\\s+(black|white)", this::manual)
+        new Command("quit$", this::doQuit),
+        new Command("seed\\s+(\\d+)$", this::doSeed),
+        new Command("dump$", this::doDump),
+        new Command("new$", this::doNew),
+        new Command("[a-j](10|[1-9])" +
+                "-[a-j](10|[1-9])\\([a-j](10|[1-9])\\)$", this::doMove),
+        new Command("[a-j](10|[1-9])\\s+" +
+                "[a-j](10|[1-9])\\s+[a-j](10|[1-9])$", this::doMove),
+        new Command("undo$", this::undo),
+        new Command("auto\\s+(black|white)", this::auto),
+        new Command("manual\\s+(black|white)", this::manual)
     };
 
     /**
@@ -230,10 +228,10 @@ final class Controller {
     }
 
     /**
-     * Command "manual"
+     * Command "manual".
      * @param cmd the command including piece
      */
-    private void manual(Matcher cmd) { // FIXME
+    private void manual(Matcher cmd) {
         String piece = cmd.group().split(" ")[1];
         Piece side = (piece.equals("black") ? BLACK : WHITE);
         if (side == BLACK) {
@@ -244,7 +242,7 @@ final class Controller {
     }
 
     /**
-     * Command "undo"
+     * Command "undo".
      * @param dummy not used
      */
     private void undo(Matcher dummy) {
@@ -285,7 +283,7 @@ final class Controller {
     }
 
     /**
-     * Execute the movement on the board
+     * Execute the movement on the board.
      * @param move the command stream which is valid
      */
     private void doMove(Matcher move) {

@@ -1,17 +1,23 @@
 package amazons;
 
-/** A Player that takes input from a GUI.
- *  @author Zhibo Fan
+/**
+ * A Player that takes input from a GUI.
+ *
+ * @author Zhibo Fan
  */
 class GUIPlayer extends Player implements Reporter {
 
-    /** A new GUIPlayer that takes moves and commands from GUI.  */
+    /**
+     * A new GUIPlayer that takes moves and commands from GUI.
+     */
     GUIPlayer(GUI gui) {
         this(null, null, gui);
     }
 
-    /** A new GUIPlayer playing PIECE under control of CONTROLLER, taking
-     *  moves and commands from GUI. */
+    /**
+     * A new GUIPlayer playing PIECE under control of CONTROLLER, taking
+     * moves and commands from GUI.
+     */
     GUIPlayer(Piece piece, Controller controller, GUI gui) {
         super(piece, controller);
         _gui = gui;
@@ -24,7 +30,7 @@ class GUIPlayer extends Player implements Reporter {
 
     @Override
     String myMove() {
-        while(true) {
+        while (true) {
             String line = _gui.readCommand();
             if (line == null) {
                 return "quit";
@@ -35,7 +41,7 @@ class GUIPlayer extends Player implements Reporter {
                     || line.matches("auto\\s+(black|white)$")
                     || _controller.board().isLegal(Move.mv(line))) {
                 return line;
-            } else if (!_controller.board().isLegal(Move.mv(line))){
+            } else if (!_controller.board().isLegal(Move.mv(line))) {
                 continue;
             }
             return null;
@@ -56,6 +62,8 @@ class GUIPlayer extends Player implements Reporter {
     public void reportMove(Move unused) {
     }
 
-    /** The GUI I use for input. */
+    /**
+     * The GUI I use for input.
+     */
     private GUI _gui;
 }

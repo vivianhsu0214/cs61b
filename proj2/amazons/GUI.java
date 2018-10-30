@@ -8,11 +8,6 @@ import java.util.regex.Pattern;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-// This skeleton provides a bit of suggested structure.   It's up to you to
-// discover what needs to be added.  You are NOT required to reproduce the
-// GUI of the staff program.
-
-
 /** The GUI controller for an Amazons board and buttons.
  *  @author Zhibo Fan
  */
@@ -44,7 +39,7 @@ class GUI extends TopLevel implements View, Reporter {
     }
 
     /**
-     * Turn black side into AI playing.
+     * Turn one side into AI playing.
      * @param cmd including which piece to execute
      */
     private void auto(String cmd) {
@@ -52,6 +47,10 @@ class GUI extends TopLevel implements View, Reporter {
         _pendingCommands.offer("auto " + piece);
     }
 
+    /**
+     * Turn one side to GUI playing.
+     * @param cmd including which piece to execute
+     */
     private void manual(String cmd) {
         String piece = cmd.split(" ")[1];
         _pendingCommands.offer("manual " + piece);

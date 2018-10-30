@@ -1,12 +1,7 @@
 package amazons;
 
-// NOTICE:
-// This file is a SUGGESTED skeleton.  NOTHING here or in any other source
-// file is sacred.  If any of it confuses you, throw it out and do it your way.
-
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Random;
 import java.util.Stack;
 
 import static amazons.Piece.*;
@@ -45,6 +40,7 @@ class Board {
 
     /**
      * Return an empty board.
+     *
      * @return a board without anything
      */
     static Board emptyBoard() {
@@ -74,9 +70,10 @@ class Board {
     /**
      * Clear a given square.
      * Used for tests.
+     *
      * @param index index of the square
      */
-    void clear(int index){
+    void clear(int index) {
         _spear[index] = false;
         _black[index] = false;
         _white[index] = false;
@@ -176,7 +173,8 @@ class Board {
     }
 
     /**
-     * Return the contents of the square of INDEX
+     * Return the contents of the square of INDEX.
+     *
      * @param index the index
      * @return contents as piece
      */
@@ -238,7 +236,7 @@ class Board {
         if (asEmpty != null) {
             int emptyIndex = asEmpty.index();
             type = (_black[emptyIndex] ? 1 :
-                            (_white[emptyIndex] ? 2 :
+                    (_white[emptyIndex] ? 2 :
                             (_spear[emptyIndex] ? 3 : 0)));
             _black[emptyIndex] = false;
             _white[emptyIndex] = false;
@@ -261,14 +259,22 @@ class Board {
     boolean isLegal(Square from) {
         int col = from.col();
         int row = from.row();
-        return (Square.exists(col - 1, row - 1) && get(col - 1, row - 1) == EMPTY)
-                || (Square.exists(col - 1, row) && get(col - 1, row) == EMPTY)
-                || (Square.exists(col - 1, row + 1) && get(col - 1, row + 1) == EMPTY)
-                || (Square.exists(col, row - 1) && get(col, row - 1) == EMPTY)
-                || (Square.exists(col, row + 1) && get(col, row + 1) == EMPTY)
-                || (Square.exists(col + 1, row - 1) && get(col + 1, row - 1) == EMPTY)
-                || (Square.exists(col + 1, row) && get(col + 1, row) == EMPTY)
-                || (Square.exists(col + 1, row + 1) && get(col + 1, row + 1) == EMPTY);
+        return (Square.exists(col - 1, row - 1)
+                && get(col - 1, row - 1) == EMPTY)
+                || (Square.exists(col - 1, row)
+                && get(col - 1, row) == EMPTY)
+                || (Square.exists(col - 1, row + 1)
+                && get(col - 1, row + 1) == EMPTY)
+                || (Square.exists(col, row - 1)
+                && get(col, row - 1) == EMPTY)
+                || (Square.exists(col, row + 1)
+                && get(col, row + 1) == EMPTY)
+                || (Square.exists(col + 1, row - 1)
+                && get(col + 1, row - 1) == EMPTY)
+                || (Square.exists(col + 1, row)
+                && get(col + 1, row) == EMPTY)
+                || (Square.exists(col + 1, row + 1)
+                && get(col + 1, row + 1) == EMPTY);
     }
 
     /**
@@ -281,8 +287,8 @@ class Board {
         if (!isLegal(from) || dir == -1) {
             return false;
         }
-        int type = (_black[from.index()] ? 1 :
-                        (_white[from.index()] ? 2 : 0));
+        int type = (_black[from.index()] ? 1
+                : (_white[from.index()] ? 2 : 0));
         int minx = Math.min(from.col(), to.col());
         int miny = Math.min(from.row(), to.row());
         int maxx = Math.max(from.col(), to.col());
@@ -292,25 +298,25 @@ class Board {
         if (dir % 4 == 0) {
             for (int i = miny; i <= maxy; i++) {
                 if (get(minx, i) != EMPTY) {
-                    result =  false;
+                    result = false;
                 }
             }
         } else if (dir % 4 == 2) {
-            for (int i = minx; i <= maxx; i++){
+            for (int i = minx; i <= maxx; i++) {
                 if (get(i, miny) != EMPTY) {
-                    result =  false;
+                    result = false;
                 }
             }
         } else if (dir % 4 == 1) {
             for (int i = minx, j = miny; i <= maxx; i++, j++) {
                 if (get(i, j) != EMPTY) {
-                    result =  false;
+                    result = false;
                 }
             }
         } else {
             for (int i = minx, j = maxy; i <= maxx; i++, j--) {
                 if (get(i, j) != EMPTY) {
-                    result =  false;
+                    result = false;
                 }
             }
         }
@@ -345,7 +351,7 @@ class Board {
         if (!isLegal(from, to, spear)) {
             return;
         }
-        if(turn() == BLACK) {
+        if (turn() == BLACK) {
             _black[from.index()] = false;
             _black[to.index()] = true;
         } else {
@@ -408,17 +414,6 @@ class Board {
             _black[m.to().index()] = false;
         }
         _turn = (_turn == BLACK ? WHITE : BLACK);
-        /*
-        m = Move.mv(_movement.pop());
-        _spear[m.spear().index()] = false;
-        if (turn() == BLACK) {
-            _black[m.from().index()] = true;
-            _black[m.to().index()] = false;
-        } else {
-            _white[m.from().index()] = true;
-            _white[m.to().index()] = false;
-        }
-        */
         updateWinner();
     }
 
@@ -547,8 +542,7 @@ class Board {
 
         @Override
         public Move next() {
-            Move mv =  Move.mv(_start, _nextSquare
-                    , _spearThrows.next());
+            Move mv = Move.mv(_start, _nextSquare, _spearThrows.next());
             if (!_spearThrows.hasNext()) {
                 toNext();
             }
@@ -612,20 +606,20 @@ class Board {
         if (!(obj instanceof Board)) {
             return false;
         }
-        boolean result = false;
+        boolean result = true;
         Board another = (Board) obj;
         for (int i = 0; i < SIZE * SIZE; i++) {
-            result = _black[i] == another._black[i]
+            result &= _black[i] == another._black[i]
                     && _white[i] == another._white[i]
                     && _spear[i] == another._spear[i];
         }
-        result = turn() == another.turn();
-        result = winner() == another.winner();
+        result &= turn() == another.turn();
+        result &= winner() == another.winner();
         if (_movement.size() != another._movement.size()) {
             return false;
         }
         for (int i = 0; i < _movement.size(); i++) {
-            result = _movement.get(i) == another._movement.get(i);
+            result &= _movement.get(i) == another._movement.get(i);
         }
         return result;
     }
@@ -636,7 +630,8 @@ class Board {
     }
 
     /**
-     * A helper function of toString
+     * A helper function of toString.
+     *
      * @param row the line to print
      * @return string
      */
@@ -663,7 +658,8 @@ class Board {
     }
 
     /**
-     * Check if the booleans are consistent
+     * Check if the booleans are consistent.
+     *
      * @return whether the board model is consistent
      */
     public boolean boardCheck() {
@@ -679,6 +675,7 @@ class Board {
 
     /**
      * Getter for white.
+     *
      * @param index index of the square
      * @return result
      */

@@ -12,13 +12,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-import static amazons.Piece.*;
+import static amazons.Piece.BLACK;
+import static amazons.Piece.WHITE;
+import static amazons.Piece.SPEAR;
 import static amazons.Square.sq;
-import static amazons.Move.mv;
-
-// This skeleton provides a bit of suggested structure.   It's up to you to
-// discover what needs to be added.  You are NOT required to reproduce the
-// GUI of the staff program.
 
 /**
  * A widget that displays an Amazons game.
@@ -99,7 +96,7 @@ class BoardWidget extends Pad {
             }
         }
         g.setColor(DARK_SQUARE_COLOR);
-        for(Square sq : _moveSquares) {
+        for (Square sq : _moveSquares) {
             g.fillRect(cx(sq) + 1, cy(sq) + 1,
                     SQUARE_SIDE - 1, SQUARE_SIDE - 1);
         }

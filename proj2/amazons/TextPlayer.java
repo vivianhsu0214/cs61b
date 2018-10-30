@@ -1,7 +1,5 @@
 package amazons;
 
-import static amazons.Move.mv;
-
 /** A Player that takes input as text commands from the standard input.
  *  @author Zhibo Fan
  */
