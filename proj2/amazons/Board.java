@@ -157,15 +157,8 @@ class Board {
         return EMPTY;
     }
 
-<<<<<<< HEAD
-    /**
-     * Return the contents of the square at (COL, ROW), where
-     * 0 <= COL, ROW < 9.
-     */
-=======
     /** Return the contents of the square at (COL, ROW), where
      *  0 <= COL, ROW <= 9. */
->>>>>>> shared/proj2
     final Piece get(int col, int row) {
         return get(row * 10 + col);
     }

@@ -42,13 +42,9 @@ class TextPlayer extends Player {
                 _controller.reportError("Invalid move. "
                                         + "Please try again.");
                 continue;
-<<<<<<< HEAD
+
             } else {
                 return null;
-=======
-            } else { // FIXME
-                return line;
->>>>>>> shared/proj2
             }
         }
     }
