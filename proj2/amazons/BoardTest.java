@@ -1,6 +1,5 @@
 package amazons;
 
-import net.sf.saxon.ma.arrays.SquareArrayConstructor;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import ucb.junit.textui;
