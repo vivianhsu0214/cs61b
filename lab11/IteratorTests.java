@@ -19,15 +19,15 @@ public class IteratorTests {
     }
 
     /** Tests reachableFromIterator to make sure it returns all reachable
-     *  Squares. This method may need to be changed based on 
-    *   your implementation. */
+     *  Squares. This method may need to be changed based on
+     *   your implementation. */
     @Test
     public void testReachableFrom() {
         Board b = new Board();
         buildBoard(b, reachableFromTestBoard);
         int numSquares = 0;
         Set<Square> squares = new HashSet<>();
-        Iterator<Square> reachableFrom = b.reachableFrom(Square.sq(5, 5), null);
+        Iterator<Square> reachableFrom = b.reachableFrom(Square.sq(5, 4), null);
         while (reachableFrom.hasNext()) {
             Square s = reachableFrom.next();
             assertTrue(reachableFromTestSquares.contains(s));
@@ -39,7 +39,7 @@ public class IteratorTests {
     }
 
     /** Tests legalMovesIterator to make sure it returns all legal Moves.
-     *  This method needs to be finished and may need to be changed 
+     *  This method needs to be finished and may need to be changed
      *  based on your implementation. */
     @Test
     public void testLegalMoves() {
@@ -61,11 +61,12 @@ public class IteratorTests {
 
     private void buildBoard(Board b, Piece[][] target) {
         for (int col = 0; col < Board.SIZE; col++) {
-            for (int row = 0; row < Board.SIZE; row++) {
-                Piece piece = target[row][col];
+            for (int row = Board.SIZE - 1; row >= 0; row--) {
+                Piece piece = target[Board.SIZE - row - 1][col];
                 b.put(piece, Square.sq(col, row));
             }
         }
+        System.out.println(b);
     }
 
     static final Piece E = Piece.EMPTY;
@@ -92,13 +93,13 @@ public class IteratorTests {
 
     static final Set<Square> reachableFromTestSquares =
             new HashSet<>(Arrays.asList(
-                    Square.sq(5, 4),
-                    Square.sq(4, 4),
+                    Square.sq(5, 5),
                     Square.sq(4, 5),
-                    Square.sq(6, 5),
-                    Square.sq(7, 5),
+                    Square.sq(4, 4),
                     Square.sq(6, 4),
-                    Square.sq(7, 3),
-                    Square.sq(8, 2)));
+                    Square.sq(7, 4),
+                    Square.sq(6, 5),
+                    Square.sq(7, 6),
+                    Square.sq(8, 7)));
 
 }
