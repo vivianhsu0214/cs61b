@@ -346,6 +346,10 @@ class Board {
      * Move FROM-TO(SPEAR), assuming this is a legal move.
      */
     void makeMove(Square from, Square to, Square spear) {
+        updateWinner();
+        if (_winner != EMPTY) {
+            return;
+        }
         if (!isLegal(from, to, spear)) {
             return;
         }
@@ -360,7 +364,6 @@ class Board {
         Move m = Move.mv(from, to, spear);
         _movement.push(m.toString());
         _turn = (turn() == BLACK ? WHITE : BLACK);
-        updateWinner();
     }
 
     /**
@@ -370,21 +373,18 @@ class Board {
         if (_winner == WHITE || _winner == BLACK) {
             return;
         }
-        boolean blackWins = true;
-        boolean whiteWins = true;
+        boolean isWin = true;
         for (int i = 0; i < SIZE * SIZE; i++) {
-            if (_black[i] && isLegal(Square.sq(i))) {
-                whiteWins = false;
-            } else if (_white[i] && isLegal(Square.sq(i))) {
-                blackWins = false;
+            if (_black[i] && isLegal(Square.sq(i))
+                    && _turn == BLACK) {
+                isWin = false;
+            } else if (_white[i] && isLegal(Square.sq(i))
+                    && _turn == WHITE) {
+                isWin = false;
             }
         }
-        if (blackWins && whiteWins) {
-            throw new IllegalStateException();
-        } else if (blackWins) {
-            _winner = BLACK;
-        } else if (whiteWins) {
-            _winner = WHITE;
+        if (isWin) {
+            _winner = _turn;
         }
     }
 
@@ -412,6 +412,7 @@ class Board {
             _black[m.to().index()] = false;
         }
         _turn = (_turn == BLACK ? WHITE : BLACK);
+        _winner = EMPTY;
         updateWinner();
     }
 
