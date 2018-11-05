@@ -346,7 +346,6 @@ class Board {
      * Move FROM-TO(SPEAR), assuming this is a legal move.
      */
     void makeMove(Square from, Square to, Square spear) {
-        updateWinner();
         if (_winner != EMPTY) {
             return;
         }
@@ -364,6 +363,7 @@ class Board {
         Move m = Move.mv(from, to, spear);
         _movement.push(m.toString());
         _turn = (turn() == BLACK ? WHITE : BLACK);
+        updateWinner();
     }
 
     /**
