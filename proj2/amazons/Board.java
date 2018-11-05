@@ -384,7 +384,7 @@ class Board {
             }
         }
         if (isWin) {
-            _winner = _turn;
+            _winner = (_turn == BLACK ? WHITE : BLACK);
         }
     }
 
