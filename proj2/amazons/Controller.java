@@ -287,6 +287,9 @@ final class Controller {
      * @param move the command stream which is valid
      */
     private void doMove(Matcher move) {
+        if (_winner != EMPTY && _winner != null) {
+            return;
+        }
         Move mv = Move.mv(move.group());
         board().makeMove(mv);
         _winner = board().winner();

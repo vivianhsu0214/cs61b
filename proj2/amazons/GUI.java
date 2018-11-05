@@ -19,8 +19,6 @@ class GUI extends TopLevel implements View, Reporter {
     /** A new window with given TITLE providing a view of an Amazons board. */
     GUI(String title) {
         super(title, true);
-        //System.err.println("Error: --display not implemented.");
-        //System.exit(2);
 
         addMenuButton("Game->Quit", this::quit);
         addMenuButton("Game->New", this::restart);
