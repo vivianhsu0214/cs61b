@@ -294,7 +294,7 @@ final class Controller {
         board().makeMove(mv);
         _winner = board().winner();
         if (_winner != EMPTY && _winner != null) {
-            _reporter.reportNote(_winner.toString() + " wins.");
+            _reporter.reportNote(_winner.toName() + " wins.");
         }
     }
 
