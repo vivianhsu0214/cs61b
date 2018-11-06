@@ -23,7 +23,6 @@ class GUI extends TopLevel implements View, Reporter {
         addMenuButton("Game->Quit", this::quit);
         addMenuButton("Game->New", this::restart);
         addMenuButton("Settings->Seed", this::newSeed);
-        addMenuButton("Game->dump", this::dump);
         addMenuButton("Game->Undo", this::undo);
         addMenuButton("Player->auto black", this::auto);
         addMenuButton("Player->auto white", this::auto);

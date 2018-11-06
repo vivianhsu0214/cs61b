@@ -39,6 +39,7 @@ class GUIPlayer extends Player implements Reporter {
                     || line.equals("undo")
                     || line.matches("manual\\s+(black|white)$")
                     || line.matches("auto\\s+(black|white)$")
+                    || line.matches(("seed\\s+(\\d+)"))
                     || _controller.board().isLegal(Move.mv(line))) {
                 return line;
             } else if (!_controller.board().isLegal(Move.mv(line))) {
