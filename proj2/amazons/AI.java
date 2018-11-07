@@ -25,7 +25,7 @@ class AI extends Player {
      * A number of how many steps later
      * should the depth of the game tree change.
      */
-    private static final int STEP_THRESH = 60;
+    private static final int STEP_THRESH = 10;
 
     /**
      * A new AI with no piece or controller (intended to produce
@@ -130,7 +130,7 @@ class AI extends Player {
      */
     private int maxDepth(Board board) {
         int N = board.numMoves();
-        return (N > STEP_THRESH ? 3 : 2);
+        return (N < STEP_THRESH ? 1 : 2);
     }
 
 
@@ -144,6 +144,23 @@ class AI extends Player {
         } else if (winner == myPiece()) {
             return WINNING_VALUE;
         }
+
+//        int myLegal = 0;
+//        int oppLegal = 0;
+//        Iterator mine = board.legalMoves();
+//        while (mine.hasNext()) {
+//            mine.next();
+//            myLegal++;
+//        }
+//        board.setTurn(myPiece().opponent());
+//        Iterator opp = board.legalMoves();
+//        while (opp.hasNext()) {
+//            opp.next();
+//            oppLegal++;
+//        }
+//        board.setTurn(myPiece());
+//        return myLegal - oppLegal;
+
         int opp = 0;
         int mine = board.SIZE * board.SIZE;
         for (int i = 0; i < board.SIZE * board.SIZE; i++) {
@@ -166,6 +183,7 @@ class AI extends Player {
             }
         }
         return -opp;
+
 //        int count = 0;
 //        Iterator i = board.legalMoves();
 //        while(i.hasNext()) {
