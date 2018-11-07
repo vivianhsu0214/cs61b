@@ -235,9 +235,9 @@ class Board {
         int type = 0;
         if (asEmpty != null) {
             int emptyIndex = asEmpty.index();
-            type = (_black[emptyIndex] ? 1 :
-                    (_white[emptyIndex] ? 2 :
-                            (_spear[emptyIndex] ? 3 : 0)));
+            type = (_black[emptyIndex] ? 1
+                    : (_white[emptyIndex] ? 2
+                            : (_spear[emptyIndex] ? 3 : 0)));
             _black[emptyIndex] = false;
             _white[emptyIndex] = false;
             _spear[emptyIndex] = false;
