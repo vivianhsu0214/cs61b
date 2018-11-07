@@ -173,10 +173,10 @@ final class Controller {
         new Command("seed\\s+(\\d+)$", this::doSeed),
         new Command("dump$", this::doDump),
         new Command("new$", this::doNew),
-        new Command("[a-j](10|[1-9])" +
-                "-[a-j](10|[1-9])\\([a-j](10|[1-9])\\)$", this::doMove),
-        new Command("[a-j](10|[1-9])\\s+" +
-                "[a-j](10|[1-9])\\s+[a-j](10|[1-9])$", this::doMove),
+        new Command("[a-j](10|[1-9])"
+                + "-[a-j](10|[1-9])\\([a-j](10|[1-9])\\)$", this::doMove),
+        new Command("[a-j](10|[1-9])\\s+"
+                + "[a-j](10|[1-9])\\s+[a-j](10|[1-9])$", this::doMove),
         new Command("undo$", this::undo),
         new Command("auto\\s+(black|white)", this::auto),
         new Command("manual\\s+(black|white)", this::manual)

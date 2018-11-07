@@ -109,14 +109,14 @@ class Board {
         _white = new boolean[SIZE * SIZE];
         _spear = new boolean[SIZE * SIZE];
         _movement = new Stack<String>();
-        put(BLACK, Square.sq(60));
-        put(BLACK, Square.sq(93));
-        put(BLACK, Square.sq(96));
-        put(BLACK, Square.sq(69));
-        put(WHITE, Square.sq(30));
-        put(WHITE, Square.sq(39));
-        put(WHITE, Square.sq(3));
-        put(WHITE, Square.sq(6));
+        put(BLACK, Square.sq(Integer.parseInt("60")));
+        put(BLACK, Square.sq(Integer.parseInt("93")));
+        put(BLACK, Square.sq(Integer.parseInt("96")));
+        put(BLACK, Square.sq(Integer.parseInt("69")));
+        put(WHITE, Square.sq(Integer.parseInt("30")));
+        put(WHITE, Square.sq(Integer.parseInt("39")));
+        put(WHITE, Square.sq(Integer.parseInt("3")));
+        put(WHITE, Square.sq(Integer.parseInt("6")));
     }
 
     /**
@@ -157,8 +157,10 @@ class Board {
         return EMPTY;
     }
 
-    /** Return the contents of the square at (COL, ROW), where
-     *  0 <= COL, ROW <= 9. */
+    /**
+     * Return the contents of the square at (COL, ROW), where
+     * 0 <= COL, ROW <= 9.
+     */
     final Piece get(int col, int row) {
         return get(row * 10 + col);
     }
@@ -626,6 +628,11 @@ class Board {
     @Override
     public String toString() {
         return toStringHelper(SIZE - 1);
+    }
+
+    @Override
+    public int hashCode() {
+        return _winner.hashCode() + _turn.hashCode();
     }
 
     /**

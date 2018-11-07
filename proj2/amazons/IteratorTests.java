@@ -65,28 +65,28 @@ public class IteratorTests {
     static final Piece S = Piece.SPEAR;
 
     static final Piece[][] reachableFromTestBoard =
-            {
-                    {E, E, E, E, E, E, E, E, E, E},
-                    {E, E, E, E, E, E, E, E, W, W},
-                    {E, E, E, E, E, E, E, S, E, S},
-                    {E, E, E, S, S, S, S, E, E, S},
-                    {E, E, E, S, E, E, E, E, B, E},
-                    {E, E, E, S, E, W, E, E, B, E},
-                    {E, E, E, S, S, S, B, W, B, E},
-                    {E, E, E, E, E, E, E, E, E, E},
-                    {E, E, E, E, E, E, E, E, E, E},
-                    {E, E, E, E, E, E, E, E, E, E},
-            };
+        {
+            {E, E, E, E, E, E, E, E, E, E},
+            {E, E, E, E, E, E, E, E, W, W},
+            {E, E, E, E, E, E, E, S, E, S},
+            {E, E, E, S, S, S, S, E, E, S},
+            {E, E, E, S, E, E, E, E, B, E},
+            {E, E, E, S, E, W, E, E, B, E},
+            {E, E, E, S, S, S, B, W, B, E},
+            {E, E, E, E, E, E, E, E, E, E},
+            {E, E, E, E, E, E, E, E, E, E},
+            {E, E, E, E, E, E, E, E, E, E},
+        };
 
     static final Set<Square> reachableFromTestSquares =
-            new HashSet<>(Arrays.asList(
-                    Square.sq(5, 4),
-                    Square.sq(4, 4),
-                    Square.sq(4, 5),
-                    Square.sq(6, 5),
-                    Square.sq(7, 5),
-                    Square.sq(6, 4),
-                    Square.sq(7, 3),
-                    Square.sq(8, 2)));
+        new HashSet<>(Arrays.asList(
+            Square.sq(5, 4),
+            Square.sq(4, 4),
+            Square.sq(4, 5),
+            Square.sq(6, 5),
+            Square.sq(7, 5),
+            Square.sq(6, 4),
+            Square.sq(7, 3),
+            Square.sq(8, 2)));
 
 }

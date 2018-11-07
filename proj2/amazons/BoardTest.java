@@ -70,7 +70,8 @@ public class BoardTest {
         _board.put(Piece.SPEAR, Square.sq(1));
         _board.put(Piece.SPEAR, Square.sq(10));
         _board.put(Piece.SPEAR, Square.sq(11));
-        assertTrue(_board.isUnblockedMove(Square.sq(0), Square.sq(11), Square.sq(11)));
+        assertTrue(_board.isUnblockedMove(Square.sq(0),
+                Square.sq(11), Square.sq(11)));
     }
 
     @Test

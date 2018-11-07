@@ -75,8 +75,8 @@ final class Square {
 
     /** Return the Square that is STEPS>0 squares away from me in direction
      *  DIR, or null if there is no such square.
-     *  DIR = 0 for north, 1 for northeast, 2 for east, etc., up to 7 for 
-     *  northwest. If DIR has another value, return null. Thus, unless the 
+     *  DIR = 0 for north, 1 for northeast, 2 for east, etc., up to 7 for
+     *  northwest. If DIR has another value, return null. Thus, unless the
      *  result is null the resulting square is a queen move away from me. */
     Square queenMove(int dir, int steps) {
         if (dir > 7 || dir < 0) {
@@ -128,9 +128,14 @@ final class Square {
     }
 
     @Override
-    public  boolean equals(Object to) {
+    public boolean equals(Object to) {
         return to instanceof Square
                 && index() == ((Square) to).index();
+    }
+
+    @Override
+    public int hashCode() {
+        return _index;
     }
 
     /**

@@ -2,7 +2,9 @@ package amazons;
 
 import ucb.gui2.Pad;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.BasicStroke;
 import java.io.IOException;
 
 import java.util.LinkedList;
@@ -159,6 +161,7 @@ class BoardWidget extends Pad {
 
     /**
      * Returns the board.
+     *
      * @return board
      */
     Board board() {

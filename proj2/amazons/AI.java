@@ -22,6 +22,12 @@ class AI extends Player {
     private static final int INFTY = Integer.MAX_VALUE;
 
     /**
+     * A number of how many steps later
+     * should the depth of the game tree change.
+     */
+    private static final int STEP_THRESH = 60;
+
+    /**
      * A new AI with no piece or controller (intended to produce
      * a template).
      */
@@ -124,7 +130,7 @@ class AI extends Player {
      */
     private int maxDepth(Board board) {
         int N = board.numMoves();
-        return (N > 60 ? 3 : 2);
+        return (N > STEP_THRESH ? 3 : 2);
     }
 
 
@@ -159,7 +165,14 @@ class AI extends Player {
                 opp = Integer.max(opp, valid);
             }
         }
-        return mine - opp;
+        return - opp;
+//        int count = 0;
+//        Iterator i = board.legalMoves();
+//        while(i.hasNext()) {
+//            i.next();
+//            count += 1;
+//        }
+//        return count;
     }
 
     /**
