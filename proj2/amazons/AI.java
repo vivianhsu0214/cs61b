@@ -89,6 +89,7 @@ class AI extends Player {
         if (depth == 0 || board.winner() != EMPTY) {
             return staticScore(board);
         }
+        System.out.println(board);
         Move decision = null;
         int v;
         if (sense == 1) {
