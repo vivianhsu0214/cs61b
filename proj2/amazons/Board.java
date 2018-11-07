@@ -674,6 +674,7 @@ class Board {
                     || (_black[i] && _spear[i])
                     || (_spear[i] && _white[i])) {
                 System.out.println(i);
+                System.out.println(toString());
                 System.out.println("black: " + _black[i]);
                 System.out.println("white: " + _white[i]);
                 System.out.println("spear: " + _spear[i]);
