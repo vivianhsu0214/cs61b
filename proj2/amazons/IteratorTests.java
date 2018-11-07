@@ -33,18 +33,18 @@ public class IteratorTests {
     @Test
     public void testReachableFrom() {
         Board b = Board.emptyBoard();
-        buildBoard(b, reachableFromTestBoard);
+        buildBoard(b, REACHABLEFROMTABLE);
         int numSquares = 0;
         Set<Square> squares = new HashSet<>();
         Iterator<Square> reachableFrom = b.reachableFrom(Square.sq(5, 5), null);
         while (reachableFrom.hasNext()) {
             Square s = reachableFrom.next();
-            assertTrue(reachableFromTestSquares.contains(s));
+            assertTrue(REACHABLEFROMSQUARES.contains(s));
             numSquares += 1;
             squares.add(s);
         }
-        assertEquals(reachableFromTestSquares.size(), numSquares);
-        assertEquals(reachableFromTestSquares.size(), squares.size());
+        assertEquals(REACHABLEFROMSQUARES.size(), numSquares);
+        assertEquals(REACHABLEFROMSQUARES.size(), squares.size());
     }
 
     private void buildBoard(Board b, Piece[][] target) {
@@ -64,7 +64,7 @@ public class IteratorTests {
 
     static final Piece S = Piece.SPEAR;
 
-    static final Piece[][] reachableFromTestBoard =
+    static final Piece[][] REACHABLEFROMTABLE =
         {
             {E, E, E, E, E, E, E, E, E, E},
             {E, E, E, E, E, E, E, E, W, W},
@@ -78,7 +78,7 @@ public class IteratorTests {
             {E, E, E, E, E, E, E, E, E, E},
         };
 
-    static final Set<Square> reachableFromTestSquares =
+    static final Set<Square> REACHABLEFROMSQUARES =
         new HashSet<>(Arrays.asList(
             Square.sq(5, 4),
             Square.sq(4, 4),

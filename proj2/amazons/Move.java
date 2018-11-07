@@ -80,6 +80,11 @@ final class Move {
         return obj instanceof Move && _str.equals(((Move) obj).toString());
     }
 
+    @Override
+    public int hashCode(){
+        return _str.hashCode();
+    }
+
     /** Construct the Move FROM-TO(SPEAR). */
     private Move(Square from, Square to, Square spear) {
         _from = from; _to = to; _spear = spear;
