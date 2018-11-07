@@ -401,7 +401,7 @@ class Board {
      * Undo one move.  Has no effect on the initial board.
      */
     void undo() {
-        if (_movement.size() < 2) {
+        if (_movement.size() < 1) {
             return;
         }
         Move m = Move.mv(_movement.pop());
@@ -673,11 +673,6 @@ class Board {
             if ((_black[i] && _white[i])
                     || (_black[i] && _spear[i])
                     || (_spear[i] && _white[i])) {
-                System.out.println(i);
-                System.out.println(toString());
-                System.out.println("black: " + _black[i]);
-                System.out.println("white: " + _white[i]);
-                System.out.println("spear: " + _spear[i]);
                 return false;
             }
         }
