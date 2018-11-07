@@ -179,6 +179,9 @@ class Board {
      * @return contents as piece
      */
     final Piece get(int index) {
+        if (!boardCheck()) {
+            System.out.println("this is!");
+        }
         assert boardCheck();
         if (_black[index]) {
             return BLACK;
