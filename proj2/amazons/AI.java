@@ -25,7 +25,13 @@ class AI extends Player {
      * A number of how many steps later
      * should the depth of the game tree change.
      */
-    private static final int STEP_THRESH = 10;
+    private static final int STEP_THRESH = 30;
+
+    /**
+     * A score table.
+     */
+    private static final int[] scoreTable = {0, 0, 1, 3, 7,
+            10, 15, 30, 100};
 
     /**
      * A new AI with no piece or controller (intended to produce
@@ -90,8 +96,10 @@ class AI extends Player {
             Iterator<Move> it = board.legalMoves(_myPiece);
             while (it.hasNext()) {
                 Move successor = it.next();
+                board.makeMove(successor);
                 int thisValue = findMove(board, depth,
                         false, -sense, alpha, beta);
+                board.undo();
                 if (thisValue >= v) {
                     v = thisValue;
                     decision = successor;
@@ -106,8 +114,10 @@ class AI extends Player {
             Iterator<Move> it = board.legalMoves(opponent());
             while (it.hasNext()) {
                 Move successor = it.next();
+                board.makeMove(successor);
                 int thisValue = findMove(board, depth - 1,
                         false, -sense, alpha, beta);
+                board.undo();
                 if (thisValue <= v) {
                     v = thisValue;
                     decision = successor;
@@ -129,8 +139,9 @@ class AI extends Player {
      * based on characteristics of BOARD.
      */
     private int maxDepth(Board board) {
-        int N = board.numMoves();
-        return (N < STEP_THRESH ? 1 : 2);
+        return 1;
+//        int N = board.numMoves();
+//        return (N < STEP_THRESH ? 1 : 2);
     }
 
 
@@ -144,6 +155,35 @@ class AI extends Player {
         } else if (winner == myPiece()) {
             return WINNING_VALUE;
         }
+
+        int myScore = 0;
+        int oppScore = 0;
+        for (int i = 0; i < board.SIZE * board.SIZE; i++) {
+            if (board.get(i) == myPiece()) {
+                int blocks = 0;
+                for (int j = 0; j < Square.DIR.length; j++) {
+                    int delta = Square.DIR[j][0]
+                            + Square.DIR[j][1] * board.SIZE;
+                    if (!Square.exists(i + delta)
+                            || board.get(i + delta) != EMPTY) {
+                        blocks++;
+                    }
+                }
+                myScore += scoreTable[blocks];
+            } else if (board.get(i) == myPiece().opponent()) {
+                int blocks = 0;
+                for (int j = 0; j < Square.DIR.length; j++) {
+                    int delta = Square.DIR[j][0]
+                            + Square.DIR[j][1] * board.SIZE;
+                    if (!Square.exists(i + delta)
+                            || board.get(i + delta) != EMPTY) {
+                        blocks++;
+                    }
+                }
+                oppScore += scoreTable[blocks];
+            }
+        }
+        return oppScore - myScore;
 
 //        int myLegal = 0;
 //        int oppLegal = 0;
@@ -161,28 +201,28 @@ class AI extends Player {
 //        board.setTurn(myPiece());
 //        return myLegal - oppLegal;
 
-        int opp = 0;
-        int mine = board.SIZE * board.SIZE;
-        for (int i = 0; i < board.SIZE * board.SIZE; i++) {
-            if (board.get(i) == myPiece()) {
-                int valid = 0;
-                Iterator it = board.reachableFrom(Square.sq(i), null);
-                while (it.hasNext()) {
-                    it.next();
-                    valid += 1;
-                }
-                mine = Integer.min(mine, valid);
-            } else if (board.get(i) == myPiece()) {
-                int valid = 0;
-                Iterator it = board.reachableFrom(Square.sq(i), null);
-                while (it.hasNext()) {
-                    it.next();
-                    valid += 1;
-                }
-                opp = Integer.max(opp, valid);
-            }
-        }
-        return -opp;
+//        int opp = 0;
+//        int mine = board.SIZE * board.SIZE;
+//        for (int i = 0; i < board.SIZE * board.SIZE; i++) {
+//            if (board.get(i) == myPiece()) {
+//                int valid = 0;
+//                Iterator it = board.reachableFrom(Square.sq(i), null);
+//                while (it.hasNext()) {
+//                    it.next();
+//                    valid += 1;
+//                }
+//                mine = Integer.min(mine, valid);
+//            } else if (board.get(i) == myPiece()) {
+//                int valid = 0;
+//                Iterator it = board.reachableFrom(Square.sq(i), null);
+//                while (it.hasNext()) {
+//                    it.next();
+//                    valid += 1;
+//                }
+//                opp = Integer.max(opp, valid);
+//            }
+//        }
+//        return -opp;
 
 //        int count = 0;
 //        Iterator i = board.legalMoves();
