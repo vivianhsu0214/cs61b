@@ -34,6 +34,8 @@ class GUIPlayer extends Player implements Reporter {
             String line = _gui.readCommand();
             if (line == null) {
                 return "quit";
+            } else if (line.trim().charAt(0) == '#') {
+                continue;
             } else if (line.equals("new") || line.equals("quit")
                     || line.matches("seed\\s+\\(\\d+\\)$")
                     || line.equals("undo")
@@ -43,6 +45,8 @@ class GUIPlayer extends Player implements Reporter {
                     || _controller.board().isLegal(Move.mv(line))) {
                 return line;
             } else if (!_controller.board().isLegal(Move.mv(line))) {
+                _controller.reportError("Invalid move. "
+                        + "Please try again.");
                 continue;
             }
             return null;

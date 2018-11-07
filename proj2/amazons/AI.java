@@ -165,7 +165,7 @@ class AI extends Player {
                 opp = Integer.max(opp, valid);
             }
         }
-        return - opp;
+        return -opp;
 //        int count = 0;
 //        Iterator i = board.legalMoves();
 //        while(i.hasNext()) {

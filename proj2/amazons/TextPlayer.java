@@ -30,6 +30,8 @@ class TextPlayer extends Player {
             }
             if (line == null) {
                 return "quit";
+            } else if (line.trim().charAt(0) == '#') {
+                continue;
             } else if (line.equals("new") || line.equals("dump")
                     || line.equals("quit")
                     || line.matches("seed\\s+\\(\\d+\\)$")
