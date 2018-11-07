@@ -678,6 +678,13 @@ class Board {
         }
         return true;
     }
+    /**
+     * Set current turn.
+     * @param turn which turn to modify
+     */
+    public void setTurn(Piece turn) {
+        _turn = turn;
+    }
 
     /**
      * Getter for white.
