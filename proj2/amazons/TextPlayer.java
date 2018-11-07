@@ -30,7 +30,8 @@ class TextPlayer extends Player {
             }
             if (line == null) {
                 return "quit";
-            } else if (line.trim().charAt(0) == '#') {
+            } else if (line.length() > 0
+                    && line.trim().charAt(0) == '#') {
                 continue;
             } else if (line.equals("new") || line.equals("dump")
                     || line.equals("quit")
