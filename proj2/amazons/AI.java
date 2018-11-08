@@ -28,10 +28,16 @@ class AI extends Player {
     private static final int STEP_THRESH = 40;
 
     /**
+     * Probability for random pruning.
+     */
+    private static final double PROB = 0.00005;
+
+
+    /**
      * A score table.
      */
-    private static final int[] scoreTable = {0, 0, 1, 3, 7,
-            10, 15, 30, 1000};
+    private static final int[] SCORETABLE = {0, 0, 1, 3, 7,
+        10, 15, 30, 1000};
 
     /**
      * A new AI with no piece or controller (intended to produce
@@ -100,15 +106,11 @@ class AI extends Player {
                 int thisValue = findMove(board, depth,
                         false, -sense, alpha, beta);
                 board.undo();
-//                if (successor.spear() == Square.sq("i2")
-//                        || successor.equals(Move.mv(Square.sq("d10"), Square.sq("d2"), Square.sq("d10")))) {
-//                    System.out.println(successor + ":" + String.valueOf(thisValue));
-//                }
                 if (thisValue >= v) {
                     v = thisValue;
                     decision = successor;
                 }
-                if (v >= beta) {
+                if (v >= beta || Math.random() < PROB) {
                     break;
                 }
                 alpha = Integer.max(alpha, v);
@@ -126,7 +128,7 @@ class AI extends Player {
                     v = thisValue;
                     decision = successor;
                 }
-                if (v <= alpha) {
+                if (v <= alpha || Math.random() < PROB) {
                     break;
                 }
                 beta = Integer.min(beta, v);
@@ -144,8 +146,6 @@ class AI extends Player {
      */
     private int maxDepth(Board board) {
         return 1;
-//        int N = board.numMoves();
-//        return (N < STEP_THRESH ? 1 : 2);
     }
 
 
@@ -173,7 +173,7 @@ class AI extends Player {
                         blocks++;
                     }
                 }
-                myScore += scoreTable[blocks];
+                myScore += SCORETABLE[blocks];
             } else if (board.get(i) == myPiece().opponent()) {
                 int blocks = 0;
                 for (int j = 0; j < Square.DIR.length; j++) {
@@ -184,60 +184,10 @@ class AI extends Player {
                         blocks++;
                     }
                 }
-                oppScore += scoreTable[blocks];
+                oppScore += SCORETABLE[blocks];
             }
         }
-//        if (oppScore > 900) {
-//            System.out.println("damn!");
-//        }
         return oppScore - myScore;
-
-//        int myLegal = 0;
-//        int oppLegal = 0;
-//        Iterator mine = board.legalMoves();
-//        while (mine.hasNext()) {
-//            mine.next();
-//            myLegal++;
-//        }
-//        board.setTurn(myPiece().opponent());
-//        Iterator opp = board.legalMoves();
-//        while (opp.hasNext()) {
-//            opp.next();
-//            oppLegal++;
-//        }
-//        board.setTurn(myPiece());
-//        return myLegal - oppLegal;
-
-//        int opp = 0;
-//        int mine = board.SIZE * board.SIZE;
-//        for (int i = 0; i < board.SIZE * board.SIZE; i++) {
-//            if (board.get(i) == myPiece()) {
-//                int valid = 0;
-//                Iterator it = board.reachableFrom(Square.sq(i), null);
-//                while (it.hasNext()) {
-//                    it.next();
-//                    valid += 1;
-//                }
-//                mine = Integer.min(mine, valid);
-//            } else if (board.get(i) == myPiece()) {
-//                int valid = 0;
-//                Iterator it = board.reachableFrom(Square.sq(i), null);
-//                while (it.hasNext()) {
-//                    it.next();
-//                    valid += 1;
-//                }
-//                opp = Integer.max(opp, valid);
-//            }
-//        }
-//        return -opp;
-
-//        int count = 0;
-//        Iterator i = board.legalMoves();
-//        while(i.hasNext()) {
-//            i.next();
-//            count += 1;
-//        }
-//        return count;
     }
 
     /**
