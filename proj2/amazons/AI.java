@@ -36,8 +36,8 @@ class AI extends Player {
     /**
      * A score table.
      */
-    private static final int[] scoreTable = {0, 0, 1, 3, 7,
-            10, 15, 30, 1000};
+    private static final int[] SCORETABLE = {0, 0, 1, 3, 7,
+        10, 15, 30, 1000};
 
     /**
      * A new AI with no piece or controller (intended to produce
@@ -173,7 +173,7 @@ class AI extends Player {
                         blocks++;
                     }
                 }
-                myScore += scoreTable[blocks];
+                myScore += SCORETABLE[blocks];
             } else if (board.get(i) == myPiece().opponent()) {
                 int blocks = 0;
                 for (int j = 0; j < Square.DIR.length; j++) {
@@ -184,7 +184,7 @@ class AI extends Player {
                         blocks++;
                     }
                 }
-                oppScore += scoreTable[blocks];
+                oppScore += SCORETABLE[blocks];
             }
         }
         return oppScore - myScore;
