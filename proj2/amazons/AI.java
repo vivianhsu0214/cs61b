@@ -25,13 +25,13 @@ class AI extends Player {
      * A number of how many steps later
      * should the depth of the game tree change.
      */
-    private static final int STEP_THRESH = 30;
+    private static final int STEP_THRESH = 40;
 
     /**
      * A score table.
      */
     private static final int[] scoreTable = {0, 0, 1, 3, 7,
-            10, 15, 30, 100};
+            10, 15, 30, 1000};
 
     /**
      * A new AI with no piece or controller (intended to produce
@@ -100,6 +100,10 @@ class AI extends Player {
                 int thisValue = findMove(board, depth,
                         false, -sense, alpha, beta);
                 board.undo();
+//                if (successor.spear() == Square.sq("i2")
+//                        || successor.equals(Move.mv(Square.sq("d10"), Square.sq("d2"), Square.sq("d10")))) {
+//                    System.out.println(successor + ":" + String.valueOf(thisValue));
+//                }
                 if (thisValue >= v) {
                     v = thisValue;
                     decision = successor;
@@ -150,7 +154,7 @@ class AI extends Player {
      */
     private int staticScore(Board board) {
         Piece winner = board.winner();
-        if (winner != myPiece()) {
+        if (winner == myPiece().opponent()) {
             return -WINNING_VALUE;
         } else if (winner == myPiece()) {
             return WINNING_VALUE;
@@ -162,10 +166,10 @@ class AI extends Player {
             if (board.get(i) == myPiece()) {
                 int blocks = 0;
                 for (int j = 0; j < Square.DIR.length; j++) {
-                    int delta = Square.DIR[j][0]
-                            + Square.DIR[j][1] * board.SIZE;
-                    if (!Square.exists(i + delta)
-                            || board.get(i + delta) != EMPTY) {
+                    if (!Square.exists(i % board.SIZE + Square.DIR[j][0],
+                            i / board.SIZE + Square.DIR[j][1])
+                            || board.get(i % board.SIZE + Square.DIR[j][0],
+                            i / board.SIZE + Square.DIR[j][1]) != EMPTY) {
                         blocks++;
                     }
                 }
@@ -173,16 +177,19 @@ class AI extends Player {
             } else if (board.get(i) == myPiece().opponent()) {
                 int blocks = 0;
                 for (int j = 0; j < Square.DIR.length; j++) {
-                    int delta = Square.DIR[j][0]
-                            + Square.DIR[j][1] * board.SIZE;
-                    if (!Square.exists(i + delta)
-                            || board.get(i + delta) != EMPTY) {
+                    if (!Square.exists(i % board.SIZE + Square.DIR[j][0],
+                            i / board.SIZE + Square.DIR[j][1])
+                            || board.get(i % board.SIZE + Square.DIR[j][0],
+                            i / board.SIZE + Square.DIR[j][1]) != EMPTY) {
                         blocks++;
                     }
                 }
                 oppScore += scoreTable[blocks];
             }
         }
+//        if (oppScore > 900) {
+//            System.out.println("damn!");
+//        }
         return oppScore - myScore;
 
 //        int myLegal = 0;
