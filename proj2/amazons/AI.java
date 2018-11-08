@@ -146,8 +146,6 @@ class AI extends Player {
      */
     private int maxDepth(Board board) {
         return 1;
-//        int N = board.numMoves();
-//        return (N < STEP_THRESH ? 1 : 2);
     }
 
 
@@ -189,57 +187,7 @@ class AI extends Player {
                 oppScore += scoreTable[blocks];
             }
         }
-//        if (oppScore > 900) {
-//            System.out.println("damn!");
-//        }
         return oppScore - myScore;
-
-//        int myLegal = 0;
-//        int oppLegal = 0;
-//        Iterator mine = board.legalMoves();
-//        while (mine.hasNext()) {
-//            mine.next();
-//            myLegal++;
-//        }
-//        board.setTurn(myPiece().opponent());
-//        Iterator opp = board.legalMoves();
-//        while (opp.hasNext()) {
-//            opp.next();
-//            oppLegal++;
-//        }
-//        board.setTurn(myPiece());
-//        return myLegal - oppLegal;
-
-//        int opp = 0;
-//        int mine = board.SIZE * board.SIZE;
-//        for (int i = 0; i < board.SIZE * board.SIZE; i++) {
-//            if (board.get(i) == myPiece()) {
-//                int valid = 0;
-//                Iterator it = board.reachableFrom(Square.sq(i), null);
-//                while (it.hasNext()) {
-//                    it.next();
-//                    valid += 1;
-//                }
-//                mine = Integer.min(mine, valid);
-//            } else if (board.get(i) == myPiece()) {
-//                int valid = 0;
-//                Iterator it = board.reachableFrom(Square.sq(i), null);
-//                while (it.hasNext()) {
-//                    it.next();
-//                    valid += 1;
-//                }
-//                opp = Integer.max(opp, valid);
-//            }
-//        }
-//        return -opp;
-
-//        int count = 0;
-//        Iterator i = board.legalMoves();
-//        while(i.hasNext()) {
-//            i.next();
-//            count += 1;
-//        }
-//        return count;
     }
 
     /**
