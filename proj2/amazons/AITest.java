@@ -8,8 +8,7 @@ import static amazons.Square.sq;
 import static amazons.Piece.*;
 
 public class AITest {
-    @Test
-    public void notStubborn() {
+    public void caseOne() {
         GUI gui = new GUI("AmazonTest");
         Controller control = new Controller(gui, null,
                 new TextReporter(), new GUIPlayer(gui), new AI());
@@ -23,26 +22,6 @@ public class AITest {
         }
     }
 
-
-
-    @Test
-    public void basicSanity() {
-
-    }
-
-    @Test
-    public void evaluateWell() {
-
-    }
-
-    @Test
-    public void testAlphaBetaPrune() {
-
-    }
-
-    public static void main(String[] ignored) {
-        textui.runClasses(AITest.class);
-    }
 
     /**
      * A board where movements are stricted.
