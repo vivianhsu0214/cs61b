@@ -28,6 +28,12 @@ class AI extends Player {
     private static final int STEP_THRESH = 40;
 
     /**
+     * Probability for random pruning.
+     */
+    private static final double PROB = 0.00005;
+
+
+    /**
      * A score table.
      */
     private static final int[] scoreTable = {0, 0, 1, 3, 7,
@@ -100,15 +106,11 @@ class AI extends Player {
                 int thisValue = findMove(board, depth,
                         false, -sense, alpha, beta);
                 board.undo();
-//                if (successor.spear() == Square.sq("i2")
-//                        || successor.equals(Move.mv(Square.sq("d10"), Square.sq("d2"), Square.sq("d10")))) {
-//                    System.out.println(successor + ":" + String.valueOf(thisValue));
-//                }
                 if (thisValue >= v) {
                     v = thisValue;
                     decision = successor;
                 }
-                if (v >= beta) {
+                if (v >= beta || Math.random() < PROB) {
                     break;
                 }
                 alpha = Integer.max(alpha, v);
@@ -126,7 +128,7 @@ class AI extends Player {
                     v = thisValue;
                     decision = successor;
                 }
-                if (v <= alpha) {
+                if (v <= alpha || Math.random() < PROB) {
                     break;
                 }
                 beta = Integer.min(beta, v);
