@@ -145,7 +145,7 @@ class AI extends Player {
      * based on characteristics of BOARD.
      */
     private int maxDepth(Board board) {
-        return 1 + (board.numMoves() >> 6);
+        return 1;
     }
 
 

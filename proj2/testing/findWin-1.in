@@ -1,4 +1,5 @@
 java -ea amazons.Main
+*time 3 5
 manual black
 d1-d7(i7)
 g10-g4(d1)
