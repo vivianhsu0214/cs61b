@@ -1,5 +1,4 @@
 java -ea amazons.Main
-*time 3 3
 manual black
 d1-d7(i7)
 g10-g4(d1)
@@ -79,5 +78,5 @@ j4-h2(i1)
 dump
 auto black
 auto white
-*move/win+
+*move/win
 quit
