@@ -37,7 +37,7 @@ class AI extends Player {
      * A score table.
      */
     private static final int[] SCORETABLE = {0, 0, 1, 3, 7,
-        10, 15, 30, 1000};
+        010, 15, 30, 1000};
 
     /**
      * A new AI with no piece or controller (intended to produce
@@ -145,7 +145,7 @@ class AI extends Player {
      * based on characteristics of BOARD.
      */
     private int maxDepth(Board board) {
-        return 1;
+        return 1 + (board.numMoves() >> 6);
     }
 
 
