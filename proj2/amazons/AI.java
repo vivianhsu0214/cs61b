@@ -103,7 +103,7 @@ class AI extends Player {
             while (it.hasNext()) {
                 Move successor = it.next();
                 board.makeMove(successor);
-                int thisValue = findMove(board, depth - 1,
+                int thisValue = findMove(board, depth,
                         false, -sense, alpha, beta);
                 board.undo();
                 if (thisValue >= v) {
