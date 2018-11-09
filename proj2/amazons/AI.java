@@ -30,7 +30,7 @@ class AI extends Player {
     /**
      * Probability for random pruning.
      */
-    private static final double PROB = 0.00005;
+    private static final double PROB = 0.0005;
 
 
     /**
