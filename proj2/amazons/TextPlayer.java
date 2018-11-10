@@ -43,7 +43,6 @@ class TextPlayer extends Player {
                     || _controller.board().isLegal(Move.mv(line))) {
                 return line;
             } else if (!_controller.board().isLegal(Move.mv(line))) {
-                System.out.println(line);
                 _controller.reportError("Invalid move. "
                                         + "Please try again.");
                 continue;
