@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.Iterator;
 
 /** A binary search tree with arbitrary Objects as keys.
- *  @author
+ *  @author Zhibo Fan
  */
 public class BST {
     /** Root of tree. */
@@ -18,7 +18,17 @@ public class BST {
      */
     private BSTNode linkedListToTree(Iterator iter, int n) {
         // YOUR CODE HERE
-        return null;
+        BSTNode newRoot = new BSTNode();
+        if (n == 0) {
+            return null;
+        } else if (n == 1) {
+            newRoot.item = iter.next();
+        } else {
+            newRoot.left = linkedListToTree(iter, n / 2);
+            newRoot.item = iter.next();
+            newRoot.right = linkedListToTree(iter, (n - 1) / 2);
+        }
+        return newRoot;
     }
 
     /**

@@ -11,11 +11,11 @@ public class MySortingAlgorithmsTest {
         new MySortingAlgorithms.InsertionSort(),
         new MySortingAlgorithms.SelectionSort(),
         new MySortingAlgorithms.MergeSort(),
-        // new MySortingAlgorithms.DistributionSort(),
-        // new MySortingAlgorithms.HeapSort(),
-        //new MySortingAlgorithms.QuickSort(),
-        new MySortingAlgorithms.LSDSort()};
-        //new MySortingAlgorithms.MSDSort()};
+        new MySortingAlgorithms.DistributionSort(),
+        new MySortingAlgorithms.HeapSort(),
+        new MySortingAlgorithms.QuickSort(),
+        new MySortingAlgorithms.LSDSort(),
+        new MySortingAlgorithms.MSDSort()};
 
     private SortingAlgorithm javaSort = new MySortingAlgorithms.JavaSort();
 

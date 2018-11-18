@@ -69,13 +69,15 @@ public class Graph {
     public int[] dijkstras(int startVertex) {
         boolean[] marked = new boolean[vertexCount];
         int[] rtn = new int[vertexCount];
+        for (int i = 0; i < vertexCount; i++) {
+            rtn[i] = Integer.MAX_VALUE;
+        }
         Heap hp = new Heap();
         hp.set(startVertex, 0);
         while (hp.size() != 0) {
             Heap.Node current = hp.pop();
             int curVal = current.value;
             int curPri = current.weight;
-            rtn[curVal] = curPri;
 
             boolean flag = false;
             for (int i = 0; i < marked.length; i++) {
@@ -91,6 +93,7 @@ public class Graph {
 
             if (!marked[curVal]) {
                 marked[curVal] = true;
+                rtn[curVal] = curPri;
                 for (int successor : neighbors(curVal)) {
                     hp.set(successor, getEdge(curVal, successor).info() + curPri);
                 }
@@ -233,8 +236,7 @@ public class Graph {
         g1.addEdge(2, 0, 1);
         g1.addEdge(2, 3, 1);
         g1.addEdge(4, 3, 1);
-        int[] result = g1.dijkstras(0);
-        System.out.println(result);
+        int[] result = g1.dijkstras(2);
 
 
         Graph g2 = new Graph(5);
@@ -244,5 +246,7 @@ public class Graph {
         g2.addEdge(1, 2, 1);
         g2.addEdge(2, 3, 1);
         g2.addEdge(4, 3, 1);
+        result = g2.dijkstras(0);
+        System.out.println("finished");
     }
 }

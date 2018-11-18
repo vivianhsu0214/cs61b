@@ -33,7 +33,31 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> buildRedBlackTree(BTree.Node<T> r) {
         // YOUR CODE HERE
-        return null;
+        if (r == null) {
+            return null;
+        }
+        if (r.getItemCount() == 3) {
+            RBTreeNode<T> newRoot = new RBTreeNode<>(true, r.getItemAt(1));
+            newRoot = insert(newRoot, r.getItemAt(0));
+            newRoot = insert(newRoot, r.getItemAt(2));
+            newRoot.left.left = buildRedBlackTree(r.getChildAt(0));
+            newRoot.left.right = buildRedBlackTree(r.getChildAt(1));
+            newRoot.right.left = buildRedBlackTree(r.getChildAt(2));
+            newRoot.right.right = buildRedBlackTree(r.getChildAt(3));
+            return newRoot;
+        } else if (r.getItemCount() == 2) {
+            RBTreeNode<T> newRoot = new RBTreeNode<>(true, r.getItemAt(1));
+            newRoot = insert(newRoot, r.getItemAt(0));
+            newRoot.left.left = buildRedBlackTree(r.getChildAt(0));
+            newRoot.left.right = buildRedBlackTree(r.getChildAt(1));
+            newRoot.right = buildRedBlackTree(r.getChildAt(2));
+            return newRoot;
+        } else {
+            RBTreeNode<T> newRoot = new RBTreeNode<>(true, r.getItemAt(0));
+            newRoot.left = buildRedBlackTree(r.getChildAt(0));
+            newRoot.right = buildRedBlackTree(r.getChildAt(1));
+            return newRoot;
+        }
     }
 
     /**
@@ -46,7 +70,14 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
         // YOUR CODE HERE
-        return null;
+        if (node == null || node.left == null) {
+            return node;
+        }
+        RBTreeNode temp = node.left.right;
+        node.left.right = node;
+        RBTreeNode rtn = node.left;
+        node.left = temp;
+        return rtn;
     }
 
     /**
@@ -59,7 +90,14 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
         // YOUR CODE HERE
-        return null;
+        if (node == null || node.right == null) {
+            return node;
+        }
+        RBTreeNode temp = node.right.left;
+        RBTreeNode rtn = node.right;
+        rtn.left = node;
+        node.right = temp;
+        return rtn;
     }
 
     /**
@@ -108,8 +146,7 @@ public class RedBlackTree<T extends Comparable<T>> {
 
         // Insert (return) new red leaf node.
         if (node == null) {
-            // YOUR CODE HERE
-
+            return new RBTreeNode<T>(false, item);
         }
 
         // Handle normal binary search tree insertion.
@@ -117,29 +154,26 @@ public class RedBlackTree<T extends Comparable<T>> {
         if (comp == 0) {
             return node; // do nothing.
         } else if (comp < 0) {
-            // YOUR CODE HERE
-
+            node.left = insert(node.left, item);
         } else {
-            // YOUR CODE HERE
-
+            node.right = insert(node.right, item);
         }
 
         // handle case C and "Right-leaning" situation.
         if (isRed(node.right) && !isRed(node.left)) {
-            // YOUR CODE HERE
-
+            node = rotateLeft(node);
         }
 
         // handle case B
         if (isRed(node.left) && isRed(node.left.left)) {
             // YOUR CODE HERE
-
+            node = rotateRight(node);
         }
 
         // handle case A
         if (isRed(node.left) && isRed(node.right)) {
             // YOUR CODE HERE
-
+            flipColors(node);
         }
         return node;
     }
@@ -184,5 +218,4 @@ public class RedBlackTree<T extends Comparable<T>> {
             this.right = right;
         }
     }
-
 }
