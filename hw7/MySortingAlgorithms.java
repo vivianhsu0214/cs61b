@@ -140,6 +140,7 @@ public class MySortingAlgorithms {
      * same size as the value of the max digit in the array.
      */
     public static class DistributionSort implements SortingAlgorithm {
+
         @Override
         public void sort(int[] array, int k) {
             int N = Integer.min(k, array.length);
@@ -147,24 +148,36 @@ public class MySortingAlgorithms {
             for (int i = 0; i < N; i++) {
                 max = Integer.max(max, array[i]);
             }
-            int numBuckets = max + 1;
-            int[] buckets = new int[numBuckets];
-            for (int i = 0; i < N; i++) {
-                buckets[array[i]] += 1;
-            }
-            int[] accumalator = new int[numBuckets];
-            for (int i = 1; i < numBuckets; i++) {
-                accumalator[i] = accumalator[i - 1] + buckets[i - 1];
-            }
-            int[] sorted = new int[N];
-            for (int i = 0; i < N; i++) {
-                int posn = accumalator[array[i]];
-                sorted[posn] = array[i];
-                accumalator[array[i]] += 1;
-            }
-            System.arraycopy(sorted, 0, array, 0, N);
+            int numBuckets = N;
+            int K = max / numBuckets + 1;
+            ArrayList[] buckets = new ArrayList[numBuckets];
+            distribute(array, buckets, N, K);
+            gather(array, buckets, N);
+            new InsertionSort().sort(array, k);
         }
-        // may want to add additional methods
+
+        private void distribute(int[] array, ArrayList[] buckets, int N, int k) {
+            for (int i = 0; i < N; i++) {
+                int elem = array[i];
+                int posn = elem / k;
+                if (buckets[posn] == null) {
+                    buckets[posn] = new ArrayList<Integer>();
+                }
+                buckets[posn].add(elem);
+            }
+        }
+
+        private void gather(int[] array, ArrayList[] buckets, int N) {
+            int pointer = 0;
+            for (int i = 0; i < buckets.length; i++) {
+                if (buckets[i] == null) {
+                    continue;
+                }
+                for (int j = 0; j < buckets[i].size(); j++) {
+                    array[pointer++] = (int) buckets[i].get(j);
+                }
+            }
+        }
 
         @Override
         public String toString() {
@@ -248,17 +261,21 @@ public class MySortingAlgorithms {
     public static class QuickSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
+            int N = Integer.min(k, array.length);
             ArrayList<Integer> origin = new ArrayList<>();
-            for (int i = 0; i < array.length; i++) {
+            for (int i = 0; i < N; i++) {
                 origin.add(array[i]);
             }
             quickSortHelper(origin);
+            for (int i = 0; i < N; i++) {
+                array[i] = origin.get(i);
+            }
             new InsertionSort().sort(array, k);
         }
 
         private void quickSortHelper(List<Integer> origin) {
             int end = origin.size();
-            if (end <= 1) {
+            if (end <= 3) {
                 return;
             }
             int pivot = origin.get(0);
@@ -376,9 +393,13 @@ public class MySortingAlgorithms {
             for (int i = 0; i < N; i++) {
                 a[i] = origin.get(i);
             }
+            new InsertionSort().sort(a, k);
         }
 
         private ArrayList<Integer> digitSort(List<Integer> origin, int n) {
+            if (origin.size() <= 3) {
+                return (ArrayList) origin;
+            }
             ArrayList[] buckets = new ArrayList[10];
             for (int i = 0; i < 10; i++) {
                 buckets[i] = new ArrayList<Integer>();

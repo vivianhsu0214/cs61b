@@ -30,6 +30,11 @@ public class RunBenchmarks {
                                                 numInts, maxVal);
 
         printTime(new MySortingAlgorithms.MergeSort(), input, inputDescription);
+        printTime(new MySortingAlgorithms.HeapSort(), input, inputDescription);
+        printTime(new MySortingAlgorithms.LSDSort(), input, inputDescription);
+        printTime(new MySortingAlgorithms.QuickSort(), input, inputDescription);
+        printTime(new MySortingAlgorithms.MSDSort(), input, inputDescription);
+        printTime(new MySortingAlgorithms.DistributionSort(), input, inputDescription);
         printTime(new MySortingAlgorithms.JavaSort(), input, inputDescription);
     }
 
