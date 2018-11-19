@@ -1,5 +1,3 @@
-import org.apache.commons.collections.BinaryHeap;
-
 import java.util.*;
 
 public class Graph {
@@ -171,12 +169,18 @@ public class Graph {
                     list.set(index * 2, temp);
                 }
             } else {
-                if (list.get(target).weight < list.get(target + 1).weight) {
-                    target += 1;
+                if (list.get(target).weight < list.get(target + 1).weight
+                    && list.get(target).weight < list.get(index).weight) {
                     Node temp = list.get(index);
                     list.set(index, list.get(target));
                     list.set(target, temp);
                     bubbledown(target);
+                } else if (list.get(target).weight > list.get(target + 1).weight
+                            && list.get(target + 1).weight < list.get(index).weight) {
+                    Node temp = list.get(index);
+                    list.set(index, list.get(target + 1));
+                    list.set(target + 1, temp);
+                    bubbledown(target + 1);
                 }
             }
         }
@@ -239,14 +243,49 @@ public class Graph {
         int[] result = g1.dijkstras(2);
 
 
-        Graph g2 = new Graph(5);
+        Graph g2 = new Graph(9);
         g2.addEdge(0, 1, 1);
-        g2.addEdge(0, 2, 1);
-        g2.addEdge(0, 4, 1);
-        g2.addEdge(1, 2, 1);
-        g2.addEdge(2, 3, 1);
-        g2.addEdge(4, 3, 1);
+        g2.addEdge(1, 0, 1);
+        g2.addEdge(0, 2, 4);
+        g2.addEdge(2, 0, 4);
+        g2.addEdge(2, 6, 1);
+        g2.addEdge(6, 2, 1);
+        g2.addEdge(0, 6, 6);
+        g2.addEdge(6, 0, 6);
+        g2.addEdge(1, 5, 5);
+        g2.addEdge(5, 1, 5);
+        g2.addEdge(6, 5, 2);
+        g2.addEdge(5, 6, 2);
+        g2.addEdge(2, 3, 3);
+        g2.addEdge(3, 2, 3);
+        g2.addEdge(3, 4, 2);
+        g2.addEdge(4, 3, 2);
+        g2.addEdge(6, 3, 2);
+        g2.addEdge(3, 6, 2);
+        g2.addEdge(4, 6, 1);
+        g2.addEdge(6, 4, 1);
+        g2.addEdge(4, 5, 7);
+        g2.addEdge(5, 4, 7);
+        g2.addEdge(6, 8, 10);
+        g2.addEdge(8, 6, 10);
+        g2.addEdge(4, 7, 2);
+        g2.addEdge(7, 4, 2);
+        g2.addEdge(5, 7, 4);
+        g2.addEdge(7, 5, 4);
+        g2.addEdge(7, 8, 2);
+        g2.addEdge(8, 7, 2);
         result = g2.dijkstras(0);
-        System.out.println("finished");
+
+        Graph g3 = new Graph(7);
+        g3.addEdge(0, 1, 1);
+        g3.addEdge(0, 2, 2);
+        g3.addEdge(0, 3, 6);
+        g3.addEdge(1, 2, 2);
+        g3.addEdge(2, 4, 1);
+        g3.addEdge(2, 5, 3);
+        g3.addEdge(4, 5, 4);
+        g3.addEdge(5, 6, 4);
+        g3.addEdge(3, 6, 2);
+        result = g3.dijkstras(0);
     }
 }
