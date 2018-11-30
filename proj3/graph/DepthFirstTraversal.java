@@ -5,7 +5,7 @@ package graph;
 /** Implements a depth-first traversal of a graph.  Generally, the
  *  client will extend this class, overriding the visit and
  *  postVisit methods, as desired (by default, they do nothing).
- *  @author
+ *  @author Zhibo Fan
  */
 public class DepthFirstTraversal extends Traversal {
 

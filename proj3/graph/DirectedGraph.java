@@ -5,7 +5,7 @@ package graph;
 /** Represents a general unlabeled directed graph whose vertices are denoted by
  *  positive integers. Graphs may have self edges.
  *
- *  @author
+ *  @author Zhibo Fan
  */
 public class DirectedGraph extends GraphObj {
 
@@ -16,16 +16,21 @@ public class DirectedGraph extends GraphObj {
 
     @Override
     public int inDegree(int v) {
-        // FIXME
-        return 0;
+        if (!_vertex.contains(v)) {
+            return 0;
+        }
+        int rtn = 0;
+        for (int[] edge : _edges) {
+            if (edge[1] == v) {
+                rtn += 1;
+            }
+        }
+        return rtn;
     }
 
     @Override
     public Iteration<Integer> predecessors(int v) {
-        // FIXME
-        return null;
+        return new VertexIteration(false, v);
     }
-
-    // FIXME
 
 }
