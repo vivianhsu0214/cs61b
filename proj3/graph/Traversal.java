@@ -2,6 +2,7 @@ package graph;
 
 /* See restrictions in Graph.java. */
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Queue;
@@ -36,6 +37,7 @@ public abstract class Traversal {
         _G = G;
         _fringe = fringe;
         _marked = new boolean[_G.vertexSize()];
+        _postVisited = new boolean[_G.vertexSize()];
     }
 
     /**
@@ -44,6 +46,7 @@ public abstract class Traversal {
     public void clear() {
         for (int i = 0; i < _marked.length; i++) {
             _marked[i] = false;
+            _postVisited[i] = false;
         }
     }
 
@@ -53,10 +56,40 @@ public abstract class Traversal {
     public void traverse(Collection<Integer> V0) {
         _fringe.addAll(V0);
         while (!_fringe.isEmpty()) {
-            int current = _fringe.poll();
-            for (int s : _G.successors(current)) {
-                if (processSuccessor(current, s)) {
-                    _fringe.offer(s);
+            int current = _fringe.peek();
+            if (marked(current)) {
+                current = _fringe.poll();
+                if (shouldPostVisit(current) && !postMarked(current)) {
+                    postMark(current);
+                    if (!postVisit(current)) {
+                        return;
+                    }
+                }
+            } else {
+                mark(current);
+                if (!shouldPostVisit(current)) {
+                    current = _fringe.poll();
+                }
+                if (!visit(current)) {
+                    return;
+                }
+                if (!reverseSuccessors(current)) {
+                    for (int s : _G.successors(current)) {
+                        if (processSuccessor(current, s)) {
+                            _fringe.add(s);
+                        }
+                    }
+                } else {
+                    ArrayList<Integer> temp = new ArrayList<>();
+                    for (int s : _G.successors(current)) {
+                        temp.add(s);
+                    }
+                    for (int i = temp.size() - 1; i >= 0; i--) {
+                        int s = temp.get(i);
+                        if (processSuccessor(current, s)) {
+                            _fringe.add(s);
+                        }
+                    }
                 }
             }
         }
@@ -84,6 +117,18 @@ public abstract class Traversal {
         return false;
     }
 
+    protected boolean postMarked(int v) {
+        _G.checkMyVertex(v);
+        int i = 0;
+        Iteration<Integer> iter = _G.vertices();
+        for (; iter.hasNext(); i++) {
+            if (iter.next() == v) {
+                return _postVisited[i];
+            }
+        }
+        return false;
+    }
+
     /**
      * Mark vertex V.
      */
@@ -93,6 +138,20 @@ public abstract class Traversal {
         for (; iter.hasNext(); i++) {
             if (iter.next() == v) {
                 _marked[i] = true;
+                return;
+            }
+        }
+    }
+
+    /**
+     * Mark vertex V if it is to be postVisited.
+     */
+    protected void postMark(int v) {
+        int i = 0;
+        Iteration<Integer> iter = _G.vertices();
+        for (; iter.hasNext(); i++) {
+            if (iter.next() == v) {
+                _postVisited[i] = true;
                 return;
             }
         }
@@ -151,4 +210,9 @@ public abstract class Traversal {
      * Boolean array of marked vertex.
      */
     protected boolean[] _marked;
+
+    /**
+     * Boolean array of postVisited vertex.
+     */
+    protected boolean[] _postVisited;
 }

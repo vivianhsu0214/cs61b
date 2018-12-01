@@ -208,10 +208,18 @@ abstract class GraphObj extends Graph {
      * Iteration class of vertex.
      */
     protected class VertexIteration extends Iteration<Integer> {
+        /**
+         * Initialize an iterator of all vertices.
+         */
         public VertexIteration() {
             iter = _vertex.iterator();
         }
 
+        /**
+         * Initialize an iterator of a successor or predecessor of a vertex.
+         * @param isFrom is it a successor or predecessor iterator
+         * @param u the vertex
+         */
         public VertexIteration(boolean isFrom, int u) {
             if (!isDirected()) {
                 for (int[] edge : _edges) {
@@ -258,10 +266,18 @@ abstract class GraphObj extends Graph {
      * Iteration for edges.
      */
     protected class EdgeIteration extends Iteration<int[]> {
+        /**
+         * Initialize an iterator of all edges.
+         */
         public EdgeIteration() {
             iter = _edges.iterator();
         }
 
+        /**
+         * Initialize an iterator of in-degree or out-degree edges
+         * @param isFrom from the vertex u or to u
+         * @param u the vertex
+         */
         public EdgeIteration(boolean isFrom, int u) {
             if (!isDirected()) {
                 for (int[] edge : _edges) {

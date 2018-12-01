@@ -4,9 +4,7 @@ import graph.DirectedGraph;
 import graph.LabeledGraph;
 import graph.SimpleShortestPaths;
 
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -18,7 +16,7 @@ import static trip.Main.error;
 
 /** Encapsulates a map containing sites, positions, and road distances between
  *  them.
- *  @author
+ *  @author Zhibo
  */
 class Trip {
 
@@ -27,7 +25,7 @@ class Trip {
         int n;
         n = 0;
         try {
-            Scanner inp = null; // REPLACE WITH SOLUTION
+            Scanner inp = new Scanner(new File(name)); // REPLACE WITH SOLUTION
             while (inp.hasNext()) {
                 n += 1;
                 switch (inp.next()) {
@@ -43,12 +41,14 @@ class Trip {
                     break;
                 }
             }
-        } catch (NullPointerException excp) { // REPLACE WITH PROPER catch
+        } catch (NullPointerException excp) {
             error(excp.getMessage());
         } catch (InputMismatchException excp) {
             error("bad entry #%d", n);
         } catch (NoSuchElementException excp) {
             error("entry incomplete at end of file");
+        } catch (FileNotFoundException excp) {
+            error("file not found");
         }
     }
 
@@ -121,9 +121,8 @@ class Trip {
         } else if (v1 == null) {
             error("location %s not defined", to);
         }
-
-        // FILL THIS IN TO CREATE TWO EDGES LABELED WITH ROADS FROM V0 to V1
-        // AND BACK.
+        _map.add(v0, v1, new Road(name, dir, length));
+        _map.add(v1, v0, new Road(name, dir.reverse(), length));
     }
 
     /** Represents the network of Locations and Roads. */
@@ -136,8 +135,7 @@ class Trip {
     private static class RoadMap extends LabeledGraph<Location, Road> {
         /** An empty RoadMap. */
         RoadMap() {
-            // REPLACE WITH SOLUTION
-            super(null);
+            super(new DirectedGraph());
         }
     }
 
@@ -151,14 +149,12 @@ class Trip {
 
         @Override
         protected double getWeight(int u, int v) {
-            // REPLACE WITH SOLUTION
-            return 0.0;
+            return _map.getLabel(u, v).length();
         }
 
         @Override
         protected double estimatedDistance(int v) {
-            // REPLACE WITH SOLUTION
-            return 0.0;
+            return _map.getLabel(v).dist(_finalLocation);
         }
 
         /** Location of the destination. */

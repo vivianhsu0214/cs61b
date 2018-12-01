@@ -1,6 +1,8 @@
 package graph;
 
-/* See restrictions in Graph.java. */
+import java.util.Queue;
+import java.util.ArrayDeque;
+import static java.util.Collections.asLifoQueue;
 
 /** Implements a depth-first traversal of a graph.  Generally, the
  *  client will extend this class, overriding the visit and
@@ -11,8 +13,7 @@ public class DepthFirstTraversal extends Traversal {
 
     /** A depth-first Traversal of G. */
     protected DepthFirstTraversal(Graph G) {
-        super(G, null);
-        // FIXME
+        super(G, stack);
     }
 
     @Override
@@ -25,6 +26,14 @@ public class DepthFirstTraversal extends Traversal {
         return super.postVisit(v);
     }
 
-    // FIXME
+    @Override
+    protected boolean shouldPostVisit(int v) {
+        return true;
+    }
 
+    /**
+     * A "stack" like queue.
+     */
+    private static Queue<Integer> stack
+            = asLifoQueue(new ArrayDeque<>());
 }

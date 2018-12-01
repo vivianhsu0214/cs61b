@@ -1,11 +1,11 @@
 package graph;
 
-/* See restrictions in Graph.java. */
+import java.util.HashMap;
 
 /** A partial implementation of ShortestPaths that contains the weights of
  *  the vertices and the predecessor edges.   The client needs to
  *  supply only the two-argument getWeight method.
- *  @author
+ *  @author Zhibo Fan
  */
 public abstract class SimpleShortestPaths extends ShortestPaths {
 
@@ -16,7 +16,9 @@ public abstract class SimpleShortestPaths extends ShortestPaths {
 
     /** A shortest path in G from SOURCE to DEST. */
     public SimpleShortestPaths(Graph G, int source, int dest) {
-        super(G, source, dest);  // FIXME?
+        super(G, source, dest);
+        _predecessor = new HashMap<>();
+        _weight = new HashMap<>();
     }
 
     /** Returns the current weight of edge (U, V) in the graph.  If (U, V) is
@@ -26,26 +28,40 @@ public abstract class SimpleShortestPaths extends ShortestPaths {
 
     @Override
     public double getWeight(int v) {
-        // FIXME
-        return 0.0;
+        if (_G.contains(v)) {
+            return _weight.get(v);
+        } else {
+            return Double.MAX_VALUE;
+        }
     }
 
     @Override
     protected void setWeight(int v, double w) {
-        // FIXME
+        _weight.put(v, w);
     }
 
     @Override
     public int getPredecessor(int v) {
-        // FIXME
-        return 0;
+        if (_G.contains(v)) {
+            return _predecessor.get(v);
+        } else {
+            return 0;
+        }
     }
 
     @Override
     protected void setPredecessor(int v, int u) {
-        // FIXME
+        _predecessor.put(v, u);
     }
 
-    // FIXME
+    /**
+     * The hash map stores the predecessor of each vertex.
+     */
+    private HashMap<Integer, Integer> _predecessor;
+
+    /**
+     * The hash map stores the weight of each vertex.
+     */
+    private HashMap<Integer, Double> _weight;
 
 }

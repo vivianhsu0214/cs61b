@@ -1,6 +1,5 @@
 package graph;
 
-/* See restrictions in Graph.java. */
 
 import java.util.ArrayList;
 
