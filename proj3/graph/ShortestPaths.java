@@ -107,7 +107,7 @@ public abstract class ShortestPaths {
      */
     public List<Integer> pathTo(int v) {
         while (v != getSource()) {
-            _path.addFirst(v);;
+            _path.addFirst(v);
             v = getPredecessor(v);
         }
         return _path;
@@ -146,6 +146,11 @@ public abstract class ShortestPaths {
      * A star traversal.
      */
     private class AStarTraversal extends Traversal {
+        /**
+         * Generate an astar traversal.
+         * @param g graph object
+         * @param fringe fringe as a priority queue
+         */
         AStarTraversal(Graph g, MyPriorityQueue fringe) {
             super(g, fringe);
         }
@@ -207,6 +212,11 @@ public abstract class ShortestPaths {
             return ts.first().getVertex();
         }
 
+        /**
+         * Interface for change elements' priority.
+         * @param vertex vertex index
+         * @param heuristic new heuristic value
+         */
         public void changeValue(int vertex, int heuristic) {
             Vertex v = null;
             for (int i = 0; i < ll.size(); i++) {
@@ -224,10 +234,12 @@ public abstract class ShortestPaths {
         /**
          * Wrapped TreeSet.
          */
-        private TreeSet<Vertex> ts = new TreeSet<Vertex>(new VertexComparator());
+        private TreeSet<Vertex> ts
+                = new TreeSet<Vertex>(new VertexComparator());
 
         /**
-         * LinkedList storing all the Vertices which are identical to those in TreeSet.
+         * LinkedList storing all the Vertices
+         * which are identical to those in TreeSet.
          */
         private LinkedList<Vertex> ll = new LinkedList<>();
 
@@ -257,8 +269,10 @@ public abstract class ShortestPaths {
 
             /**
              * Constructor.
+             * @param vertex vertex index
+             * @param heuristic heuristic value
              */
-            public Vertex(int vertex, double heuristic) {
+            Vertex(int vertex, double heuristic) {
                 _vertex = vertex;
                 _heuristic = heuristic;
             }

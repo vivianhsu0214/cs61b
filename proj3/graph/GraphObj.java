@@ -17,7 +17,8 @@ abstract class GraphObj extends Graph {
     /**
      * A new, empty Graph.
      */
-    GraphObj() {}
+    GraphObj() {
+    }
 
     @Override
     public int vertexSize() {
@@ -191,7 +192,7 @@ abstract class GraphObj extends Graph {
         if (!isDirected()) {
             for (int i = 0; i < edgeSize(); i++) {
                 if ((_edges.get(i)[0] == u && _edges.get(i)[1] == v)
-                    || (_edges.get(i)[0] == v && _edges.get(i)[1] == u)) {
+                        || (_edges.get(i)[0] == v && _edges.get(i)[1] == u)) {
                     return i + 1;
                 }
             }
@@ -219,8 +220,9 @@ abstract class GraphObj extends Graph {
 
         /**
          * Initialize an iterator of a successor or predecessor of a vertex.
+         *
          * @param isFrom is it a successor or predecessor iterator
-         * @param u the vertex
+         * @param u      the vertex
          */
         public VertexIteration(boolean isFrom, int u) {
             if (!isDirected()) {
@@ -277,8 +279,9 @@ abstract class GraphObj extends Graph {
 
         /**
          * Initialize an iterator of in-degree or out-degree edges
+         *
          * @param isFrom from the vertex u or to u
-         * @param u the vertex
+         * @param u      the vertex
          */
         public EdgeIteration(boolean isFrom, int u) {
             if (!isDirected()) {

@@ -118,7 +118,7 @@ public abstract class Traversal {
     }
 
     /**
-     * Check if the vertex V is post visited
+     * Check if the vertex V is post visited.
      * @param v vertex index
      * @return true or false if the vertex V is post visited.
      */
