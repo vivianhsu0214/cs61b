@@ -22,4 +22,13 @@ public class UnitTest {
 
     }
 
+    /**
+     * The default trip to test on.
+     * @return the generated trip
+     */
+    private Trip getTestTrip() {
+        Trip trip = new Trip();
+        trip.readMap("testing/trip/trip01.map");
+        return trip;
+    }
 }

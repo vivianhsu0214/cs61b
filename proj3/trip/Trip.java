@@ -25,7 +25,7 @@ class Trip {
         int n;
         n = 0;
         try {
-            Scanner inp = new Scanner(new File(name)); // REPLACE WITH SOLUTION
+            Scanner inp = new Scanner(new File(name));
             while (inp.hasNext()) {
                 n += 1;
                 switch (inp.next()) {

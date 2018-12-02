@@ -278,7 +278,7 @@ abstract class GraphObj extends Graph {
         }
 
         /**
-         * Initialize an iterator of in-degree or out-degree edges
+         * Initialize an iterator of in-degree or out-degree edges.
          *
          * @param isFrom from the vertex u or to u
          * @param u      the vertex

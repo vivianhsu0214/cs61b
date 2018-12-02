@@ -169,4 +169,28 @@ public class GraphTest {
         assertFalse(vIter.hasNext());
     }
 
+    @Test
+    public void DFSTest() {
+        Graph g = generateGraph();
+        Traversal dfs = new DepthFirstTraversal(g);
+        dfs.traverse(1);
+    }
+
+    private Graph generateGraph() {
+        UndirectedGraph g = new UndirectedGraph();
+        for (int i = 0; i < 8; i++) {
+            g.add();
+        }
+        g.add(1, 2);
+        g.add(1, 3);
+        g.add(1, 4);
+        g.add(1, 6);
+        g.add(3, 7);
+        g.add(7, 8);
+        g.add(6, 8);
+        g.add(4, 5);
+        g.add(5, 6);
+        return g;
+    }
+
 }
