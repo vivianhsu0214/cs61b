@@ -137,7 +137,7 @@ class Trip {
         }
         String toPrint = String.valueOf(seq) + ". Take " + curName + " "
                 + curDir.fullName() + " for %.1f" + " miles to "
-                + _map.getLabel(curLocation).toString() + "%n";
+                + _map.getLabel(curLocation).toString() + ".%n";
         System.out.printf(toPrint, dist);
         return seq + 1;
     }

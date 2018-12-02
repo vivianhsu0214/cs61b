@@ -170,7 +170,7 @@ public class GraphTest {
     }
 
     @Test
-    public void DFSTest() {
+    public void dfsTest() {
         Graph g = generateGraph();
         Traversal dfs = new DepthFirstTraversal(g);
         dfs.traverse(1);
