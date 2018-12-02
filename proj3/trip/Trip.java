@@ -6,21 +6,21 @@ import graph.SimpleShortestPaths;
 
 import java.io.*;
 
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 
 import static trip.Main.error;
 
-/** Encapsulates a map containing sites, positions, and road distances between
- *  them.
- *  @author Zhibo
+/**
+ * Encapsulates a map containing sites, positions, and road distances between
+ * them.
+ *
+ * @author Zhibo
  */
 class Trip {
 
-    /** Read map file named NAME into out map graph. */
+    /**
+     * Read map file named NAME into out map graph.
+     */
     void readMap(String name) {
         int n;
         n = 0;
@@ -29,16 +29,16 @@ class Trip {
             while (inp.hasNext()) {
                 n += 1;
                 switch (inp.next()) {
-                case "L":
-                    addLocation(inp.next(), inp.nextDouble(), inp.nextDouble());
-                    break;
-                case "R":
-                    addRoad(inp.next(), inp.next(), inp.nextDouble(),
-                            Direction.parse(inp.next()), inp.next());
-                    break;
-                default:
-                    error("map entry #%d: unknown type", n);
-                    break;
+                    case "L":
+                        addLocation(inp.next(), inp.nextDouble(), inp.nextDouble());
+                        break;
+                    case "R":
+                        addRoad(inp.next(), inp.next(), inp.nextDouble(),
+                                Direction.parse(inp.next()), inp.next());
+                        break;
+                    default:
+                        error("map entry #%d: unknown type", n);
+                        break;
                 }
             }
         } catch (NullPointerException excp) {
@@ -52,8 +52,10 @@ class Trip {
         }
     }
 
-    /** Produce a report on the standard output of a shortest journey from
-     *  DESTS.get(0), then DESTS.get(1), .... */
+    /**
+     * Produce a report on the standard output of a shortest journey from
+     * DESTS.get(0), then DESTS.get(1), ....
+     */
     void makeTrip(List<String> dests) {
         if (dests.size() < 2) {
             error("must have at least two locations for a trip");
@@ -65,8 +67,8 @@ class Trip {
         step = 1;
         for (int i = 1; i < dests.size(); i += 1) {
             Integer
-                from = _sites.get(dests.get(i - 1)),
-                to = _sites.get(dests.get(i));
+                    from = _sites.get(dests.get(i - 1)),
+                    to = _sites.get(dests.get(i));
             if (from == null) {
                 error("No location named %s", dests.get(i - 1));
             } else if (to == null) {
@@ -79,26 +81,70 @@ class Trip {
         }
     }
 
-    /** Print out a written description of the location sequence SEGMENT,
-     *  starting at FROM, and numbering the lines of the description starting
-     *  at SEQ.  That is, FROM and each item in SEGMENT are the
-     *  numbers of vertices representing locations.  Together, they
-     *  specify the starting point and vertices along a path where
-     *  each vertex is joined to the next by an edge.  Returns the
-     *  next sequence number.  The format is as described in the
-     *  project specification.  That is, each line but the last in the
-     *  segment is formated like this example:
-     *      1. Take University_Ave west for 0.1 miles.
-     *  and the last like this:
-     *      5. Take I-80 west for 8.4 miles to San_Francisco.
-     *  Adjacent roads with the same name and direction are combined.
-     *  */
+    /**
+     * Print out a written description of the location sequence SEGMENT,
+     * starting at FROM, and numbering the lines of the description starting
+     * at SEQ.  That is, FROM and each item in SEGMENT are the
+     * numbers of vertices representing locations.  Together, they
+     * specify the starting point and vertices along a path where
+     * each vertex is joined to the next by an edge.  Returns the
+     * next sequence number.  The format is as described in the
+     * project specification.  That is, each line but the last in the
+     * segment is formated like this example:
+     * 1. Take University_Ave west for 0.1 miles.
+     * and the last like this:
+     * 5. Take I-80 west for 8.4 miles to San_Francisco.
+     * Adjacent roads with the same name and direction are combined.
+     */
     int reportSegment(int seq, int from, List<Integer> segment) {
-        // FILL THIS IN
-        return seq;
+        Iterator<Integer> iter = segment.iterator();
+        int prevLocation = from;
+        int curLocation = iter.next();
+        double dist = _map.getLabel(prevLocation).dist(_map.getLabel(curLocation));
+        String prevName = "";
+        Direction prevDir = null;
+        Road prevRoad = null;
+        while (iter.hasNext()) {
+            Road curRoad = _map.getLabel(prevLocation, curLocation);
+            String curName = curRoad.toString();
+            Direction curDir = curRoad.direction();
+            if (curName.equals(prevName) && curDir == prevDir) {
+                dist += _map.getLabel(prevLocation).dist(_map.getLabel(curLocation));
+            } else if (prevRoad != null) {
+                String toPrint = String.valueOf(seq) + ". Take " + prevName + " "
+                        + prevDir.fullName() + " for %.1f" + " miles.";
+                System.out.printf(toPrint, dist);
+                dist = _map.getLabel(prevLocation).dist(_map.getLabel(curLocation));
+                seq += 1;
+            }
+            prevRoad = curRoad;
+            prevName = curName;
+            prevDir = curDir;
+            prevLocation = curLocation;
+            curLocation = iter.next();
+        }
+        Road curRoad = _map.getLabel(prevLocation, curLocation);
+        String curName = curRoad.toString();
+        Direction curDir = curRoad.direction();
+        if (curName.equals(prevName) && curDir == prevDir) {
+            dist += _map.getLabel(prevLocation).dist(_map.getLabel(curLocation));
+        } else if (prevRoad != null) {
+            String toPrint = String.valueOf(seq) + ". Take " + prevName + " "
+                    + prevDir.fullName() + " for %.1f" + " miles.";
+            System.out.printf(toPrint, dist);
+            dist = _map.getLabel(prevLocation).dist(_map.getLabel(curLocation));
+            seq += 1;
+        }
+        String toPrint = "Take " + prevName + " " + prevDir.fullName()
+                + " for %.1f" + " miles to "
+                + _map.getLabel(curLocation).toString();
+        System.out.printf(toPrint, dist);
+        return seq + 1;
     }
 
-    /** Add a new location named NAME at (X, Y). */
+    /**
+     * Add a new location named NAME at (X, Y).
+     */
     private void addLocation(String name, double x, double y) {
         if (_sites.containsKey(name)) {
             error("multiple entries for %s", name);
@@ -107,14 +153,16 @@ class Trip {
         _sites.put(name, v);
     }
 
-    /** Add a stretch of road named NAME from the Location named FROM
-     *  to the location named TO, running in direction DIR, and
-     *  LENGTH miles long.  Add a reverse segment going back from TO
-     *  to FROM. */
+    /**
+     * Add a stretch of road named NAME from the Location named FROM
+     * to the location named TO, running in direction DIR, and
+     * LENGTH miles long.  Add a reverse segment going back from TO
+     * to FROM.
+     */
     private void addRoad(String from, String name, double length,
                          Direction dir, String to) {
         Integer v0 = _sites.get(from),
-            v1 = _sites.get(to);
+                v1 = _sites.get(to);
 
         if (v0 == null) {
             error("location %s not defined", from);
@@ -125,23 +173,35 @@ class Trip {
         _map.add(v1, v0, new Road(name, dir.reverse(), length));
     }
 
-    /** Represents the network of Locations and Roads. */
+    /**
+     * Represents the network of Locations and Roads.
+     */
     private RoadMap _map = new RoadMap();
-    /** Mapping of Location names to corresponding map vertices. */
+    /**
+     * Mapping of Location names to corresponding map vertices.
+     */
     private HashMap<String, Integer> _sites = new HashMap<>();
 
-    /** A labeled directed graph of Locations whose edges are labeled by
-     *  Roads. */
+    /**
+     * A labeled directed graph of Locations whose edges are labeled by
+     * Roads.
+     */
     private static class RoadMap extends LabeledGraph<Location, Road> {
-        /** An empty RoadMap. */
+        /**
+         * An empty RoadMap.
+         */
         RoadMap() {
             super(new DirectedGraph());
         }
     }
 
-    /** Paths in _map from a given location. */
+    /**
+     * Paths in _map from a given location.
+     */
     private class TripPlan extends SimpleShortestPaths {
-        /** A plan for travel from START to DEST according to _map. */
+        /**
+         * A plan for travel from START to DEST according to _map.
+         */
         TripPlan(int start, int dest) {
             super(_map, start, dest);
             _finalLocation = _map.getLabel(dest);
@@ -157,7 +217,9 @@ class Trip {
             return _map.getLabel(v).dist(_finalLocation);
         }
 
-        /** Location of the destination. */
+        /**
+         * Location of the destination.
+         */
         private final Location _finalLocation;
 
     }
