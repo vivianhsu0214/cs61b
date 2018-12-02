@@ -117,6 +117,11 @@ public abstract class Traversal {
         return false;
     }
 
+    /**
+     * Check if the vertex V is post visited
+     * @param v vertex index
+     * @return true or false if the vertex V is post visited.
+     */
     protected boolean postMarked(int v) {
         _G.checkMyVertex(v);
         int i = 0;

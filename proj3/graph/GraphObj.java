@@ -2,7 +2,9 @@ package graph;
 
 /* See restrictions in Graph.java. */
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Arrays;
 
 /**
  * A partial implementation of Graph containing elements common to

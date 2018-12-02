@@ -1,6 +1,11 @@
 package graph;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.AbstractQueue;
+import java.util.Iterator;
+import java.util.TreeSet;
+import java.util.Comparator;
 
 /**
  * The shortest paths through an edge-weighted graph.
@@ -219,7 +224,7 @@ public abstract class ShortestPaths {
         /**
          * Wrapped TreeSet.
          */
-        private TreeSet<Vertex> ts = new TreeSet<>(new VertexComparator());
+        private TreeSet<Vertex> ts = new TreeSet<Vertex>(new VertexComparator());
 
         /**
          * LinkedList storing all the Vertices which are identical to those in TreeSet.
