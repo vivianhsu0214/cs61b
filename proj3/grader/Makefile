@@ -36,7 +36,7 @@ CLASSES = $(SRCS:.java=.class)
 CPATH = "..:$(CLASSPATH):;..;$(CLASSPATH)"
 
 # Tell make that these are not really files.
-.PHONY: clean default check style jar
+.PHONY: clean default check unit style
 
 # By default, make sure all classes are present and check if any sources have
 # changed since the last build.
@@ -49,7 +49,9 @@ sentinel: $(SRCS)
 	touch $@
 
 # Run Tests.
-check: sentinel
+check: unit
+
+unit: sentinel
 	java -ea -classpath $(CPATH) grader.SimpleUnitTest
 
 # Check style of source files with style61b.
