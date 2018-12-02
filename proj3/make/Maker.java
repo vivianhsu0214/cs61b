@@ -2,6 +2,8 @@ package make;
 
 import graph.DepthFirstTraversal;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -40,7 +42,7 @@ class Maker {
         String name;
         name = "<unknown>";
         try {
-            Scanner inp = null; // FIXME
+            Scanner inp = new Scanner(fileInfoName);
             _currentTime = inp.nextInt();
             while (inp.hasNext()) {
                 // FILL IN
@@ -49,7 +51,7 @@ class Maker {
         } catch (NoSuchElementException excp) {
             error("Near entry for %s: %s", name, excp.getMessage());
         }
-        // FIXME?
+        // FIXME：error message in format and so on
     }
 
     /** Read make rules from the file named MAKEFILENAME and form the dependence
@@ -64,10 +66,13 @@ class Maker {
         dependencies = null;
         commands = null;
         try {
-            inp = null;  // FIXME
-        } catch (NullPointerException excp) { // REPLACE WITH PROPER catch
-            // FILL IN
+            File f = new File(makefileName);
+            inp = new Scanner(f);
+        } catch (FileNotFoundException excp) {
             error("Could not find makefile: %s", makefileName);
+            return;
+        } catch (NoSuchElementException excp) {
+            error("FIXME");
             return;
         }
 

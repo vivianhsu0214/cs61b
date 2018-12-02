@@ -199,7 +199,8 @@ abstract class GraphObj extends Graph {
         } else {
             int[] edge = new int[]{u, v};
             for (int i = 0; i < edgeSize(); i++) {
-                if (_edges.get(i) == edge) {
+                if (_edges.get(i)[0] == edge[0]
+                        && _edges.get(i)[1] == edge[1]) {
                     return i + 1;
                 }
             }

@@ -100,7 +100,7 @@ class Trip {
         Iterator<Integer> iter = segment.iterator();
         int prevLocation = from;
         int curLocation = iter.next();
-        double dist = _map.getLabel(prevLocation).dist(_map.getLabel(curLocation));
+        double dist = _map.getLabel(prevLocation, curLocation).length();
         String prevName = "";
         Direction prevDir = null;
         Road prevRoad = null;
@@ -109,12 +109,12 @@ class Trip {
             String curName = curRoad.toString();
             Direction curDir = curRoad.direction();
             if (curName.equals(prevName) && curDir == prevDir) {
-                dist += _map.getLabel(prevLocation).dist(_map.getLabel(curLocation));
+                dist += curRoad.length();
             } else if (prevRoad != null) {
                 String toPrint = String.valueOf(seq) + ". Take " + prevName + " "
-                        + prevDir.fullName() + " for %.1f" + " miles.";
+                        + prevDir.fullName() + " for %.1f" + " miles.%n";
                 System.out.printf(toPrint, dist);
-                dist = _map.getLabel(prevLocation).dist(_map.getLabel(curLocation));
+                dist = curRoad.length();
                 seq += 1;
             }
             prevRoad = curRoad;
@@ -127,17 +127,17 @@ class Trip {
         String curName = curRoad.toString();
         Direction curDir = curRoad.direction();
         if (curName.equals(prevName) && curDir == prevDir) {
-            dist += _map.getLabel(prevLocation).dist(_map.getLabel(curLocation));
+            dist += curRoad.length();
         } else if (prevRoad != null) {
             String toPrint = String.valueOf(seq) + ". Take " + prevName + " "
-                    + prevDir.fullName() + " for %.1f" + " miles.";
+                    + prevDir.fullName() + " for %.1f" + " miles.%n";
             System.out.printf(toPrint, dist);
-            dist = _map.getLabel(prevLocation).dist(_map.getLabel(curLocation));
+            dist = curRoad.length();
             seq += 1;
         }
-        String toPrint = "Take " + prevName + " " + prevDir.fullName()
-                + " for %.1f" + " miles to "
-                + _map.getLabel(curLocation).toString();
+        String toPrint = String.valueOf(seq) + ". Take " + curName + " "
+                + curDir.fullName() + " for %.1f" + " miles to "
+                + _map.getLabel(curLocation).toString() + "%n";
         System.out.printf(toPrint, dist);
         return seq + 1;
     }
