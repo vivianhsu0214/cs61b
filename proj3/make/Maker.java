@@ -42,16 +42,19 @@ class Maker {
         String name;
         name = "<unknown>";
         try {
-            Scanner inp = new Scanner(fileInfoName);
+            File f = new File(fileInfoName);
+            Scanner inp = new Scanner(f);
             _currentTime = inp.nextInt();
             while (inp.hasNext()) {
-                // FILL IN
+                _ages.put(inp.next(), inp.nextInt());
             }
             inp.close();
         } catch (NoSuchElementException excp) {
             error("Near entry for %s: %s", name, excp.getMessage());
+        } catch (FileNotFoundException excp) {
+            error("File not found %S", fileInfoName);
+            return;
         }
-        // FIXME：error message in format and so on
     }
 
     /** Read make rules from the file named MAKEFILENAME and form the dependence
@@ -72,7 +75,7 @@ class Maker {
             error("Could not find makefile: %s", makefileName);
             return;
         } catch (NoSuchElementException excp) {
-            error("FIXME");
+            error("near entry");
             return;
         }
 
@@ -189,7 +192,8 @@ class Maker {
 
         @Override
         protected boolean postVisit(int v0) {
-            // FILL IN
+            Rule r = _depends.getLabel(v0);
+            r.rebuild();
             return true;
         }
     }
