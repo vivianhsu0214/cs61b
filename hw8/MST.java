@@ -1,8 +1,9 @@
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.TreeSet;
 
 /** Minimal spanning tree utility.
- *  @author
+ *  @author Zhibo Fan
  */
 public class MST {
 
@@ -17,7 +18,9 @@ public class MST {
      *  are a subset of those in E (they do not include copies of the
      *  original edges, just the original edges themselves.) */
     public static int[][] mst(int V, int[][] E) {
-        return null;  // FIXME
+        TreeSet<int[]> ts = new TreeSet<>(EDGE_WEIGHT_COMPARATOR);
+
+        return null;
     }
 
     /** An ordering of edges by weight. */

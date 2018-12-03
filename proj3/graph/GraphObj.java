@@ -52,7 +52,10 @@ abstract class GraphObj extends Graph {
         }
         int rtn = 0;
         for (int[] edge : _edges) {
-            if (edge[0] == v) {
+            if (isDirected() && edge[0] == v) {
+                rtn += 1;
+            } else if (!isDirected()
+                    && (edge[0] == v || edge[1] == v)) {
                 rtn += 1;
             }
         }
@@ -111,9 +114,6 @@ abstract class GraphObj extends Graph {
 
     @Override
     public int add(int u, int v) {
-        if (u == v) {
-            return 0;
-        }
         int[] newEdge = new int[]{u, v};
         if (!(_vertex.contains(u) && _vertex.contains(v))) {
             return 0;
