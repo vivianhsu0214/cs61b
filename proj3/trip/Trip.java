@@ -4,9 +4,15 @@ import graph.DirectedGraph;
 import graph.LabeledGraph;
 import graph.SimpleShortestPaths;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 
-import java.util.*;
+import java.util.Scanner;
+import java.util.NoSuchElementException;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Iterator;
+import java.util.HashMap;
 
 import static trip.Main.error;
 
@@ -29,16 +35,16 @@ class Trip {
             while (inp.hasNext()) {
                 n += 1;
                 switch (inp.next()) {
-                    case "L":
-                        addLocation(inp.next(), inp.nextDouble(), inp.nextDouble());
-                        break;
-                    case "R":
-                        addRoad(inp.next(), inp.next(), inp.nextDouble(),
-                                Direction.parse(inp.next()), inp.next());
-                        break;
-                    default:
-                        error("map entry #%d: unknown type", n);
-                        break;
+                case "L":
+                    addLocation(inp.next(), inp.nextDouble(), inp.nextDouble());
+                    break;
+                case "R":
+                    addRoad(inp.next(), inp.next(), inp.nextDouble(),
+                           Direction.parse(inp.next()), inp.next());
+                    break;
+                default:
+                    error("map entry #%d: unknown type", n);
+                    break;
                 }
             }
         } catch (NullPointerException excp) {
@@ -111,7 +117,8 @@ class Trip {
             if (curName.equals(prevName) && curDir == prevDir) {
                 dist += curRoad.length();
             } else if (prevRoad != null) {
-                String toPrint = String.valueOf(seq) + ". Take " + prevName + " "
+                String toPrint = String.valueOf(seq) + ". Take "
+                        + prevName + " "
                         + prevDir.fullName() + " for %.1f" + " miles.%n";
                 System.out.printf(toPrint, dist);
                 dist = curRoad.length();
