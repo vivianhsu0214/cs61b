@@ -193,8 +193,9 @@ public abstract class ShortestPaths {
         @Override
         public boolean offer(Integer e) {
             Vertex vertex = new Vertex(e, getWeight(e) + estimatedDistance(e));
-            ts.add(vertex);
-            ll.add(vertex);
+            if (ts.add(vertex)) {
+                ll.add(vertex);
+            }
             return true;
         }
 
@@ -252,7 +253,12 @@ public abstract class ShortestPaths {
         private class VertexComparator implements Comparator<Vertex> {
             @Override
             public int compare(Vertex o1, Vertex o2) {
-                return Double.compare(o1.getHeurisitc(), o2.getHeurisitc());
+                int firstCmp = Double.compare(o1.getHeurisitc(),
+                        o2.getHeurisitc());
+                if (firstCmp != 0) {
+                    return firstCmp;
+                }
+                return Integer.compare(o1.getVertex(), o2.getVertex());
             }
         }
 
