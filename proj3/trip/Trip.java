@@ -43,18 +43,18 @@ class Trip {
                            Direction.parse(inp.next()), inp.next());
                     break;
                 default:
-                    error("map entry #%d: unknown type", n);
+                    error("error: map entry #%d: unknown type", n);
                     break;
                 }
             }
         } catch (NullPointerException excp) {
             error(excp.getMessage());
         } catch (InputMismatchException excp) {
-            error("bad entry #%d", n);
+            error("error: bad entry #%d", n);
         } catch (NoSuchElementException excp) {
-            error("entry incomplete at end of file");
+            error("error: entry incomplete at end of file");
         } catch (FileNotFoundException excp) {
-            error("file not found");
+            error("error: file not found");
         }
     }
 
@@ -64,7 +64,7 @@ class Trip {
      */
     void makeTrip(List<String> dests) {
         if (dests.size() < 2) {
-            error("must have at least two locations for a trip");
+            error("error: must have at least two locations for a trip");
         }
 
         System.out.printf("From %s:%n%n", dests.get(0));
@@ -76,9 +76,9 @@ class Trip {
                     from = _sites.get(dests.get(i - 1)),
                     to = _sites.get(dests.get(i));
             if (from == null) {
-                error("No location named %s", dests.get(i - 1));
+                error("error: No location named %s", dests.get(i - 1));
             } else if (to == null) {
-                error("No location named %s", dests.get(i));
+                error("error: No location named %s", dests.get(i));
             }
             TripPlan plan = new TripPlan(from, to);
             plan.setPaths();
@@ -175,9 +175,9 @@ class Trip {
                 v1 = _sites.get(to);
 
         if (v0 == null) {
-            error("location %s not defined", from);
+            error("error: location %s not defined", from);
         } else if (v1 == null) {
-            error("location %s not defined", to);
+            error("error: location %s not defined", to);
         }
         _map.add(v0, v1, new Road(name, dir, length));
         _map.add(v1, v0, new Road(name, dir.reverse(), length));

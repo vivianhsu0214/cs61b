@@ -42,7 +42,7 @@ enum Direction {
         try {
             return valueOf(name);
         } catch (IllegalArgumentException excp) {
-            error("improper direction name: %s", name);
+            error("error: improper direction name: %s", name);
             return null;
         }
     }

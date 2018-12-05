@@ -48,9 +48,9 @@ class Maker {
             }
             inp.close();
         } catch (NoSuchElementException excp) {
-            error("Near entry for %s: %s", name, excp.getMessage());
+            error("error: Near entry for %s: %s", name, excp.getMessage());
         } catch (FileNotFoundException excp) {
-            error("File not found %S", fileInfoName);
+            error("error: File not found %S", fileInfoName);
             return;
         }
     }
@@ -70,10 +70,10 @@ class Maker {
             File f = new File(makefileName);
             inp = new Scanner(f);
         } catch (FileNotFoundException excp) {
-            error("Could not find makefile: %s", makefileName);
+            error("error: Could not find makefile: %s", makefileName);
             return;
         } catch (NoSuchElementException excp) {
-            error("near entry");
+            error("error: near entry");
             return;
         }
 
@@ -89,10 +89,10 @@ class Maker {
                 addRule(target, dependencies, commands);
                 target = parsed.group(1);
                 if (!TARGETS.matcher(target).matches()) {
-                    error("Bad target: '%s'", target);
+                    error("error: Bad target: '%s'", target);
                 }
                 if (!TARGETS.matcher(parsed.group(2)).matches()) {
-                    error("One or more bad prerequisites: '%s'",
+                    error("error: One or more bad prerequisites: '%s'",
                           parsed.group(2));
                 }
                 dependencies = new ArrayList<>();
@@ -106,7 +106,7 @@ class Maker {
             if (target != null && parsed.matches()) {
                 commands.add(parsed.group(1));
             } else {
-                error("Erroneous input line: '%s'", line);
+                error("error: Erroneous input line: '%s'", line);
             }
         }
         addRule(target, dependencies, commands);
