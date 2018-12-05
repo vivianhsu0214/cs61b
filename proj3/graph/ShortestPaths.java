@@ -315,19 +315,6 @@ public abstract class ShortestPaths {
             public void setHeuristic(double heurisitc) {
                 _heuristic = heurisitc;
             }
-
-            @Override
-            public int hashCode() {
-                return _vertex + (int) _heuristic;
-            }
-
-            @Override
-            public boolean equals(Object o) {
-                if (!(o instanceof Vertex)) {
-                    return false;
-                }
-                return ((Vertex) o).getVertex() == _vertex;
-            }
         }
     }
 
