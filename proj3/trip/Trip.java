@@ -104,7 +104,10 @@ class Trip {
      */
     int reportSegment(int seq, int from, List<Integer> segment) {
         Iterator<Integer> iter = segment.iterator();
-        int prevLocation = from;
+        int prevLocation = iter.next();
+        if (!iter.hasNext()) {
+            return seq;
+        }
         int curLocation = iter.next();
         double dist = _map.getLabel(prevLocation, curLocation).length();
         String prevName = "";

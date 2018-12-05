@@ -110,6 +110,7 @@ public abstract class ShortestPaths {
             _path.addFirst(v);
             v = getPredecessor(v);
         }
+        _path.addFirst(v);
         return _path;
     }
 
