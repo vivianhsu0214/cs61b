@@ -194,6 +194,11 @@ class Maker {
             r.rebuild();
             return true;
         }
+
+        @Override
+        protected boolean reverseSuccessors(int v) {
+            return true;
+        }
     }
 
 }
