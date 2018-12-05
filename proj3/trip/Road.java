@@ -11,7 +11,7 @@ class Road {
      *  LENGTH. */
     Road(String name, Direction direction, double length) {
         if (length < 0) {
-            error("error: Road %s given negative length.", length);
+            error("Error: Road %s given negative length.", length);
         }
         _name = name;
         _direction = direction;

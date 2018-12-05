@@ -43,18 +43,18 @@ class Trip {
                            Direction.parse(inp.next()), inp.next());
                     break;
                 default:
-                    error("error: map entry #%d: unknown type", n);
+                    error("Error: map entry #%d: unknown type", n);
                     break;
                 }
             }
         } catch (NullPointerException excp) {
             error(excp.getMessage());
         } catch (InputMismatchException excp) {
-            error("error: bad entry #%d", n);
+            error("Error: bad entry #%d", n);
         } catch (NoSuchElementException excp) {
-            error("error: entry incomplete at end of file");
+            error("Error: entry incomplete at end of file");
         } catch (FileNotFoundException excp) {
-            error("error: file not found");
+            error("Error: file not found");
         }
     }
 
@@ -64,7 +64,7 @@ class Trip {
      */
     void makeTrip(List<String> dests) {
         if (dests.size() < 2) {
-            error("error: must have at least two locations for a trip");
+            error("Error: must have at least two locations for a trip");
         }
 
         System.out.printf("From %s:%n%n", dests.get(0));
@@ -76,9 +76,9 @@ class Trip {
                     from = _sites.get(dests.get(i - 1)),
                     to = _sites.get(dests.get(i));
             if (from == null) {
-                error("error: No location named %s", dests.get(i - 1));
+                error("Error: No location named %s", dests.get(i - 1));
             } else if (to == null) {
-                error("error: No location named %s", dests.get(i));
+                error("Error: No location named %s", dests.get(i));
             }
             TripPlan plan = new TripPlan(from, to);
             plan.setPaths();
@@ -157,7 +157,7 @@ class Trip {
      */
     private void addLocation(String name, double x, double y) {
         if (_sites.containsKey(name)) {
-            error("error: multiple entries for %s", name);
+            error("Error: multiple entries for %s", name);
         }
         int v = _map.add(new Location(name, x, y));
         _sites.put(name, v);
@@ -175,9 +175,9 @@ class Trip {
                 v1 = _sites.get(to);
 
         if (v0 == null) {
-            error("error: location %s not defined", from);
+            error("Error: location %s not defined", from);
         } else if (v1 == null) {
-            error("error: location %s not defined", to);
+            error("Error: location %s not defined", to);
         }
         _map.add(v0, v1, new Road(name, dir, length));
         _map.add(v1, v0, new Road(name, dir.reverse(), length));

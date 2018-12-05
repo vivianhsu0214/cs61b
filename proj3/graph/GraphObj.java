@@ -183,7 +183,7 @@ abstract class GraphObj extends Graph {
     @Override
     protected void checkMyVertex(int v) {
         if (!contains(v)) {
-            throw new IllegalArgumentException("error: vertex not from Graph");
+            throw new IllegalArgumentException("Error: vertex not from Graph");
         }
     }
 
