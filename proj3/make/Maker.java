@@ -196,6 +196,11 @@ class Maker {
         }
 
         @Override
+        protected boolean shouldPostVisit(int v){
+            return true;
+        }
+
+        @Override
         protected boolean reverseSuccessors(int v) {
             return true;
         }
