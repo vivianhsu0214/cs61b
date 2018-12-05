@@ -196,7 +196,7 @@ class Maker {
         }
 
         @Override
-        protected boolean shouldPostVisit(int v){
+        protected boolean shouldPostVisit(int v) {
             return true;
         }
 
