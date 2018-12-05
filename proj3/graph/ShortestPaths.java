@@ -192,7 +192,9 @@ public abstract class ShortestPaths {
         @Override
         public boolean offer(Integer e) {
             Vertex vertex = new Vertex(e, getWeight(e) + estimatedDistance(e));
-            return ts.add(vertex) && ll.add(vertex);
+            ts.add(vertex);
+            ll.add(vertex);
+            return true;
         }
 
         @Override
