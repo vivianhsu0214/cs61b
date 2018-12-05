@@ -157,7 +157,7 @@ class Trip {
      */
     private void addLocation(String name, double x, double y) {
         if (_sites.containsKey(name)) {
-            error("multiple entries for %s", name);
+            error("error: multiple entries for %s", name);
         }
         int v = _map.add(new Location(name, x, y));
         _sites.put(name, v);

@@ -79,7 +79,7 @@ class Rule {
         for (Integer i : _depends.successors(getVertex())) {
             Rule r = _depends.getLabel(i);
             if (r.isUnfinished()) {
-                error("dependency of %s, %s is not finished",
+                error("error: dependency of %s, %s is not finished",
                         _target, r.getTarget());
             }
         }
@@ -113,7 +113,7 @@ class Rule {
 
         if (outOfDate()) {
             if (_commands.isEmpty()) {
-                error("%s needs to be rebuilt, but has no commands",
+                error("error: %s needs to be rebuilt, but has no commands",
                         _target);
             }
             _time = _maker.getCurrentTime();

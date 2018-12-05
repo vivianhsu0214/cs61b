@@ -29,7 +29,7 @@ public class LabeledGraph<VL, EL> extends GraphFilter {
     public EL getLabel(int u, int v) {
         int e = edgeId(u, v);
         if (e == 0) {
-            throw new IllegalArgumentException("no such edge");
+            throw new IllegalArgumentException("error: no such edge");
         }
         return e < _elabel.size() ? _elabel.get(e) : null;
     }
@@ -59,7 +59,7 @@ public class LabeledGraph<VL, EL> extends GraphFilter {
     public void setLabel(int u, int v, EL lab) {
         int e = edgeId(u, v);
         if (e == 0) {
-            throw new IllegalArgumentException("no such edge");
+            throw new IllegalArgumentException("error: no such edge");
         }
         if (lab != null || e < _elabel.size()) {
             expand(_elabel, e + 1);
