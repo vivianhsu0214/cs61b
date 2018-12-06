@@ -307,7 +307,7 @@ public class AnotherGraphTest {
      * distances from V0 in graph with successor map SUCCS.
      */
     static Map<Integer, Integer>
-    levelMap(final ArrayList<ArrayList<Integer>> succs, int v0) {
+        levelMap(final ArrayList<ArrayList<Integer>> succs, int v0) {
         final HashMap<Integer, Integer> distMap = new HashMap<>();
         class BF {
             void bf(int u, int d, int maxDepth) {
@@ -379,7 +379,7 @@ public class AnotherGraphTest {
      * u <= v.
      */
     static Set<Point>
-    edgeSet(ArrayList<ArrayList<Integer>> edges, boolean directed) {
+        edgeSet(ArrayList<ArrayList<Integer>> edges, boolean directed) {
         HashSet<Point> result = new HashSet<>();
         for (int u = 1; u < edges.size(); u += 1) {
             for (int v : edges.get(u)) {
