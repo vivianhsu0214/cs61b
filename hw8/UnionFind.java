@@ -12,26 +12,27 @@ public class UnionFind {
     /** A union-find structure consisting of the sets { 1 }, { 2 }, ... { N }.
      */
     public UnionFind(int N) {
-        ArrayList<UnionNode> list = new ArrayList<>();
+        _union = new int[N + 1];
+        _sizes = new int[N + 1];
         for (int i = 1; i < N + 1; i++) {
-            UnionNode n = new UnionNode(i, null);
-            list.add(n);
+            _union[i] = i;
+            _sizes[i] = 1;
         }
-        union = new UnionTree(list);
+        _compressed = new int[Integer.SIZE - Integer.numberOfLeadingZeros(N)];
     }
 
     /** Return the representative of the partition currently containing V.
      *  Assumes V is contained in one of the partitions.  */
     public int find(int v) {
-        UnionTree temp = new UnionTree(union);
-        for (int i = 1; i < v + 1; i++) {
-            temp.compress(i);
+        int count = 0;
+        while (_union[v] != v) {
+            _compressed[count++] = v;
+            v = _union[v];
         }
-        UnionNode n = temp.getNode(v);
-        while (n.getParent() != null) {
-            n = n.getParent();
+        while (count > 0) {
+            _union[_compressed[--count]] = v;
         }
-        return n.getValue();
+        return v;
     }
 
     /** Return true iff U and V are in the same partition. */
@@ -41,85 +42,26 @@ public class UnionFind {
 
     /** Union U and V into a single partition, returning its representative. */
     public int union(int u, int v) {
-        int root = find(u);
-        int subRoot = find(v);
-        union.getNode(subRoot).changeParent(union.getNode(root));
-        return root;
+        u = find(u);
+        v = find(v);
+        if (u == v) {
+            return u;
+        } else if (_sizes[u] < _sizes[v]) {
+            _union[u] = v;
+            _sizes[v] += _sizes[u];
+            return v;
+        } else {
+            _union[v] = u;
+            _sizes[u] += _sizes[v];
+            return v;
+        }
     }
 
-    private UnionTree union;
+    private int[] _union;
 
-    private class UnionNode{
-        UnionNode(int value) {
-            _value = value;
-        }
+    private int[] _sizes;
 
-        UnionNode(int value, UnionNode parent) {
-            _value = value;
-            _parent = parent;
-        }
+    private int[] _compressed;
 
-        public void changeParent(UnionNode parent) {
-            _parent = parent;
-        }
 
-        public int getValue() {
-            return _value;
-        }
-
-        public UnionNode getParent() {
-            return _parent;
-        }
-
-        public int getParentValue() {
-            return _parent._value;
-        }
-        
-        private int _value;
-        private UnionNode _parent;
-    }
-
-    private class UnionTree{
-        UnionTree(UnionNode ... nodes) {
-            for (UnionNode n : nodes) {
-                _set.put(n._value, n);
-            }
-        }
-
-        UnionTree(List<UnionNode> nodes) {
-            for (UnionNode n : nodes) {
-                _set.put(n._value, n);
-            }
-        }
-
-        UnionTree(UnionTree origin) {
-            for (Integer v : origin._set.keySet()) {
-                UnionNode n = origin._set.get(v);
-                _set.put(v, new UnionNode(v, n._parent));
-            }
-        }
-
-        public void add(UnionNode n) {
-            _set.put(n._value, n);
-        }
-
-        public UnionNode getNode(int value) {
-            if (_set.containsKey(value)) {
-                return _set.get(value);
-            } else {
-                return null;
-            }
-        }
-
-        public void compress(int value) {
-            UnionNode n = getNode(value);
-            if (n == null || n._parent == null) {
-                return;
-            }
-            n._parent = n._parent;
-        }
-
-        private HashMap<Integer, UnionNode> _set
-                = new HashMap<>();
-    }
 }

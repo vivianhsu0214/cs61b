@@ -18,9 +18,21 @@ public class MST {
      *  are a subset of those in E (they do not include copies of the
      *  original edges, just the original edges themselves.) */
     public static int[][] mst(int V, int[][] E) {
-        TreeSet<int[]> ts = new TreeSet<>(EDGE_WEIGHT_COMPARATOR);
-
-        return null;
+        int[][] replica = Arrays.copyOf(E, E.length);
+        Arrays.sort(replica, EDGE_WEIGHT_COMPARATOR);
+        int ec = 0;
+        int i = 0;
+        int[][] r = new int[V-1][3];
+        UnionFind uf = new UnionFind(V);
+        while (ec < V - 1) {
+            int[] rep = replica[i++];
+            int u = rep[0], v = rep[1];
+            if (!uf.samePartition(u, v)) {
+                uf.union(u, v);
+                r[ec++] = rep;
+            }
+        }
+        return r;
     }
 
     /** An ordering of edges by weight. */
